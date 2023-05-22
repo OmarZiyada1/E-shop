@@ -58,7 +58,7 @@ public class E_shop_CUI {
 		System.out.print("         \n  Artikelbestand erhöhen:  'h'");
 		System.out.print("         \n  Artikelbestand senken:  'w'");
 		System.out.print("         \n  ---------------------");
-		System.out.println("       \n  Beenden:        'q'");
+		System.out.println("         \n  Beenden:        t'q'");
 		System.out.print("> "); // Prompt
 		System.out.flush();
 	}
