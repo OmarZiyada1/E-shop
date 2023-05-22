@@ -19,6 +19,8 @@ public class Bestellung {
 	private Kunde kunde;
 	private HashMap<Artikel, Integer> bestellteArtikeln;
 	private double Gesamtprise = 0;
+	private Rechnung rechnung;
+
 
 
 
@@ -91,6 +93,16 @@ public class Bestellung {
 	 */
 	public void setBestellungsNr(int bestellungsNr) {
 		this.bestellungsNr = bestellungsNr;
+	}
+	
+	
+
+	public Rechnung getRechnung() {
+		return rechnung;
+	}
+
+	public void setRechnung(Rechnung rechnung) {
+		this.rechnung = rechnung;
 	}
 
 	@Override

@@ -36,17 +36,23 @@ public class MitarbeiterVerwaltung {
 			}
 		}
 
+		generateMitarbeiterId(mitarbeiter);
+
+		list_Mitarbeiter.add(mitarbeiter);
+	}
+	
+	
+
+	private void generateMitarbeiterId(Mitarbeiter mitarbeiter) {
 		if (list_Mitarbeiter.isEmpty()) {
 			mitarbeiter.setMaId(1);
 		} else {
 			int lastMitrbeiterID = list_Mitarbeiter.get(list_Mitarbeiter.size() - 1).getMaId();
 			mitarbeiter.setMaId(lastMitrbeiterID + 1);
 		}
-
-		list_Mitarbeiter.add(mitarbeiter);
 	}
 
-	public Mitarbeiter mitarbeiterEinlogen(String nutzerName, String passwort)
+	public Mitarbeiter mitarbeiterEinloggen(String nutzerName, String passwort)
 			throws NutzernameOderPasswortFalschException {
 		// TODO: Implementiere die Methode "einloggen" für den Nutzer.
 		Iterator<Mitarbeiter> iter = list_Mitarbeiter.iterator();
@@ -62,11 +68,11 @@ public class MitarbeiterVerwaltung {
 				break;
 			}
 		}
-		 if (!treffer || list_Mitarbeiter.isEmpty()) {
-		        throw new NutzernameOderPasswortFalschException();
-		    }
+		if (!treffer || list_Mitarbeiter.isEmpty()) {
+			throw new NutzernameOderPasswortFalschException();
+		}
 
-		    return mitarbeiter;
+		return mitarbeiter;
 
 	}
 

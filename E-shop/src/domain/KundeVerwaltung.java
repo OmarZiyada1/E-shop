@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 import entities.Adresse;
+import entities.Bestellung;
 import domain.exceptions.KundeIDistbenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import entities.Kunde;
@@ -17,7 +18,8 @@ public class KundeVerwaltung {
 	public KundeVerwaltung() {
 	}
 
-	public void kundeRegistieren(Kunde kunde) throws KundeIDistbenutztException {
+	public void kundeRegistieren(String name, String vorname, String nutzerNr, String passwort, Adresse adresse) throws KundeIDistbenutztException {
+		Kunde kunde= new Kunde( name,  vorname,  nutzerNr,  passwort,  adresse);
 		Iterator<Kunde> iter = list_Kunde.iterator();
 
 		while (iter.hasNext()) {
@@ -27,14 +29,18 @@ public class KundeVerwaltung {
 			}
 		}
 
+		generateKundenId(kunde);
+
+		list_Kunde.add(kunde);
+	}
+
+	private void generateKundenId(Kunde kunde) {
 		if (list_Kunde.isEmpty()) {
 			kunde.setKndNr(100);
 		} else {
 			int lastKundenNr = list_Kunde.get(list_Kunde.size() - 1).getKndNr();
 			kunde.setKndNr(lastKundenNr + 2);
 		}
-
-		list_Kunde.add(kunde);
 	}
 
 	// TODO Auto-generated constructor stub
@@ -79,5 +85,18 @@ public class KundeVerwaltung {
 		return kunde;
 
 	}
+
+	public List<Kunde> getList_Kunde() {
+		return list_Kunde;
+	}
+	
+	public List<Bestellung> getMeineBestellungen(Kunde kunde){
+		return kunde.getMeineBestellungen();
+	}
+
+
+	
+	
+	
 
 }

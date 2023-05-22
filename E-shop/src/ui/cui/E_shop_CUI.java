@@ -11,6 +11,7 @@ import domain.E_Shop;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
+import domain.exceptions.KundeIDistbenutztException;
 import domain.exceptions.MitarbeiterIDIstBenutztException;
 import entities.Artikel;
 
@@ -30,6 +31,13 @@ public class E_shop_CUI {
 		// einlesen von Konsole
 		return in.readLine();
 	}
+	
+	private void gibStartMenuAus() {
+		System.out.println("\"Befehle: \\n  Login:  'l'\"");
+		System.out.print("         \n  Regestrieren als Kunde: 'r'");
+		System.out.print("> "); 
+		System.out.flush();
+	}
 
 	private void gibMenueAus() {
 		System.out.print("Befehle: \n  Artikel ausgeben:  'a'");
@@ -42,6 +50,16 @@ public class E_shop_CUI {
 		System.out.print("> "); // Prompt
 		System.out.flush();
 	}
+	
+	
+	private void verarbeiteLogin(String line) throws KundeIDistbenutztException {
+		switch (line) {
+		case "r":
+			//hier
+			//sh.kundenRegistrieren();
+			
+		}	
+	}
 
 	private void verarbeiteEingabe(String line) throws IOException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException {
 
@@ -51,7 +69,7 @@ public class E_shop_CUI {
 		int bestand;
 		double preis;
 		List<Artikel> artikelListe;
-
+		
 		// Eingabe bearbeiten:
 		switch (line) {
 		case "a":
@@ -71,7 +89,7 @@ public class E_shop_CUI {
 			System.out.print("Artikel Preis  > ");
 			preis = Double.parseDouble(liesEingabe());
 
-			sh.loescheArtikel(artikelId, name, beschreibung, bestand, preis);
+			sh.loescheArtikel(name, beschreibung, bestand, preis);
 
 			break;
 		case "e":
@@ -87,7 +105,7 @@ public class E_shop_CUI {
 			System.out.print("Artikel Preis  > ");
 			preis = Double.parseDouble(liesEingabe());
 
-			sh.fuegeArtikelEin(artikelId, name, beschreibung, bestand, preis);
+			sh.fuegeArtikelEin( name, beschreibung, bestand, preis);
 			System.out.println("Einfügen ok");
 			break;
 		case "f":

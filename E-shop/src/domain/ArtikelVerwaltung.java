@@ -26,18 +26,24 @@ public class ArtikelVerwaltung {
 	    } else {
 	        if (anzahl > 0) {
 	            artikel.setBestand(anzahl);
-	            if (artikelListe.isEmpty()) {
-	            	artikel.setArtikelId(1322);
-	    		} else {
-	    			int lastRechnungNr = artikelListe.get(artikelListe.size() - 1).getArtikelId();
-	    			artikel.setArtikelId(lastRechnungNr + 322);
-	    		}
+	            genertaeArtiekelNr(artikel);
 	            artikelListe.add(artikel);
 	            updateVerfuegbarkeit(artikel);
 	        } else {
 	            throw new AnzahlIsNichtDefiniertException();
 	        }
 	    }
+	}
+
+
+
+	private void genertaeArtiekelNr(Artikel artikel) {
+		if (artikelListe.isEmpty()) {
+			artikel.setArtikelId(1322);
+		} else {
+			int lastRechnungNr = artikelListe.get(artikelListe.size() - 1).getArtikelId();
+			artikel.setArtikelId(lastRechnungNr + 322);
+		}
 	}
 	
 	

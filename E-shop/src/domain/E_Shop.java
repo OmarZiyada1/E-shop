@@ -1,15 +1,21 @@
 package domain;
 
+import java.util.HashMap;
 import java.util.List;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.KundeIDistbenutztException;
 import domain.exceptions.MitarbeiterIDIstBenutztException;
+import domain.exceptions.NichtGenugArtikelVorhandenException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
+import domain.exceptions.WarenkorbLeerException;
+import entities.Adresse;
 import entities.Artikel;
+import entities.Bestellung;
 import entities.Kunde;
 import entities.Mitarbeiter;
-
+import entities.Rechnung;
+import entities.Warenkorb;
 
 public class E_Shop {
 
@@ -29,8 +35,7 @@ public class E_Shop {
 		rechnungVW = new RechnungsVerwaltung();
 	}
 
-	
-	//Artikel Methoden
+	// Artikel Methoden
 	public List<Artikel> gibAlleArtikeln() {
 		return artikelVW.getArtikelListe();
 	}
@@ -43,45 +48,111 @@ public class E_Shop {
 	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis)
 			throws AnzahlIsNichtDefiniertException {
 
-		Artikel artikel=new Artikel(name, beschreibung, bestand, preis);
+		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
 		artikelVW.fugeArtikelEin(artikel, bestand);
 		return artikel;
 	}
 
 	public void loescheArtikel(String name, String beschreibung, int bestand, double preis)
 			throws ArtikelExistiertNichtException {
-		Artikel artikel=new Artikel(name, beschreibung, bestand, preis);
+		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
 		artikelVW.artikelloeschen(artikel);
 
 	}
-	public void erhoeheArtikelBestand(Artikel artikel,int anzahl) {
-		artikelVW.bestandErhoehen(artikel, anzahl);	
+
+	public void erhoeheArtikelBestand(Artikel artikel, int anzahl) {
+		artikelVW.bestandErhoehen(artikel, anzahl);
 	}
-	public void senkenArtikelBestand(Artikel artikel,int anzahl) {
-		artikelVW.bestandSenken(artikel, anzahl);	
+
+	public void senkenArtikelBestand(Artikel artikel, int anzahl) {
+		artikelVW.bestandSenken(artikel, anzahl);
+	}
+
+	// Kunde Methoden
+	public void kundenRegistrieren(String name, String vorname, String nutzerNr, String passwort, Adresse adresse) throws KundeIDistbenutztException {
+		kundeVW.kundeRegistieren(name,  vorname,  nutzerNr,  passwort,  adresse);
+
+	}
+
+	public Kunde kundenEinloggen(Kunde kunde) throws KundeIDistbenutztException, NutzernameOderPasswortFalschException {
+		return kundeVW.kundeEinloggen(kunde.getNutzerName(), kunde.getPasswort());
+
 	}
 	
-	//Kunde Methoden
-	public void kundenRegistrieren(Kunde kunde) throws KundeIDistbenutztException {
-		kundeVW.kundeRegistieren(kunde);
-		
+	public List<Bestellung> GibAlleMeineBestellungen(Kunde kunde){
+		return kundeVW.getMeineBestellungen(kunde);
 	}
-	public void kundenEinlogen(Kunde kunde) throws KundeIDistbenutztException, NutzernameOderPasswortFalschException {
-		kundeVW.kundeEinloggen(kunde.getNutzerName(),kunde.getPasswort());
-		
+	public  List<Kunde> gibAlleKunden(){
+		return kundeVW.getList_Kunde();
 	}
-	//Mitarbeiter Methoden
-	
+	// Mitarbeiter Methoden
+
 	public void mitarbeiterEinfügen(Mitarbeiter mitarbeiter) throws MitarbeiterIDIstBenutztException {
 		mitarbeiterVW.fuegeMitarbeiterEin(mitarbeiter);
+
+	}
+
+	public void mitarbeiterEinloggen(Mitarbeiter mitarbeiter)
+			throws MitarbeiterIDIstBenutztException, NutzernameOderPasswortFalschException {
+		mitarbeiterVW.mitarbeiterEinloggen(mitarbeiter.getNutzerName(), mitarbeiter.getPasswort());
+
+	}
+
+	public void regestiereNeueMitarbeiter(String name, String vorName, String nutzerName, String passwort,
+			Adresse adresse) throws MitarbeiterIDIstBenutztException {
+		mitarbeiterVW.neueMitarbeiterRegistieren(name, vorName, nutzerName, passwort, adresse);
+
+	}
+
+	public List<Mitarbeiter> gibAlleMitarbeiter() {
+		return mitarbeiterVW.getList_Mitarbeiter();
+	}
+	// Rechnung Methoden
+
+	public Rechnung erstelleRechnung(Bestellung bestl) {
+
+		return rechnungVW.erstelleRechnung(bestl);
+	}
 	
+	public List<Rechnung> GinAlleRechnungen(){
+		return rechnungVW.getRechnungenList();
 	}
-	public void mitarbeiterEinlogen(Mitarbeiter mitarbeiter) throws MitarbeiterIDIstBenutztException, NutzernameOderPasswortFalschException {
-		mitarbeiterVW.mitarbeiterEinlogen(mitarbeiter.getNutzerName(),mitarbeiter.getPasswort());
 	
+	// Warenkorb
+	
+	public void fueArtikelInkorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException {
+		warenKorbVW.fuegeArtikelInKorbEin(kunde, art, anzahl);
 	}
-	public List<Mitarbeiter> alleMitarbeiter() {
-		return mitarbeiterVW.getList_Mitarbeiter();	
+	
+	public void entferneArtikelVomWarenkorb(Kunde kunde, Artikel art, int anzahl) throws AnzahlIsNichtDefiniertException {
+		warenKorbVW.entferneArtikelKorbListe(kunde, art, anzahl);
 	}
-	//todo
+	
+	public void loescheArtikelVomWarenkorb(Kunde kunde, Artikel art) {
+		warenKorbVW.loescheArtikeVomKorb(kunde, art);
+	}
+	
+	public void leereWarenkorb(Kunde kunde) {
+		warenKorbVW.leereWarenKorb(kunde);
+	}
+	
+	public double UpdadteGesamtprise (HashMap<Artikel, Integer> liste, Kunde kunde) {
+		return warenKorbVW.updadteGesamtprise(liste, kunde);
+	}
+	
+	public Warenkorb getKundenWarenkorb(Kunde kunde) {
+		return warenKorbVW.getWarenkorb(kunde);	
+	}
+	
+	//Bestellung
+	public Bestellung bestellen(Kunde kunde) throws AnzahlIsNichtDefiniertException, WarenkorbLeerException {
+		return bestellVW.bestellen(kunde);
+	}
+	
+	public List<Bestellung> getBestellungList(){
+		return bestellVW.getBestellungList();
+	}
+	
+	
+	
 }

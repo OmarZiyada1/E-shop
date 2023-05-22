@@ -13,7 +13,7 @@ public class Kunde extends Nutzer {
 	private static final char rolle = 'k';
 	private Warenkorb kundeWarenkorb;
 	private List<Bestellung> meineBestellungen = new Vector<>();
-	private Bestellung aktuelleBestellung ;
+	private Bestellung aktuelleBestellung;
 
 	
 	/**
@@ -93,8 +93,8 @@ public class Kunde extends Nutzer {
 	/**
 	 * @param meineBestellungen the meineBestellungen to set
 	 */
-	public void setMeineBestellungen(List<Bestellung> meineBestellungen) {
-		this.meineBestellungen = meineBestellungen;
+	public void setMeineBestellungen(Bestellung best) {
+		this.meineBestellungen.add(best);
 	}
 	
 	
