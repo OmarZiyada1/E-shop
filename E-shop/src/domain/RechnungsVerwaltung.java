@@ -39,6 +39,7 @@ public class RechnungsVerwaltung {
 	
 	
 	public List<Rechnung> getRechnungenList() {
+	//Sex with condom is the Best.  Sudki Koulak
 		return RechnungenList;
 	}
 

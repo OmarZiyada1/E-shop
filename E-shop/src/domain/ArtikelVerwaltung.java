@@ -57,8 +57,6 @@ public class ArtikelVerwaltung {
 
 	public void bestandSenken(String name, int anzahl) {
 		Artikel artikel = sucheArtikel(name);
-		System.out.println("artikel"+artikel);
-		System.out.println("Anzahl" +anzahl);
 		System.out.println(artikel.getBestand());
 		artikel.setBestand(artikel.getBestand() - anzahl);
 		updateVerfuegbarkeit(artikel);
