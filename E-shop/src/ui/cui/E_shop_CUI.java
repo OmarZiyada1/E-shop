@@ -74,7 +74,7 @@ public class E_shop_CUI {
 		System.out.print("         \n  Bestellen:  'm'");
 		// System.out.print(" \n Daten sichern: 's'");
 		System.out.print("           \n  ---------------------");
-		System.out.println("         \n  Beenden:        'tq'");
+		System.out.println("         \n  Beenden:        'q'");
 		System.out.print("> "); // Prompt
 		System.out.flush();
 	}
