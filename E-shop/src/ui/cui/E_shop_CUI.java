@@ -368,6 +368,7 @@ public class E_shop_CUI {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				
 			} while (!input.equals("q"));
 		}
 
