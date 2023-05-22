@@ -251,7 +251,7 @@ public class E_shop_CUI {
 			System.out.print("Artikel Name  > ");
 			artikelName = liesEingabe();
 			gesuchteArtikel = sh.sucheNachName(artikelName);
-			System.out.println(gesuchteArtikel);
+			System.out.println(gesuchteArtikel+ "\n");
 			break;
 		case "d":
 			System.out.println("Bitte name des Artikels eingeben  >");
@@ -260,6 +260,7 @@ public class E_shop_CUI {
 			System.out.println("Stückanzahl  >");
 			anzahl = Integer.parseInt(liesEingabe());
 			sh.fueArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
+			System.out.println("Artikel wurde erfolgreich hinzugefügt\n");
 			break;
 		case "c":
 			System.out.println("Bitte name des Artikels eingeben  >");
@@ -273,17 +274,20 @@ public class E_shop_CUI {
 				System.out.print("Stückzahl eingeben bitte  >");
 				anzahl =Integer.parseInt(liesEingabe());
 				sh.fueArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
+				System.out.println("Bestand des Artikel '"+gesuchteArtikel+"' wurde um '"+anzahl+"' Stückzahl erhöht");
 				break;
 			case "-":
 				System.out.print("Stückzahl eingeben bitte  >");
 				anzahl =Integer.parseInt(liesEingabe());
 				sh.fueArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
+				System.out.println("Bestand des Artikel '"+gesuchteArtikel+"' wurde um '"+anzahl+"' Stückzahl gesenkt");
 				break;
 			}
 			break;
 		case "r":
 			sh.leereWarenkorb(loggedkunde);
-			System.out.println("Ihre Warenkorb ist jetzt leer");
+			System.out.println("Ihre Warenkorb ist jetzt leer\n");
+			sh.getKundenWarenkorb(loggedkunde);
 			break;
 			
 		case "w":
@@ -292,7 +296,7 @@ public class E_shop_CUI {
 			
 		case "m":
 			aktuelleBestellung = sh.bestellen(loggedkunde);
-			System.out.println(sh.erstelleRechnung(aktuelleBestellung));
+			System.out.println("\n"+sh.erstelleRechnung(aktuelleBestellung)+"\n");
 			sh.leereWarenkorb(loggedkunde);
 			break;
 
