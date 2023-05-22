@@ -345,7 +345,7 @@ public class E_shop_CUI {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} while ((loggedkunde == null && loggedMitarbeiter == null)|| !input.equals("q"));
+		} while ((loggedkunde == null && loggedMitarbeiter == null)&& !input.equals("q"));
 		// Hauptschleife der Benutzungsschnittstelle
 
 		if (loggedMitarbeiter != null) {
