@@ -12,30 +12,32 @@ import domain.exceptions.ArtikelExistiertNichtException;
 import entities.Artikel;
 import entities.Mitarbeiter;
 
-
 public class ArtikelVerwaltung {
 
 	private List<Artikel> artikelListe = new Vector<>();
-	
-
 
 	public void fugeArtikelEin(Artikel artikel, int anzahl) throws AnzahlIsNichtDefiniertException {
-	    if (this.artikelListe.contains(artikel)) {
-	        artikel.setBestand(artikel.getBestand() + anzahl);
-	        updateVerfuegbarkeit(artikel);
-	    } else {
-	        if (anzahl > 0) {
-	            artikel.setBestand(anzahl);
-	            genertaeArtiekelNr(artikel);
-	            artikelListe.add(artikel);
-	            updateVerfuegbarkeit(artikel);
-	        } else {
-	            throw new AnzahlIsNichtDefiniertException();
-	        }
-	    }
+		if (this.artikelListe.contains(artikel)) {
+			artikel.setBestand(artikel.getBestand() + anzahl);
+			updateVerfuegbarkeit(artikel);
+		} else {
+			if (anzahl > 0) {
+				artikel.setBestand(anzahl);
+				genertaeArtiekelNr(artikel);
+				artikelListe.add(artikel);
+				updateVerfuegbarkeit(artikel);
+			} else {
+				throw new AnzahlIsNichtDefiniertException();
+			}
+		}
 	}
 
-
+	public void fugeArtikelEin(Artikel artikel) throws AnzahlIsNichtDefiniertException {
+		artikel.setBestand(artikel.getBestand());
+		genertaeArtiekelNr(artikel);
+		artikelListe.add(artikel);
+		updateVerfuegbarkeit(artikel);
+	}
 
 	private void genertaeArtiekelNr(Artikel artikel) {
 		if (artikelListe.isEmpty()) {
@@ -45,61 +47,60 @@ public class ArtikelVerwaltung {
 			artikel.setArtikelId(lastRechnungNr + 322);
 		}
 	}
-	
-	
-	
-	public void bestandErhoehen(Artikel artikel, int anzahl){
+
+	public void bestandErhoehen(String name, int anzahl) {
+		Artikel artikel = sucheArtikel(name);
 		artikel.setBestand(artikel.getBestand() + anzahl);
 		updateVerfuegbarkeit(artikel);
-		
+
 	}
-	
-	public void bestandSenken(Artikel artikel, int anzahl){
+
+	public void bestandSenken(String name, int anzahl) {
+		Artikel artikel = sucheArtikel(name);
+		System.out.println("artikel"+artikel);
+		System.out.println("Anzahl" +anzahl);
+		System.out.println(artikel.getBestand());
 		artikel.setBestand(artikel.getBestand() - anzahl);
 		updateVerfuegbarkeit(artikel);
-		
+
 	}
 	
 	
-	
-	
-	
-	
+	public void bestandSenken(Artikel artikel, int anzahl) {
+		artikel.setBestand(artikel.getBestand() - anzahl);
+		updateVerfuegbarkeit(artikel);
+
+	}
+
 	public void artikelloeschen(Artikel artikel) throws ArtikelExistiertNichtException {
-		if(this.artikelListe.contains(artikel)) {
-			artikelListe.remove(artikel);		
-		}
-		else {
+		if (this.artikelListe.contains(artikel)) {
+			artikelListe.remove(artikel);
+		} else {
 			throw new ArtikelExistiertNichtException();
 		}
 	}
 
-	
-	public List<Artikel> sucheArtikel(String name) {
-		List<Artikel> suchArtikel = new ArrayList<>();
+	public Artikel sucheArtikel(String name) {
+		Artikel suchArtikel = null;
 		Iterator<Artikel> iter = artikelListe.iterator();
-		while (iter.hasNext()) {			
+		while (iter.hasNext()) {
 			Artikel a = iter.next();
 			if (a.getName().equals(name))
-				suchArtikel.add(a);
-		}		
+				suchArtikel = a;
+		}
 		return suchArtikel;
 	}
 
-	//Verfügbarkeit
+	// Verfügbarkeit
 	public boolean updateVerfuegbarkeit(Artikel artikel) {
-		if (artikel.getBestand()==0) {
-	        artikel.setVerfügbar(false);
-	        return false ;
-	    } 
-		else {
-			return true ;
-		}		
+		if (artikel.getBestand() == 0) {
+			artikel.setVerfügbar(false);
+			return false;
+		} else {
+			return true;
+		}
 	}
-	
-	
-	
-	
+
 	public List<Artikel> getArtikelListe() {
 		return new Vector<>(artikelListe);
 	}

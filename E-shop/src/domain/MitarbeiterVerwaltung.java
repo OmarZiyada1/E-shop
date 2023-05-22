@@ -76,9 +76,9 @@ public class MitarbeiterVerwaltung {
 
 	}
 
-	public void neueMitarbeiterRegistieren(String name, String vorName, String nutzerName, String passwort,
-			Adresse adresse) throws MitarbeiterIDIstBenutztException {
-		Mitarbeiter mitarbeiter = new Mitarbeiter(name, vorName, nutzerName, passwort, adresse);
+	public void neueMitarbeiterRegistieren(String name, String vorName, String nutzerName, String passwort
+			) throws MitarbeiterIDIstBenutztException {
+		Mitarbeiter mitarbeiter = new Mitarbeiter(name, vorName, nutzerName, passwort );
 		fuegeMitarbeiterEin(mitarbeiter);
 	}
 }

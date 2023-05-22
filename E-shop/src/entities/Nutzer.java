@@ -30,6 +30,13 @@ public abstract class Nutzer {
 		this.adresse = adresse;
 	}
 
+	public Nutzer(String name, String vorname, String nutzerNr, String passwort) {
+		this.name = name;
+		this.vorname = vorname;
+		this.nutzerName = nutzerNr;
+		this.passwort = passwort;
+		
+	}
 	/**
 	 * @return the name
 	 */

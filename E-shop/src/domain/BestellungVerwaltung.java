@@ -22,7 +22,7 @@ public class BestellungVerwaltung {
 
 	}
 
-	public Bestellung bestellen(Kunde kunde) throws AnzahlIsNichtDefiniertException, WarenkorbLeerException {
+	public Bestellung bestellen(Kunde kunde) throws  WarenkorbLeerException {
 		HashMap<Artikel, Integer> artikelnInWarenkorbList = kunde.getKundeWarenkorb().getKorbArtikelListe();
 		
 		if (artikelnInWarenkorbList.isEmpty()) {

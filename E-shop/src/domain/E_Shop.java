@@ -40,16 +40,25 @@ public class E_Shop {
 		return artikelVW.getArtikelListe();
 	}
 
-	public List<Artikel> sucheNachName(String name) {
+	public Artikel sucheNachName(String name) {
 
 		return artikelVW.sucheArtikel(name);
 	}
 
-	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis)
+	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis, int anzahl)
 			throws AnzahlIsNichtDefiniertException {
 
 		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
-		artikelVW.fugeArtikelEin(artikel, bestand);
+		artikelVW.fugeArtikelEin(artikel, anzahl);
+		return artikel;
+	}
+
+	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis)
+			throws AnzahlIsNichtDefiniertException
+			 {
+
+		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
+		artikelVW.fugeArtikelEin(artikel);
 		return artikel;
 	}
 
@@ -60,47 +69,55 @@ public class E_Shop {
 
 	}
 
-	public void erhoeheArtikelBestand(Artikel artikel, int anzahl) {
-		artikelVW.bestandErhoehen(artikel, anzahl);
+	public void erhoeheArtikelBestand(String name,  int anzahl) {
+		artikelVW.bestandErhoehen(name, anzahl);
 	}
 
-	public void senkenArtikelBestand(Artikel artikel, int anzahl) {
-		artikelVW.bestandSenken(artikel, anzahl);
+	public void senkenArtikelBestand(String name,  int anzahl) {
+		artikelVW.bestandSenken(name, anzahl);
 	}
 
 	// Kunde Methoden
-	public void kundenRegistrieren(String name, String vorname, String nutzerNr, String passwort, Adresse adresse) throws KundeIDistbenutztException {
-		kundeVW.kundeRegistieren(name,  vorname,  nutzerNr,  passwort,  adresse);
+	public void kundenRegistrieren(String name, String vorname, String nutzerNr, String passwort, String strasse,
+			String hNr, String plz, String ort, String land) throws KundeIDistbenutztException {
+		Adresse adresse = new Adresse(strasse, hNr, plz, ort, land);
+		Kunde kunde = new Kunde(name,vorname,nutzerNr,passwort,adresse);
+		kundeVW.kundeRegistieren(kunde);
 
 	}
 
-	public Kunde kundenEinloggen(Kunde kunde) throws KundeIDistbenutztException, NutzernameOderPasswortFalschException {
-		return kundeVW.kundeEinloggen(kunde.getNutzerName(), kunde.getPasswort());
+	public Kunde kundenEinloggen(String nutzerName, String passwort) throws NutzernameOderPasswortFalschException {
+		return kundeVW.kundeEinloggen(nutzerName, passwort);
 
 	}
-	
-	public List<Bestellung> GibAlleMeineBestellungen(Kunde kunde){
+
+	public List<Bestellung> GibAlleMeineBestellungen(Kunde kunde) {
 		return kundeVW.getMeineBestellungen(kunde);
 	}
-	public  List<Kunde> gibAlleKunden(){
+
+	public List<Kunde> gibAlleKunden() {
 		return kundeVW.getList_Kunde();
 	}
 	// Mitarbeiter Methoden
 
-	public void mitarbeiterEinfügen(Mitarbeiter mitarbeiter) throws MitarbeiterIDIstBenutztException {
+	public void mitarbeiterEinfügen(String name, String vorName, String nutzerName, String passwort)
+			throws MitarbeiterIDIstBenutztException {
+
+		Mitarbeiter mitarbeiter = new Mitarbeiter(name, vorName, nutzerName, passwort);
 		mitarbeiterVW.fuegeMitarbeiterEin(mitarbeiter);
 
 	}
 
-	public void mitarbeiterEinloggen(Mitarbeiter mitarbeiter)
-			throws MitarbeiterIDIstBenutztException, NutzernameOderPasswortFalschException {
-		mitarbeiterVW.mitarbeiterEinloggen(mitarbeiter.getNutzerName(), mitarbeiter.getPasswort());
+	public Mitarbeiter mitarbeiterEinloggen(String nutzerName, String passwort)
+			throws NutzernameOderPasswortFalschException {
+		return mitarbeiterVW.mitarbeiterEinloggen(nutzerName, passwort);
 
 	}
 
-	public void regestiereNeueMitarbeiter(String name, String vorName, String nutzerName, String passwort,
-			Adresse adresse) throws MitarbeiterIDIstBenutztException {
-		mitarbeiterVW.neueMitarbeiterRegistieren(name, vorName, nutzerName, passwort, adresse);
+	public void regestiereNeueMitarbeiter(String name, String vorName, String nutzerName, String passwort)
+			throws MitarbeiterIDIstBenutztException {
+
+		mitarbeiterVW.neueMitarbeiterRegistieren(name, vorName, nutzerName, passwort);
 
 	}
 
@@ -113,46 +130,45 @@ public class E_Shop {
 
 		return rechnungVW.erstelleRechnung(bestl);
 	}
-	
-	public List<Rechnung> GinAlleRechnungen(){
+
+	public List<Rechnung> GinAlleRechnungen() {
 		return rechnungVW.getRechnungenList();
 	}
-	
+
 	// Warenkorb
-	
+
 	public void fueArtikelInkorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException {
 		warenKorbVW.fuegeArtikelInKorbEin(kunde, art, anzahl);
 	}
-	
-	public void entferneArtikelVomWarenkorb(Kunde kunde, Artikel art, int anzahl) throws AnzahlIsNichtDefiniertException {
+
+	public void entferneArtikelVomWarenkorb(Kunde kunde, Artikel art, int anzahl)
+			throws AnzahlIsNichtDefiniertException {
 		warenKorbVW.entferneArtikelKorbListe(kunde, art, anzahl);
 	}
-	
+
 	public void loescheArtikelVomWarenkorb(Kunde kunde, Artikel art) {
 		warenKorbVW.loescheArtikeVomKorb(kunde, art);
 	}
-	
+
 	public void leereWarenkorb(Kunde kunde) {
 		warenKorbVW.leereWarenKorb(kunde);
 	}
-	
-	public double UpdadteGesamtprise (HashMap<Artikel, Integer> liste, Kunde kunde) {
+
+	public double UpdadteGesamtprise(HashMap<Artikel, Integer> liste, Kunde kunde) {
 		return warenKorbVW.updadteGesamtprise(liste, kunde);
 	}
-	
+
 	public Warenkorb getKundenWarenkorb(Kunde kunde) {
-		return warenKorbVW.getWarenkorb(kunde);	
+		return warenKorbVW.getWarenkorb(kunde);
 	}
-	
-	//Bestellung
-	public Bestellung bestellen(Kunde kunde) throws AnzahlIsNichtDefiniertException, WarenkorbLeerException {
+
+	// Bestellung
+	public Bestellung bestellen(Kunde kunde) throws  WarenkorbLeerException {
 		return bestellVW.bestellen(kunde);
 	}
-	
-	public List<Bestellung> getBestellungList(){
+
+	public List<Bestellung> getBestellungList() {
 		return bestellVW.getBestellungList();
 	}
-	
-	
-	
+
 }

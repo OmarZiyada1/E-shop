@@ -18,8 +18,8 @@ public class KundeVerwaltung {
 	public KundeVerwaltung() {
 	}
 
-	public void kundeRegistieren(String name, String vorname, String nutzerNr, String passwort, Adresse adresse) throws KundeIDistbenutztException {
-		Kunde kunde= new Kunde( name,  vorname,  nutzerNr,  passwort,  adresse);
+	public void kundeRegistieren(Kunde kunde) throws KundeIDistbenutztException {
+		
 		Iterator<Kunde> iter = list_Kunde.iterator();
 
 		while (iter.hasNext()) {

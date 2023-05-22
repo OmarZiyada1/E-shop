@@ -47,6 +47,8 @@ public class WarenkorbVerwaltung {
 		}
 
 	}
+	
+	
 
 	public void loescheArtikeVomKorb(Kunde kunde, Artikel art) {
 		kunde.getKundeWarenkorb().getKorbArtikelListe().remove(art);

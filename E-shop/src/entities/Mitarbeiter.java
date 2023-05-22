@@ -28,6 +28,10 @@ public class Mitarbeiter extends Nutzer {
 	public Mitarbeiter(String name, String vorname, String nutzerNr, String passwort, Adresse adresse) {
 		super(name, vorname, nutzerNr, passwort, adresse);
 	}
+	
+	public Mitarbeiter(String name, String vorname, String nutzerNr, String passwort) {
+		super(name, vorname, nutzerNr, passwort);
+	}
 
 	/**
 	 * @return die maId
