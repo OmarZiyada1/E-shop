@@ -259,7 +259,7 @@ public class E_shop_CUI {
 			gesuchteArtikel = sh.sucheNachName(artikelName);
 			System.out.println("Stückanzahl  >");
 			anzahl = Integer.parseInt(liesEingabe());
-			sh.fueArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
+			sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
 			System.out.println("Artikel wurde erfolgreich hinzugefügt\n");
 			break;
 		case "c":
@@ -269,18 +269,29 @@ public class E_shop_CUI {
 			String line2 ="";
 			System.out.print(
 					"Wenn Sie Anzahl erhöhen möchten bitte '+' Eingeben. Sollten Sie den Anzahl senken wollen '-' eingeben \n ");
+					line2=liesEingabe();
 			switch(line2) {
 			case "+":
 				System.out.print("Stückzahl eingeben bitte  >");
 				anzahl =Integer.parseInt(liesEingabe());
-				sh.fueArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
-				System.out.println("Bestand des Artikel '"+gesuchteArtikel+"' wurde um '"+anzahl+"' Stückzahl erhöht");
+				try {
+					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
+					System.out.println("Bestand des Artikel '"+gesuchteArtikel+"' wurde um '"+anzahl+"' Stückzahl erhöht");
+				} catch (NichtGenugArtikelVorhandenException e) {
+					e.printStackTrace();
+				}
+				
 				break;
 			case "-":
 				System.out.print("Stückzahl eingeben bitte  >");
 				anzahl =Integer.parseInt(liesEingabe());
-				sh.fueArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
-				System.out.println("Bestand des Artikel '"+gesuchteArtikel+"' wurde um '"+anzahl+"' Stückzahl gesenkt");
+				try {
+					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
+					System.out.println("Bestand des Artikel '"+gesuchteArtikel+"' wurde um '"+anzahl+"' Stückzahl gesenkt");
+				} catch (NichtGenugArtikelVorhandenException e) {
+					
+					e.printStackTrace();
+				}
 				break;
 			}
 			break;

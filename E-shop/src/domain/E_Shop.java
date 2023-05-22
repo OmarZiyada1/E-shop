@@ -137,7 +137,7 @@ public class E_Shop {
 
 	// Warenkorb
 
-	public void fueArtikelInkorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException {
+	public void fuegeArtikelInkorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException {
 		warenKorbVW.fuegeArtikelInKorbEin(kunde, art, anzahl);
 	}
 
