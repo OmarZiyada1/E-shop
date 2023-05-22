@@ -186,7 +186,7 @@ public class E_shop_CUI {
 			// lies die notwendigen Parameter, einzeln pro Zeile
 			System.out.print("Artikel Name  > ");
 			artikelName = liesEingabe();
-			System.out.print("Artikel Beschreibung  > ");
+			System.out.print("Artikel Beschreibung > ");
 			beschreibung = liesEingabe();
 			System.out.print("Artikel Preis  > ");
 			preis = Double.parseDouble(liesEingabe());
