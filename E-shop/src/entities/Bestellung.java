@@ -12,9 +12,7 @@ public class Bestellung {
 	 * Gesamtpreis etc.
 	 */
 
-	private final static LocalDateTime aktuelleDatumZeit = LocalDateTime.now();
-	private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss",
-			Locale.GERMANY);
+	
 	private String formattedDatumZeit;
 	private int bestellungsNr;
 	private Kunde kunde;
@@ -32,8 +30,8 @@ public class Bestellung {
 	 * @param gesamtPreis       der Gesamtpreis der Bestellung
 	 */
 
-	public Bestellung(Kunde kunde, HashMap<Artikel, Integer> bestellteArtikeln, double gesamtprise) {
-		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
+	public Bestellung(Kunde kunde, HashMap<Artikel, Integer> bestellteArtikeln, double gesamtprise, String formattedDatumZeit) {
+		this.formattedDatumZeit = formattedDatumZeit;
 		this.bestellteArtikeln = bestellteArtikeln;
 		this.kunde = kunde;
 		this.Gesamtprise = gesamtprise;

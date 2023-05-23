@@ -117,7 +117,7 @@ public class E_shop_CUI {
 			land = liesEingabe();
 			try {
 				sh.kundenRegistrieren(name, vorname, nutzerName, passwort, strasse, hNr, plz, ort, land);
-				System.out.println("Sie Haben Sich erfolgreich regestriert. Sie Können Sich jetzt anmelden\n");
+				System.out.println("\nSie Haben Sich erfolgreich regestriert. Sie Können Sich jetzt anmelden\n");
 			} catch (KundeIDistbenutztException e1) {
 				e1.printStackTrace();
 			}
@@ -140,7 +140,7 @@ public class E_shop_CUI {
 			loginPasswort = liesEingabe();
 			try {
 				loggedkunde = sh.kundenEinloggen(loginNutzerName, loginPasswort);
-				System.out.println("Sie Sind Erfolgreich angemeldet\n");
+				System.out.println("\nSie Sind Erfolgreich angemeldet\n");
 			} catch (NutzernameOderPasswortFalschException e) {
 				e.printStackTrace();
 			}
@@ -185,6 +185,7 @@ public class E_shop_CUI {
 			gesuchteArtikel = sh.loescheArtikel(artikelName, beschreibung, bestand, preis);
 			
 			sh.addVerlauf("Mitarbeiter (Artikellöschen): ", loggedMitarbeiter, gesuchteArtikel);
+			System.out.println("\nLöschen ok\n");
 
 			break;
 		case "e":
@@ -200,7 +201,7 @@ public class E_shop_CUI {
 
 			gesuchteArtikel = sh.fuegeArtikelEin(artikelName, beschreibung, bestand, preis, bestand);
 			sh.addVerlauf("Mitarbeiter (Artikel eingefügt): ", loggedMitarbeiter, gesuchteArtikel);
-			System.out.println("Einfügen ok");
+			System.out.println("\nEinfügen ok\n");
 			break;
 		case "f":
 			System.out.print("Artikel Name  > ");
@@ -220,6 +221,7 @@ public class E_shop_CUI {
 			try {
 				sh.regestiereNeueMitarbeiter(mitarbeiterName, mitarbeiterNameVorname, mitarbeiterNutzername,
 						mitarbeiterPasswort);
+				System.out.println("\nNeue Mitarbeiter regestrierung ok\n");
 			} catch (MitarbeiterIDIstBenutztException e) {
 				e.printStackTrace();
 			}
@@ -230,8 +232,9 @@ public class E_shop_CUI {
 			System.out.println("Um wiel viel erhöhen?  >");
 			anzahl = Integer.parseInt(liesEingabe());
 			gesuchteArtikel = sh.erhoeheArtikelBestand(artikelName, anzahl);
-			System.out.println("gesuchteArtikel  "+ gesuchteArtikel);
 			sh.addVerlauf("Mitarbeiter (Artikel bestand erhöht): ", loggedMitarbeiter, gesuchteArtikel);
+			System.out.println("\nBestand erhöht.\n");
+
 			break;
 		case "w":
 			System.out.println("Artikel name >");
@@ -240,6 +243,7 @@ public class E_shop_CUI {
 			anzahl = Integer.parseInt(liesEingabe());
 			gesuchteArtikel = sh.senkenArtikelBestand(artikelName, anzahl);
 			sh.addVerlauf("kund (Bestellung): ", loggedMitarbeiter, gesuchteArtikel);
+			System.out.println("\nBestand gesenkt.\n");
 			break;
 
 		case "v":
@@ -273,7 +277,7 @@ public class E_shop_CUI {
 			System.out.println("Stückanzahl  >");
 			anzahl = Integer.parseInt(liesEingabe());
 			sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
-			System.out.println("Artikel wurde erfolgreich hinzugefügt\n");
+			System.out.println("\nArtikel wurde erfolgreich im Warenkorb hinzugefügt\n");
 			break;
 		case "c":
 			System.out.println("Bitte name des Artikels eingeben  >");
@@ -290,7 +294,7 @@ public class E_shop_CUI {
 				try {
 					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
 					System.out.println(
-							"Bestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl + "' Stückzahl erhöht");
+							"\nBestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl + "' Stückzahl erhöht\n");
 				} catch (NichtGenugArtikelVorhandenException e) {
 					e.printStackTrace();
 				}
@@ -301,8 +305,8 @@ public class E_shop_CUI {
 				anzahl = Integer.parseInt(liesEingabe());
 				try {
 					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
-					System.out.println("Bestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl
-							+ "' Stückzahl gesenkt");
+					System.out.println("\nBestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl
+							+ "' Stückzahl gesenkt\n");
 				} catch (NichtGenugArtikelVorhandenException e) {
 
 					e.printStackTrace();
@@ -312,7 +316,7 @@ public class E_shop_CUI {
 			break;
 		case "r":
 			sh.leereWarenkorb(loggedkunde);
-			System.out.println("Ihre Warenkorb ist jetzt leer\n");
+			System.out.println("\nIhre Warenkorb ist jetzt leer\n");
 			sh.getKundenWarenkorb(loggedkunde);
 			break;
 

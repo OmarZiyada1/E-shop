@@ -22,13 +22,13 @@ import entities.Warenkorb;
 
 public class E_Shop {
 
-	public ArtikelVerwaltung artikelVW;
-	public WarenkorbVerwaltung warenKorbVW;
-	public BestellungVerwaltung bestellVW;
-	public KundeVerwaltung kundeVW;
-	public MitarbeiterVerwaltung mitarbeiterVW;
-	public RechnungsVerwaltung rechnungVW;
-	public VerlaufsVerwaltung verlaufVW;
+	private ArtikelVerwaltung artikelVW;
+	private WarenkorbVerwaltung warenKorbVW;
+	private BestellungVerwaltung bestellVW;
+	private KundeVerwaltung kundeVW;
+	private MitarbeiterVerwaltung mitarbeiterVW;
+	private RechnungsVerwaltung rechnungVW;
+	private VerlaufsVerwaltung verlaufVW;
 
 	public E_Shop() {
 		artikelVW = new ArtikelVerwaltung();
@@ -37,6 +37,7 @@ public class E_Shop {
 		kundeVW = new KundeVerwaltung();
 		mitarbeiterVW = new MitarbeiterVerwaltung();
 		rechnungVW = new RechnungsVerwaltung();
+		verlaufVW = new VerlaufsVerwaltung();
 	}
 
 	// Artikel Methoden
@@ -160,9 +161,6 @@ public class E_Shop {
 		warenKorbVW.leereWarenKorb(kunde);
 	}
 
-	public double UpdadteGesamtprise(HashMap<Artikel, Integer> liste, Kunde kunde) {
-		return warenKorbVW.updadteGesamtprise(liste, kunde);
-	}
 
 	public Warenkorb getKundenWarenkorb(Kunde kunde) {
 		return warenKorbVW.getWarenkorb(kunde);
@@ -179,9 +177,6 @@ public class E_Shop {
 
 	// Verlauf
 	public void addVerlauf(String aktion, Nutzer nutzer, Artikel artikel) {
-//		System.out.println("aktion  " + aktion);
-//		System.out.println("nutzer  " + nutzer);
-//		System.out.println("\nartikel " + artikel);
 		verlaufVW.addVerlauf(aktion, nutzer, artikel);
 
 	}

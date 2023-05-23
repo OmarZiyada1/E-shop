@@ -5,21 +5,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Rechnung {
-	private final static LocalDateTime aktuelleDatumZeit = LocalDateTime.now();
-	private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss",
-			Locale.GERMANY);
-	private String formattedDatumZeit;
 	private double gesamtPreis;
 	private int rechnungNr;
 	private Bestellung bestellung;
-
+	private String formattedDatumZeit;
 	/**
 	 * Konstruktor für die Rechnung.
 	 * 
 	 * @param bestellung Die Bestellung, für die die Rechnung erstellt wird.
 	 */
-	public Rechnung(Bestellung bestellung) {
-		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
+	public Rechnung(Bestellung bestellung , String formattedDatumZeit) {
+		this.formattedDatumZeit = formattedDatumZeit;
 		this.bestellung = bestellung;
 
 	}

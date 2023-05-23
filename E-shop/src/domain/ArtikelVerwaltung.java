@@ -58,7 +58,6 @@ public class ArtikelVerwaltung {
 
 	public Artikel bestandSenken(String name, int anzahl) {
 		Artikel artikel = sucheArtikel(name);
-		System.out.println(artikel.getBestand());
 		artikel.setBestand(artikel.getBestand() - anzahl);
 		updateVerfuegbarkeit(artikel);
 		return artikel;
