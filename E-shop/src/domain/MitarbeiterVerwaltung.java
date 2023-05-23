@@ -1,15 +1,11 @@
 package domain;
 
 import java.util.Iterator;
-
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 
 import domain.exceptions.MitarbeiterIDIstBenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
-import entities.Adresse;
-import entities.Kunde;
 import entities.Mitarbeiter;
 
 /*
@@ -99,6 +95,12 @@ public class MitarbeiterVerwaltung {
 		}
 
 		return mitarbeiter;
+
+	}
+
+	public void mitarbeiterAusloggen(Mitarbeiter mitarbeiter) {
+
+		mitarbeiter = null;
 
 	}
 

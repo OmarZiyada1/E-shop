@@ -87,6 +87,10 @@ public class KundeVerwaltung {
 
 	}
 
+	public void kundeAusloggen(Kunde kunde) {
+		kunde = null;
+	}
+
 	/**
 	 * 
 	 * Gibt die Liste der Kunden zurück.*

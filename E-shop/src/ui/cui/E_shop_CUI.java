@@ -56,9 +56,11 @@ public class E_shop_CUI {
 		System.out.print("         \n  Artikel suchen:  'f'");
 		// System.out.print(" \n Daten sichern: 's'");
 		System.out.print("         \n  Mitarbeiter regestrieren:  'm'");
+		System.out.print("         \n  Mitarbeiterliste anzeigen:  'l'");
 		System.out.print("         \n  Artikelbestand erhöhen:  'h'");
 		System.out.print("         \n  Artikelbestand senken:  'w'");
 		System.out.print("         \n  Zeige Verlauf:  'v'");
+		System.out.print("         \n  Logout:  'g'");
 		System.out.print("         \n  ---------------------");
 		System.out.println("         \n  Beenden:        'q'");
 		System.out.print("> "); // Prompt
@@ -75,6 +77,7 @@ public class E_shop_CUI {
 		System.out.print("         \n  Warenkorb leeren: 'r'");
 		System.out.print("         \n  Bestellen:  'm'");
 		System.out.print("         \n  Zeige Verlauf:  'v'");
+		System.out.print("         \n  Logout:  'g'");
 		// System.out.print(" \n Daten sichern: 's'");
 		System.out.print("           \n  ---------------------");
 		System.out.println("         \n  Beenden:        'q'");
@@ -266,7 +269,7 @@ public class E_shop_CUI {
 			try {
 				gesuchteArtikel = sh.senkenArtikelBestand(artikelName, anzahl);
 				System.out.println("\nBestand gesenkt.\n");
-				sh.addVerlauf("kund (Bestellung): ", loggedMitarbeiter, gesuchteArtikel);
+				sh.addVerlauf("Mitarbeiter (hat Bestand gesenkt): ", loggedMitarbeiter, gesuchteArtikel);
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
@@ -279,7 +282,21 @@ public class E_shop_CUI {
 			} catch (VerlaufLeerException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
+			break;
+
+		case "l":
+			try {
+				sh.gibAlleMitarbeiter();
+			} catch (Exception e) {
+				System.out.println("Mitarbeiterliste leer");
+			}
+			break;
+
+		case "g":
+			sh.loggeMitarbeiterAus(loggedMitarbeiter);
+			break;
 		}
+
 	}
 
 	private void verarbeiteKundenEingabe(String line) throws IOException, NichtGenugArtikelVorhandenException,
@@ -369,11 +386,12 @@ public class E_shop_CUI {
 		case "m":
 			try {
 				aktuelleBestellung = sh.bestellen(loggedkunde);
+				for (Artikel artikel : aktuelleBestellung.getBestellteArtikeln().keySet()) {
+					sh.addVerlauf("Kunde hat Bestellt: ", loggedkunde, artikel);
+				}
 				System.out.println("\n" + sh.erstelleRechnung(aktuelleBestellung) + "\n");
 				sh.leereWarenkorb(loggedkunde);
-				for (Artikel artikel : aktuelleBestellung.getBestellteArtikeln().keySet()) {
-					sh.addVerlauf("Mitarbeiter (Artikellöschen): ", loggedkunde, artikel);
-				}
+				
 			} catch (WarenkorbLeerException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
@@ -385,7 +403,10 @@ public class E_shop_CUI {
 			} catch (VerlaufLeerException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
-
+			break;
+		case "g":
+			sh.loggeKundeAus(loggedkunde);
+			break;
 		}
 
 	}
@@ -402,41 +423,57 @@ public class E_shop_CUI {
 		sh.fuegeArtikelEin("Shirt", "wolle", 10, 10);
 
 		String input = "";
+
 		do {
+		    do {
+		        gibStartMenuAus();
+		        try {
+		            input = liesEingabe();
+		            verarbeiteLogin(input);
+		        } catch (IOException e) {
+		            // e.printStackTrace();
+		        }
+		    } while (loggedkunde == null && loggedMitarbeiter == null && !input.equals("q"));
 
-			gibStartMenuAus();
-			try {
-				input = liesEingabe();
-				verarbeiteLogin(input);
-			} catch (IOException e) {
-				// e.printStackTrace();
-			}
-		} while (loggedkunde == null && loggedMitarbeiter == null && !input.equals("q"));
-		// Hauptschleife der Benutzungsschnittstelle
+		    if (loggedMitarbeiter != null) {
+		        do {
+		            gibMitarbeiterMenueAus();
+		            try {
+		                input = liesEingabe();
+		                verarbeiteEingabe(input);
+		                if (input.equals("g")) {
+		                    sh.loggeMitarbeiterAus(loggedMitarbeiter);
+		                    loggedkunde = null;
+		                    loggedMitarbeiter = null;
+		                    break; // Beende die Schleife nach dem Ausloggen
+		                }
+		            } catch (IOException e) {
+		                // e.printStackTrace();
+		            }
 
-		if (loggedMitarbeiter != null) {
-			do {
-				gibMitarbeiterMenueAus();
-				try {
-					input = liesEingabe();
-					verarbeiteEingabe(input);
-				} catch (IOException e) {
-					// e.printStackTrace();
-				}
-			} while (!input.equals("q"));
+		        } while (loggedMitarbeiter != null && !input.equals("q")); // Verwende '&&' statt '||'
 
-		} else if (loggedkunde != null) {
-			do {
-				gibKundeMenueAus();
-				try {
-					input = liesEingabe();
-					verarbeiteKundenEingabe(input);
-				} catch (IOException e) {
-					// e.printStackTrace();
-				}
+		    } else if (loggedkunde != null) {
+		        do {
+		            gibKundeMenueAus();
+		            try {
+		                input = liesEingabe();
+		                verarbeiteKundenEingabe(input);
 
-			} while (!input.equals("q"));
-		}
+		                if (input.equals("g")) {
+		                    sh.loggeKundeAus(loggedkunde);
+		                    loggedkunde = null;
+		                    loggedMitarbeiter = null;
+		                    break; // Beende die Schleife nach dem Ausloggen
+		                }
+		            } catch (IOException e) {
+		                // e.printStackTrace();
+		            }
+		        } while (loggedkunde != null && !input.equals("q")); // Verwende '&&' statt '||'
+		    }
+
+		} while (!input.equals("q"));
+
 
 	}
 

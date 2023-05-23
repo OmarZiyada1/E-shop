@@ -19,8 +19,6 @@ import entities.Rechnung;
 import entities.Verlauf;
 import entities.Warenkorb;
 
-
-
 public class E_Shop {
 
 	private ArtikelVerwaltung artikelVW;
@@ -66,8 +64,8 @@ public class E_Shop {
 		return artikel;
 	}
 
-	public Artikel loescheArtikel(int id, String name, String beschreibung, int bestand, double preis, boolean verfügbarkeit)
-			throws ArtikelExistiertNichtException {
+	public Artikel loescheArtikel(int id, String name, String beschreibung, int bestand, double preis,
+			boolean verfügbarkeit) throws ArtikelExistiertNichtException {
 		Artikel artikel = new Artikel(id, name, beschreibung, bestand, preis, verfügbarkeit);
 		artikelVW.artikelloeschen(artikel);
 		return artikel;
@@ -83,8 +81,8 @@ public class E_Shop {
 		Artikel artikel = artikelVW.bestandSenken(name, anzahl);
 		return artikel;
 	}
-	
-	public  void gibArtikelnlisteAus(List<Artikel> artikelListe) {
+
+	public void gibArtikelnlisteAus(List<Artikel> artikelListe) {
 		if (artikelListe.isEmpty()) {
 			System.out.println("Liste ist leer.");
 		} else {
@@ -112,6 +110,10 @@ public class E_Shop {
 		return kundeVW.getMeineBestellungen(kunde);
 	}
 
+	public void loggeKundeAus(Kunde kunde) {
+		kundeVW.kundeAusloggen(kunde);
+	}
+
 	public List<Kunde> gibAlleKunden() {
 		return kundeVW.getList_Kunde();
 	}
@@ -136,6 +138,10 @@ public class E_Shop {
 
 		mitarbeiterVW.neueMitarbeiterRegistieren(name, vorName, nutzerName, passwort);
 
+	}
+
+	public void loggeMitarbeiterAus(Mitarbeiter mitarbeiter) {
+		mitarbeiterVW.mitarbeiterAusloggen(mitarbeiter);
 	}
 
 	public List<Mitarbeiter> gibAlleMitarbeiter() {
