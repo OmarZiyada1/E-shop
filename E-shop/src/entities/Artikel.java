@@ -1,5 +1,9 @@
 package entities;
 
+/**
+ * Die Klasse "Artikel" repräsentiert einen Artikel und enthält Informationen
+ * wie Artikel-ID, Name, Beschreibung, Bestand, Preis und Verfügbarkeit.
+ */
 public class Artikel {
 	private int artikelId;
 	private String name;
@@ -9,13 +13,16 @@ public class Artikel {
 	private boolean verfuegbar;
 
 	/**
-	 * @param artikelId
-	 * @param name
-	 * @param beschreibung
-	 * @param bestand
-	 * @param preis
+	 * Konstruktor1 für die Klasse Artikel. Erzeugt einen Artikel mit den
+	 * angegebenen Werten für Name, Beschreibung, Bestand und Preis. Der Artikel
+	 * wird standardmäßig als verfügbar markiert.
+	 * 
+	 * @param name         der Name des Artikels
+	 * @param beschreibung die Beschreibung des Artikels
+	 * @param bestand      der Bestand des Artikels
+	 * @param preis        der Preis des Artikels
 	 */
-	public Artikel( String name, String beschreibung, int bestand, double preis) {
+	public Artikel(String name, String beschreibung, int bestand, double preis) {
 		this.name = name;
 		this.beschreibung = beschreibung;
 		this.bestand = bestand;
@@ -24,14 +31,16 @@ public class Artikel {
 	}
 
 	/**
-	 * @param artikelId
-	 * @param name
-	 * @param beschreibung
-	 * @param bestand
-	 * @param preis
-	 * @param verfügbar
+	 * Konstruktor2 für die Klasse Artikel. Erzeugt einen Artikel mit den
+	 * angegebenen Werten für Name, Beschreibung, Bestand, Preis und Verfügbarkeit.
+	 * 
+	 * @param name         der Name des Artikels
+	 * @param beschreibung die Beschreibung des Artikels
+	 * @param bestand      der Bestand des Artikels
+	 * @param preis        der Preis des Artikels
+	 * @param verfuegbar   die Verfügbarkeit des Artikels
 	 */
-	public Artikel( String name, String beschreibung, int bestand, double preis, boolean verfuegbar) {
+	public Artikel(String name, String beschreibung, int bestand, double preis, boolean verfuegbar) {
 		this.name = name;
 		this.beschreibung = beschreibung;
 		this.bestand = bestand;
@@ -40,83 +49,119 @@ public class Artikel {
 	}
 
 	/**
-	 * @return the artikelId
+	 * Gibt die Artikel-ID zurück.
+	 * 
+	 * @return die Artikel-ID
 	 */
 	public int getArtikelId() {
 		return artikelId;
 	}
 
 	/**
-	 * @return the name
+	 * Gibt den Namen des Artikels zurück.
+	 * 
+	 * @return der Name des Artikels
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return the beschreibung
+	 * Gibt die Beschreibung des Artikels zurück.
+	 * 
+	 * @return die Beschreibung des Artikels
 	 */
 	public String getBeschreibung() {
 		return beschreibung;
 	}
 
 	/**
-	 * @return the bestand
+	 * Gibt den Bestand des Artikels zurück.
+	 * 
+	 * @return der Bestand des Artikels
 	 */
 	public int getBestand() {
 		return bestand;
 	}
 
+	/**
+	 * Gibt die Verfügbarkeit des Artikels zurück.
+	 * 
+	 * @return true, wenn der Artikel verfügbar ist, andernfalls false
+	 */
 	public boolean isVerfuegbar() {
 		return verfuegbar;
 	}
 
 	/**
-	 * @param bestand the bestand to set
+	 * Setzt den Bestand des Artikels.
+	 * 
+	 * @param bestand der neue Bestand des Artikels
 	 */
 	public void setBestand(int bestand) {
 		this.bestand = bestand;
 	}
 
+	/**
+	 * Setzt die Verfügbarkeit des Artikels.
+	 * 
+	 * @param verfuegbar die neue Verfügbarkeit des Artikels
+	 */
 	public void setVerfügbar(boolean verfuegbar) {
 		this.verfuegbar = verfuegbar;
 	}
 
 	/**
-	 * @param artikelId the artikelId to set
+	 * Setzt die Artikel-ID.
+	 * 
+	 * @param artikelId die neue Artikel-ID
 	 */
 	public void setArtikelId(int artikelId) {
 		this.artikelId = artikelId;
 	}
 
 	/**
-	 * @param name the name to set
+	 * Setzt den Namen des Artikels.
+	 * 
+	 * @param name der neue Name des Artikels
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @param beschreibung the beschreibung to set
+	 * Setzt die Beschreibung des Artikels.
+	 * 
+	 * @param beschreibung die neue Beschreibung des Artikels
 	 */
 	public void setBeschreibung(String beschreibung) {
 		this.beschreibung = beschreibung;
 	}
 
 	/**
-	 * @param preis the preis to set
+	 * Setzt den Preis des Artikels.
+	 * 
+	 * @param preis der neue Preis des Artikels
 	 */
 	public void setPreis(double preis) {
 		this.preis = preis;
 	}
 
 	/**
-	 * @return the preis
+	 * Gibt den Preis des Artikels zurück.
+	 * 
+	 * @return der Preis des Artikels
 	 */
 	public double getPreis() {
 		return preis;
 	}
 
+	/**
+	 * Überprüft, ob der Artikel mit einem anderen Artikelobjekt identisch ist.
+	 * 
+	 * @param andereArtikel das andere Artikelobjekt, mit dem verglichen wird
+	 * @return true, wenn die Artikel identisch sind, andernfalls false
+	 */
 	public boolean equals(Object andereArtikel) {
 		if (andereArtikel instanceof Artikel) {
 			return ((this.artikelId == ((Artikel) andereArtikel).artikelId)
@@ -130,26 +175,26 @@ public class Artikel {
 
 	}
 
+	/**
+	 * Gibt die Artikelformationen dar.
+	 * 
+	 * @return Die Artikelformationen des Artikel
+	 */
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		
-		builder.append("(ArtikelId = ");
-		builder.append(artikelId);
-		builder.append(", Name = ");
-		builder.append(name);
-		builder.append(", Beschreibung = ");
-		builder.append(beschreibung);
-		builder.append(", Bestand = ");
-		builder.append(bestand);
-		builder.append(", Preis = ");
-		builder.append(preis);
-		builder.append(", Verfügbarkeit = ");
-		builder.append(verfuegbar);
+
+		builder.append("(ArtikelId = " + artikelId);
+		builder.append(", Name = " + name);
+		builder.append(", Beschreibung = " + beschreibung);
+		builder.append(", Bestand = " + bestand);
+		builder.append(", Preis = " + preis);
+		builder.append(", Verfügbarkeit = " + verfuegbar);
 		builder.append(")");
 		builder.append("\n");
-		
+
 		return builder.toString();
-		
+
 	}
 
 }

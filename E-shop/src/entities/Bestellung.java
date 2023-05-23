@@ -7,103 +7,143 @@ import java.util.Locale;
 
 public class Bestellung {
 	/**
-	 * 
+	 * Die Klasse "Bestellung" repräsentiert eine Kundenbestellung. Sie enthält
+	 * Informationen wie Bestellungsnummer, Kundendaten, bestellte Artikel und den
+	 * Gesamtpreis etc.
 	 */
-	
 
 	private final static LocalDateTime aktuelleDatumZeit = LocalDateTime.now();
 	private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss",
 			Locale.GERMANY);
-	private int bestellungsNr;
 	private String formattedDatumZeit;
+	private int bestellungsNr;
 	private Kunde kunde;
 	private HashMap<Artikel, Integer> bestellteArtikeln;
 	private double Gesamtprise = 0;
 	private Rechnung rechnung;
 
+	/**
+	 * Konstruktor der Klasse Bestellung. Erzeugt eine neue Instanz einer Bestellung
+	 * mit den angegebenen Parametern.
+	 * 
+	 * @param kunde             der Kunde, der die Bestellung aufgibt
+	 * @param bestellteArtikeln die Liste der bestellten Artikel und ihrer
+	 *                          jeweiligen Anzahl
+	 * @param gesamtPreis       der Gesamtpreis der Bestellung
+	 */
 
-
-
-	public Bestellung(Kunde kunde, HashMap<Artikel, Integer> bestellteArtikeln , double gesamtprise) {
+	public Bestellung(Kunde kunde, HashMap<Artikel, Integer> bestellteArtikeln, double gesamtprise) {
+		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
 		this.bestellteArtikeln = bestellteArtikeln;
 		this.kunde = kunde;
-		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
-		this.Gesamtprise= gesamtprise;
+		this.Gesamtprise = gesamtprise;
 	}
 
 	/**
-	 * @return the bestellteArtikeln
+	 * Gibt die Liste der bestellten Artikel zurück.
+	 * 
+	 * @return die Liste der bestellten Artikel
 	 */
 	public HashMap<Artikel, Integer> getBestellteArtikeln() {
 		return bestellteArtikeln;
 	}
 
 	/**
-	 * @param bestellteArtikeln the bestellteArtikeln to set
+	 * Setzt die Liste der bestellten Artikel.
+	 * 
+	 * @param bestellteArtikeln die Liste der bestellten Artikel
 	 */
 	public void setBestellteArtikeln(HashMap<Artikel, Integer> bestellteArtikeln) {
 		this.bestellteArtikeln = bestellteArtikeln;
 	}
 
 	/**
-	 * @return the kunde
+	 * Gibt den Kunden der Bestellung zurück.
+	 * 
+	 * @return der Kunde der Bestellung
 	 */
 	public Kunde getKunde() {
 		return kunde;
 	}
 
 	/**
-	 * @param kunde the kunde to set
+	 * Setzt den Kunden der Bestellung.
+	 * 
+	 * @param kunde der Kunde der Bestellung
 	 */
 	public void setKunde(Kunde kunde) {
 		this.kunde = kunde;
 	}
 
 	/**
-	 * @return the formattedDatumZeit
+	 * Gibt das formatierte Datum und die Uhrzeit der Bestellung zurück.
+	 * 
+	 * @return das formatierte Datum und die Uhrzeit der Bestellung
 	 */
 	public String getFormattedDatumZeit() {
 		return formattedDatumZeit;
 	}
-	
+
 	/**
-	 * @return the gesamtprise
+	 * Gibt den Gesamtpreis der Bestellung zurück.
+	 * 
+	 * @return der Gesamtpreis der Bestellung
 	 */
 	public double getGesamtprise() {
 		return Gesamtprise;
 	}
 
 	/**
-	 * @param gesamtprise the gesamtprise to set
+	 * Setzt den Gesamtpreis der Bestellung.
+	 * 
+	 * @param gesamtPreis der Gesamtpreis der Bestellung
 	 */
 	public void setGesamtprise(double gesamtprise) {
 		Gesamtprise = gesamtprise;
 	}
 
-	
 	/**
-	 * @return the bestellungsNr
+	 * Gibt die Bestellungsnummer zurück.
+	 * 
+	 * @return die Bestellungsnummer
 	 */
 	public int getBestellungsNr() {
 		return bestellungsNr;
 	}
 
 	/**
-	 * @param bestellungsNr the bestellungsNr to set
+	 * Setzt die Bestellungsnummer.
+	 * 
+	 * @param bestellungsNr die Bestellungsnummer
 	 */
 	public void setBestellungsNr(int bestellungsNr) {
 		this.bestellungsNr = bestellungsNr;
 	}
-	
-	
 
+	/**
+	 * Gibt die Rechnung der Bestellung zurück.
+	 * 
+	 * @return die Rechnung der Bestellung
+	 */
 	public Rechnung getRechnung() {
 		return rechnung;
 	}
 
+	/**
+	 * Setzt die Rechnung der Bestellung.
+	 * 
+	 * @param rechnung die Rechnung der Bestellung
+	 */
+
 	public void setRechnung(Rechnung rechnung) {
 		this.rechnung = rechnung;
 	}
+	
+	/**
+	 * Gibt die Bestellungsiformationen dar.
+	 * 
+	 * @return Die Bestellungsiformationen des Kunde
+	 */
 
 	@Override
 	public String toString() {
@@ -113,18 +153,16 @@ public class Bestellung {
 		builder.append(", kundeNr.= ");
 		builder.append(kunde.getKndNr());
 		builder.append("\nBstellteArtikeln: \n");
-		
-		
+
 		int i = 1;
 		for (Artikel best : bestellteArtikeln.keySet()) {
 
 			int anzahlArtikel = bestellteArtikeln.get(best);
 			Artikel bestellungArtikel = best;
-			builder.append("\t"+ i + ". artikel: " + bestellungArtikel.getName() + ", menge: " + anzahlArtikel + "\n");
+			builder.append("\t" + i + ". artikel: " + bestellungArtikel.getName() + ", menge: " + anzahlArtikel + "\n");
 			i++;
 		}
-		
-		
+
 		return builder.toString();
 	}
 

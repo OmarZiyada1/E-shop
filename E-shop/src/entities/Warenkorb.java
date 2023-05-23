@@ -2,47 +2,65 @@ package entities;
 
 import java.util.HashMap;
 
+/**
+ * Die Klasse "Warenkorb" repräsentiert den Warenkorb eines Kunden. Sie enthält
+ * eine Liste von Artikeln mit ihrer jeweiligen Anzahl und den Gesamtpreis.
+ */
 public class Warenkorb {
 
 	private HashMap<Artikel, Integer> korbArtikelListe;
 	private double gesamtPrise = 0.0;
 
 	/**
-	 * @param artikelMap
+	 * Konstruktor der Klasse Warenkorb. Erzeugt eine neue Instanz des Warenkorbs
+	 * mit einer leeren Artikel-Liste.
 	 */
 	public Warenkorb() {
 		this.korbArtikelListe = new HashMap<>();
-
 	}
 
 	/**
-	 * @return the artikelMap
+	 * Gibt die Liste der Artikel im Warenkorb zurück.
+	 * 
+	 * @return die Artikel-Liste des Warenkorbs
 	 */
 	public HashMap<Artikel, Integer> getKorbArtikelListe() {
 		return korbArtikelListe;
 	}
 
 	/**
-	 * @param artikelMap the artikelMap to set
+	 * Setzt die Liste der Artikel im Warenkorb.
+	 * 
+	 * @param art    der Artikel, der hinzugefügt werden soll
+	 * @param anzahl die Anzahl des Artikels, die hinzugefügt werden soll
 	 */
 	public void setKorbArtikelListe(Artikel art, int anzahl) {
 		this.korbArtikelListe.put(art, anzahl);
 	}
 
 	/**
-	 * @return the gesamtPrise
+	 * Gibt den Gesamtpreis des Warenkorbs zurück.
+	 * 
+	 * @return der Gesamtpreis des Warenkorbs
 	 */
 	public double getGesamtPrise() {
 		return gesamtPrise;
 	}
 
 	/**
-	 * @param gesamtPrise the gesamtPrise to set
+	 * Setzt den Gesamtpreis des Warenkorbs.
+	 * 
+	 * @param gesamtPreis der neue Gesamtpreis des Warenkorbs
 	 */
 	public void setGesamtPrise(double gesamtPrise) {
 		this.gesamtPrise = gesamtPrise;
 	}
 
+	/**
+	 * Gibt die Warenkorbformationen dar.
+	 * 
+	 * @return Die Warenkorbformationen des Artikel
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

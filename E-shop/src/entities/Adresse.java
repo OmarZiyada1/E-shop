@@ -2,8 +2,7 @@
 package entities;
 
 /**
- * @author Mo.Alaskari
- *
+ * Eine Klasse, die eine Adresse repräsentiert.
  */
 public class Adresse {
 	private String strasse;
@@ -11,108 +10,134 @@ public class Adresse {
 	private String plz;
 	private String ort;
 	private String land;
-	
+
 	/**
-	 * @param strasse
-	 * @param hNr
-	 * @param plz
-	 * @param ort
+	 * Konstruktor für die Adresse.
+	 * 
+	 * @param strasse Die Straße der Adresse.
+	 * @param hNr     Die Hausnummer der Adresse.
+	 * @param plz     Die Postleitzahl der Adresse.
+	 * @param ort     Der Ort der Adresse.
+	 * @param land    Das Land der Adresse.
 	 */
 	public Adresse(String strasse, String hNr, String plz, String ort, String land) {
 		this.strasse = strasse;
 		this.hNr = hNr;
 		this.plz = plz;
 		this.ort = ort;
-		this.land= land;
+		this.land = land;
 	}
 
 	/**
-	 * @return the strasse
+	 * Gibt die Straße der Adresse zurück.
+	 * 
+	 * @return Die Straße der Adresse.
 	 */
 	public String getStrasse() {
 		return strasse;
 	}
 
 	/**
-	 * @param strasse the strasse to set
+	 * Setzt die Straße der Adresse.
+	 * 
+	 * @param strasse Die Straße der Adresse.
 	 */
 	public void setStrasse(String strasse) {
 		this.strasse = strasse;
 	}
 
 	/**
-	 * @return the hNr
+	 * Gibt die Hausnummer der Adresse zurück.
+	 * 
+	 * @return Die Hausnummer der Adresse.
 	 */
 	public String gethNr() {
 		return hNr;
 	}
 
 	/**
-	 * @param hNr the hNr to set
+	 * Setzt die Hausnummer der Adresse.
+	 * 
+	 * @param hNr Die Hausnummer der Adresse.
 	 */
 	public void sethNr(String hNr) {
 		this.hNr = hNr;
 	}
 
 	/**
-	 * @return the plz
+	 * Gibt die Postleitzahl der Adresse zurück.
+	 * 
+	 * @return Die Postleitzahl der Adresse.
 	 */
 	public String getPlz() {
 		return plz;
 	}
 
 	/**
-	 * @param plz the plz to set
+	 * Gibt die Postleitzahl der Adresse zurück.
+	 * 
+	 * @return Die Postleitzahl der Adresse.
 	 */
 	public void setPlz(String plz) {
 		this.plz = plz;
 	}
 
 	/**
-	 * @return the ort
+	 * Gibt den Ort der Adresse zurück.
+	 * 
+	 * @return Der Ort der Adresse.
 	 */
 	public String getOrt() {
 		return ort;
 	}
 
 	/**
-	 * @param ort the ort to set
+	 * Setzt den Ort der Adresse.
+	 * 
+	 * @param ort Der Ort der Adresse.
 	 */
 	public void setOrt(String ort) {
 		this.ort = ort;
 	}
 
 	/**
-	 * @return the land
+	 * Gibt das Land der Adresse zurück.
+	 * 
+	 * @return Das Land der Adresse.
 	 */
 	public String getLand() {
 		return land;
 	}
 
 	/**
-	 * @param land the land to set
+	 * Setzt das Land der Adresse.
+	 * 
+	 * @param land Das Land der Adresse.
 	 */
 	public void setLand(String land) {
 		this.land = land;
 	}
 
+	/**
+	 * Gibt eine formatierte Zeichenkette mit allen Adressinformationen zurück.
+	 * 
+	 * @return Eine formatierte Zeichenkette mit allen Adressinformationen.
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\n\tAdresse: ");
 		builder.append(strasse);
 
-		builder.append(" "+hNr);
+		builder.append(" " + hNr);
 		builder.append(", ");
 		builder.append(plz);
 		builder.append(" ");
 		builder.append(ort);
 		builder.append(" ");
 		builder.append(land);
-		
+
 		return builder.toString();
 	}
-	
-	
 
 }

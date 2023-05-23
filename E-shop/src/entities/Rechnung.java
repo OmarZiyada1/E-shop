@@ -6,97 +6,111 @@ import java.util.Locale;
 
 public class Rechnung {
 	private final static LocalDateTime aktuelleDatumZeit = LocalDateTime.now();
-	private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.GERMANY);
+	private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss",
+			Locale.GERMANY);
 	private String formattedDatumZeit;
 	private double gesamtPreis;
 	private int rechnungNr;
 	private Bestellung bestellung;
-	
-	
+
 	/**
-	 * konstruktor
-	 * @param bestellung
-	 * @param gesamtPreis
-	 * @param rechnungNr
+	 * Konstruktor für die Rechnung.
+	 * 
+	 * @param bestellung Die Bestellung, für die die Rechnung erstellt wird.
 	 */
 	public Rechnung(Bestellung bestellung) {
 		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
 		this.bestellung = bestellung;
-		
+
 	}
+
 	/**
-	 * @return the bestellung
+	 * Gibt die Bestellung zurück, für die die Rechnung erstellt wurde.
+	 * 
+	 * @return Die Bestellung.
 	 */
 	public Bestellung getBestellung() {
 		return bestellung;
 	}
+
 	/**
-	 * @param bestellung the bestellung to set
+	 * Setzt die Bestellung, für die die Rechnung erstellt wird.
+	 * 
+	 * @param bestellung Die Bestellung.
 	 */
 	public void setBestellung(Bestellung bestellung) {
 		this.bestellung = bestellung;
 	}
+
 	/**
-	 * @return the gesamtPreis
+	 * Gibt den Gesamtpreis der Rechnung zurück.
+	 * 
+	 * @return Der Gesamtpreis der Rechnung.
 	 */
 	public double getGesamtPreis() {
 		return gesamtPreis;
 	}
+
 	/**
-	 * @param gesamtPreis the gesamtPreis to set
+	 * Setzt den Gesamtpreis der Rechnung.
+	 * 
+	 * @param gesamtPreis Der Gesamtpreis der Rechnung.
 	 */
 	public void setGesamtPreis(double gesamtPreis) {
 		this.gesamtPreis = gesamtPreis;
 	}
+
 	/**
-	 * @return the rechnungNr
+	 * Gibt die Rechnungsnummer zurück.
+	 * 
+	 * @return Die Rechnungsnummer.
 	 */
 	public int getRechnungNr() {
 		return rechnungNr;
 	}
+
 	/**
-	 * @param rechnungNr the rechnungNr to set
+	 * Setzt die Rechnungsnummer.
+	 * 
+	 * @param rechnungNr Die Rechnungsnummer.
 	 */
 	public void setRechnungNr(int rechnungNr) {
 		this.rechnungNr = rechnungNr;
 	}
+
 	/**
-	 * @return the formattedDatumZeit
+	 * Gibt das formatierte Datum und die Uhrzeit der Rechnung zurück.
+	 * 
+	 * @return Das formatierte Datum und die Uhrzeit der Rechnung.
 	 */
 	public String getFormattedDatumZeit() {
 		return formattedDatumZeit;
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Rechnung: am ");
-		builder.append(formattedDatumZeit);
-		builder.append(" RechnungNr: ");
-		builder.append(rechnungNr);
+		builder.append("Rechnung: am " + formattedDatumZeit);
+		builder.append(" RechnungNr: " + rechnungNr);
 		builder.append("\n\t");
 		builder.append(bestellung.getKunde().getVorname());
 		builder.append(" ");
 		builder.append(bestellung.getKunde().getName());
 		builder.append(bestellung.getKunde().getAdresse());
-		builder.append("\n\n\tBestellungsNr.: ");
-		builder.append(bestellung.getBestellungsNr());
+		builder.append("\n\n\tBestellungsNr.: " + bestellung.getBestellungsNr());
 		builder.append("\n");
 		int i = 1;
 		for (Artikel best : bestellung.getBestellteArtikeln().keySet()) {
 			int anzahlArtikel = bestellung.getBestellteArtikeln().get(best);
 			Artikel bestellungArtikel = best;
-			builder.append("\t\t"+ i + ". artikel: " + bestellungArtikel.getName() + ", menge: " + anzahlArtikel + "\n");
+			builder.append(
+					"\t\t" + i + ". artikel: " + bestellungArtikel.getName() + ", menge: " + anzahlArtikel + "\n");
 			i++;
 		}
-		builder.append("\n\t Summe: ");
-		builder.append(bestellung.getGesamtprise());
+		builder.append("\n\t Summe: " + bestellung.getGesamtprise());
 		builder.append("€ ink. 19% mwst");
-		
-		
+
 		return builder.toString();
 	}
-	
-	
-	
 
 }

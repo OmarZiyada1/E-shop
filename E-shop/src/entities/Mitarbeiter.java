@@ -2,8 +2,8 @@ package entities;
 
 /**
  * Die Klasse "Mitarbeiter" repräsentiert einen Mitarbeiter und erbt von der
- * Klasse "Nutzer" Sie enthält Informationen über den Mitarbeiter wie
- * MitarbeiterID, Rolle
+ * Klasse "Nutzer". Sie enthält Informationen über den Mitarbeiter wie
+ * MitarbeiterID und Rolle.
  */
 
 public class Mitarbeiter extends Nutzer {
@@ -11,49 +11,72 @@ public class Mitarbeiter extends Nutzer {
 	private static final char rolle = 'm';
 
 	/**
-	 * Constructor
+	 * Konstruktor1 für die Klasse Mitarbeiter.
 	 * 
-	 * Der Constructor der Klasse initialisiert einen Mitarbeiter mit den angegebenen
-	 * Werten für Name, Vorname, Nutzername, Passwort und Adresse. Dabei wird der
-	 * Konstruktor der Basisklasse "Nutzer" aufgerufen 
+	 * Der Konstruktor initialisiert einen Mitarbeiter mit den angegebenen Werten
+	 * für Name, Vorname, Nutzername, Passwort und Adresse. Dabei wird der
+	 * Konstruktor der Basisklasse "Nutzer" aufgerufen.
 	 * 
-	 * @param maId
-	 * @param name
-	 * @param vorname
-	 * @param nutzerNr
-	 * @param passwort
-	 * @param adresse
+	 * @param name     Der Name des Mitarbeiters.
+	 * @param vorname  Der Vorname des Mitarbeiters.
+	 * @param nutzerNr Die Nutzernummer des Mitarbeiters.
+	 * @param passwort Das Passwort des Mitarbeiters.
+	 * @param adresse  Die Adresse des Mitarbeiters.
 	 */
 
 	public Mitarbeiter(String name, String vorname, String nutzerNr, String passwort, Adresse adresse) {
 		super(name, vorname, nutzerNr, passwort, adresse);
 	}
-	
+
+	/**
+	 * Konstruktor 2 für die Klasse Mitarbeiter ohne Adresse.
+	 * 
+	 * Der Konstruktor initialisiert einen Mitarbeiter mit den angegebenen Werten
+	 * für Name, Vorname, Nutzername und Passwort. Dabei wird der Konstruktor der
+	 * Basisklasse "Nutzer" aufgerufen.
+	 * 
+	 * @param name     Der Name des Mitarbeiters.
+	 * @param vorname  Der Vorname des Mitarbeiters.
+	 * @param nutzerNr Die Nutzernummer des Mitarbeiters.
+	 * @param passwort Das Passwort des Mitarbeiters.
+	 */
+
 	public Mitarbeiter(String name, String vorname, String nutzerNr, String passwort) {
 		super(name, vorname, nutzerNr, passwort);
 	}
 
 	/**
-	 * @return die maId
+	 * Gibt die Mitarbeiter-ID zurück.
+	 * 
+	 * @return Die Mitarbeiter-ID.
 	 */
 	public int getMaId() {
 		return maId;
 	}
 
 	/**
-	 * @param maId
+	 * Setzt die Mitarbeiter-ID.
+	 * 
+	 * @param maId Die Mitarbeiter-ID.
 	 */
 	public void setMaId(int maId) {
 		this.maId = maId;
 	}
 
 	/**
-	 * @return die rolle
+	 * Gibt die Rolle des Mitarbeiters zurück.
+	 * 
+	 * @return Die Rolle des Mitarbeiters.
 	 */
 	public static char getRolle() {
 		return rolle;
 	}
 
+	/**
+	 * Gibt die Mitarbeiterformationen dar.
+	 * 
+	 * @return Die Mitarbeiterformationen des Mitarbeiters
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
