@@ -1,9 +1,8 @@
-/**
- * 
- */
 package entities;
 
-
+/**
+ * Eine abstrakte Klasse, die einen Nutzer repräsentiert.
+ */
 
 public abstract class Nutzer {
 	private String name;
@@ -11,16 +10,15 @@ public abstract class Nutzer {
 	private String nutzerName;
 	private String passwort;
 	private Adresse adresse;
-	
 
 	/**
-	 * Constructor
+	 * Konstruktor für den Nutzer mit Adresse.
 	 * 
-	 * @param name
-	 * @param vorname
-	 * @param nutzerNr
-	 * @param passwort
-	 * @param adresse
+	 * @param name     Der Name des Nutzers.
+	 * @param vorname  Der Vorname des Nutzers.
+	 * @param nutzerNr Die Nutzernummer des Nutzers.
+	 * @param passwort Das Passwort des Nutzers.
+	 * @param adresse  Die Adresse des Nutzers.
 	 */
 	public Nutzer(String name, String vorname, String nutzerNr, String passwort, Adresse adresse) {
 		this.name = name;
@@ -35,66 +33,85 @@ public abstract class Nutzer {
 		this.vorname = vorname;
 		this.nutzerName = nutzerNr;
 		this.passwort = passwort;
-		
+
 	}
+
 	/**
-	 * @return the name
+	 * Gibt den Namen des Nutzers zurück.
+	 * 
+	 * @return Der Name des Nutzers.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @param name the name to set
+	 * Setzt den Namen des Nutzers.
+	 * 
+	 * @param name Der Name des Nutzers.
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return the vorname
+	 * Gibt den Vornamen des Nutzers zurück.
+	 * 
+	 * @return Der Vorname des Nutzers.
 	 */
 	public String getVorname() {
 		return vorname;
 	}
 
 	/**
-	 * @param vorname the vorname to set
+	 * Setzt den Vornamen des Nutzers.
+	 * 
+	 * @param vorname Der Vorname des Nutzers.
 	 */
 	public void setVorname(String vorname) {
 		vorname = vorname;
 	}
 
 	/**
-	 * @return the nutzerNr
+	 * Gibt die Nutzernummer des Nutzers zurück.
+	 * 
+	 * @return Die Nutzernummer des Nutzers.
 	 */
 	public String getNutzerName() {
 		return nutzerName;
 	}
 
 	/**
-	 * @param nutzerNr the nutzerNr to set
+	 * Setzt die Nutzernummer des Nutzers.
+	 * 
+	 * @param nutzerNr Die Nutzernummer des Nutzers.
 	 */
 	public void setNutzerName(String nutzerNr) {
 		nutzerNr = nutzerNr;
 	}
 
 	/**
-	 * @return the passwort
+	 * Gibt das Passwort des Nutzers zurück.
+	 * 
+	 * @return Das Passwort des Nutzers.
 	 */
 	public String getPasswort() {
 		return passwort;
 	}
 
 	/**
-	 * @param passwort the passwort to set
+	 * Setzt das Passwort des Nutzers.
+	 * 
+	 * @param passwort Das Passwort des Nutzers.
 	 */
 	public void setPasswort(String passwort) {
 		this.passwort = passwort;
 	}
 
 	/**
-	 * @return the adresse
+	 * Gibt die Adresse des Nutzers zurück.
+	 * 
+	 * @return Die Adresse des Nutzers.
 	 */
 	public Adresse getAdresse() {
 		return adresse;
@@ -107,6 +124,12 @@ public abstract class Nutzer {
 		this.adresse = adresse;
 	}
 
+	/**
+	 * Gibt eine formatierte Zeichenkette mit allen Informationen des Nutzers
+	 * zurück.
+	 * 
+	 * @return Eine formatierte Zeichenkette mit allen Informationen des Nutzers.
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -120,7 +143,5 @@ public abstract class Nutzer {
 		builder.append("");
 		return builder.toString();
 	}
-
-	
 
 }

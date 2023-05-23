@@ -5,9 +5,10 @@ import java.util.Vector;
 
 /**
  * Die Klasse "Kunde" repräsentiert einen Kunden und erbt von der Klasse
- * "Nutzer" Sie enthält Informationen über den Kunden wie Kundennummer, Rolle
- * und KundeWarenkorb
+ * "Nutzer". Sie enthält Informationen über den Kunden wie Kundennummer, Rolle
+ * und den Kunden-Warenkorb.
  */
+
 public class Kunde extends Nutzer {
 	private int kndNr;
 	private static final char rolle = 'k';
@@ -15,21 +16,20 @@ public class Kunde extends Nutzer {
 	private List<Bestellung> meineBestellungen = new Vector<>();
 	private Bestellung aktuelleBestellung;
 
-	
 	/**
 	 * Constructor
 	 * 
-	 * Der Constructor der Klasse initialisiert einen Kunden mit den angegebenen
+	 * Der Konstruktor der Klasse initialisiert einen Kunden mit den angegebenen
 	 * Werten für Name, Vorname, Nutzername, Passwort und Adresse. Dabei wird der
-	 * Konstruktor der Basisklasse "Nutzer" aufgerufen und ein neuer Kundenwarenkorb
-	 * für den Kunden erstellt.
+	 * Konstruktor der Basisklasse "Nutzer" aufgerufen und ein neuer
+	 * Kunden-Warenkorb für den Kunden erstellt.
 	 * 
-	 * @param kndNr
-	 * @param name
-	 * @param vorname
-	 * @param nutzerNr
-	 * @param passwort
-	 * @param adresse
+	 * @param kndNr    Die Kundennummer
+	 * @param name     Der Name des Kunden
+	 * @param vorname  Der Vorname des Kunden
+	 * @param nutzerNr Die Nutzernummer des Kunden
+	 * @param passwort Das Passwort des Kunden
+	 * @param adresse  Die Adresse des Kunden
 	 */
 
 	public Kunde(String name, String vorname, String nutzerNr, String passwort, Adresse adresse) {
@@ -74,9 +74,10 @@ public class Kunde extends Nutzer {
 	}
 
 	/**
-	 * Setzt den Warenkorb des Kunden
+	 * Setzt den Warenkorb des Kunden.
 	 * 
-	 * @param kundeWarenkorb
+	 * @param artikel Der Artikel, der zum Warenkorb hinzugefügt wird
+	 * @param anzahl  Die Anzahl des Artikels
 	 */
 	public void setKundeWarenkorb(Artikel artikel, int anzahl) {
 		this.kundeWarenkorb.setKorbArtikelListe(artikel, anzahl);
@@ -84,39 +85,43 @@ public class Kunde extends Nutzer {
 	}
 
 	/**
-	 * @return the meineBestellungen
+	 * Gibt die Liste der Bestellungen des Kunden zurück.
+	 * 
+	 * @return Die Liste der Bestellungen des Kunden
 	 */
 	public List<Bestellung> getMeineBestellungen() {
 		return meineBestellungen;
 	}
 
 	/**
-	 * @param meineBestellungen the meineBestellungen to set
+	 * Fügt dem Kunden eine Bestellung hinzu.
+	 * 
+	 * @param best Die hinzuzufügende Bestellung
 	 */
 	public void setMeineBestellungen(Bestellung best) {
 		this.meineBestellungen.add(best);
 	}
-	
-	
-	
-	
+
 	/**
-	 * @return the aktuelleBestellung
+	 * Gibt die aktuelle Bestellung des Kunden zurück.
+	 * 
+	 * @return Die aktuelle Bestellung des Kunden
 	 */
 	public Bestellung getAktuelleBestellung() {
 		return aktuelleBestellung;
 	}
 
 	/**
-	 * @param aktuelleBestellung the aktuelleBestellung to set
+	 * Setzt die aktuelle Bestellung des Kunden.
+	 * 
+	 * @param aktuelleBestellung Die aktuelle Bestellung des Kunden
 	 */
 	public void setAktuelleBestellung(Bestellung aktuelleBestellung) {
 		this.aktuelleBestellung = aktuelleBestellung;
 	}
 
-
 	/**
-	 * Kundeninformationen darstellen.
+	 * Gibt die Kundeninformationen dar.
 	 * 
 	 * @return Die Kundeninformationen des Kunden
 	 */
@@ -124,16 +129,12 @@ public class Kunde extends Nutzer {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("________________________");
-		builder.append("\n");
+		builder.append("________________________\n");
 		builder.append("Kunde: ");
-		builder.append("\n\tkndNr: ");
-		builder.append(kndNr);
+		builder.append("\n\tkndNr: " + kndNr);
 		builder.append("\n");
 		builder.append(super.toString());
 		builder.append("\n");
-		
-		
 
 		return builder.toString();
 	}
