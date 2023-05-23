@@ -13,19 +13,29 @@ import entities.Kunde;
 import entities.Mitarbeiter;
 
 /*
- * @author Mo.Alaskari
- */
+*Diese Klasse verwaltet Mitarbeiterobjekte und bietet Funktionen zur
+*Mitarbeiterverwaltung.
+*/
 public class MitarbeiterVerwaltung {
 
-	public List<Mitarbeiter> list_Mitarbeiter = new Vector<Mitarbeiter>();
+	public List<Mitarbeiter> list_Mitarbeiter = new Vector<Mitarbeiter>(); // list mit alle regestrierte Mitarbeiter
 
-	/**
-	 * @return the list_Mitarbeiter
-	 */
+	/*
+	 * Gibt die Liste der Mitarbeiter zurück.*
+	 * 
+	 * @return Die Liste der Mitarbeiter.
+	 **/
 	public List<Mitarbeiter> getList_Mitarbeiter() {
 		return list_Mitarbeiter;
 	}
 
+	/**
+	 * Fügt einen neuen Mitarbeiter zur Liste hinzu.*
+	 * 
+	 * @param mitarbeiter Der hinzuzufügende Mitarbeiter.
+	 * @throws MitarbeiterIDIstBenutztException Wenn die Mitarbeiter bereits
+	 *                                          verwendet wird.
+	 */
 	public void fuegeMitarbeiterEin(Mitarbeiter mitarbeiter) throws MitarbeiterIDIstBenutztException {
 		Iterator<Mitarbeiter> iter = list_Mitarbeiter.iterator();
 
@@ -40,8 +50,13 @@ public class MitarbeiterVerwaltung {
 
 		list_Mitarbeiter.add(mitarbeiter);
 	}
-	
-	
+
+	/**
+	 * 
+	 * Generiert eine Mitarbeiter-ID für den übergebenen Mitarbeiter.*
+	 * 
+	 * @param mitarbeiter Der Mitarbeiter, für den eine ID generiert werden soll.
+	 */
 
 	private void generateMitarbeiterId(Mitarbeiter mitarbeiter) {
 		if (list_Mitarbeiter.isEmpty()) {
@@ -51,6 +66,17 @@ public class MitarbeiterVerwaltung {
 			mitarbeiter.setMaId(lastMitrbeiterID + 1);
 		}
 	}
+
+	/**
+	 * 
+	 * Meldet einen Mitarbeiter mit den angegebenen Anmeldeinformationen an.*
+	 * 
+	 * @param nutzerName Der Nutzername des Mitarbeiters.
+	 * @param passwort   Das Passwort des Mitarbeiters.
+	 * @return Der angemeldete Mitarbeiter.
+	 * @throws NutzernameOderPasswortFalschException Wenn der Nutzername oder das
+	 *                                               Passwort falsch sind.
+	 */
 
 	public Mitarbeiter mitarbeiterEinloggen(String nutzerName, String passwort)
 			throws NutzernameOderPasswortFalschException {
@@ -76,9 +102,21 @@ public class MitarbeiterVerwaltung {
 
 	}
 
-	public void neueMitarbeiterRegistieren(String name, String vorName, String nutzerName, String passwort
-			) throws MitarbeiterIDIstBenutztException {
-		Mitarbeiter mitarbeiter = new Mitarbeiter(name, vorName, nutzerName, passwort );
+	/**
+	 * 
+	 * Registriert einen neuen Mitarbeiter mit den angegebenen Informationen.*
+	 * 
+	 * @param name       Der Name des Mitarbeiters.
+	 * @param vorName    Der Vorname des Mitarbeiters.
+	 * @param nutzerName Der Nutzername des Mitarbeiters.
+	 * @param passwort   Das Passwort des Mitarbeiters.
+	 * @throws MitarbeiterIDIstBenutztException Wenn die Mitarbeiter-ID bereits
+	 *                                          verwendet wird.
+	 */
+
+	public void neueMitarbeiterRegistieren(String name, String vorName, String nutzerName, String passwort)
+			throws MitarbeiterIDIstBenutztException {
+		Mitarbeiter mitarbeiter = new Mitarbeiter(name, vorName, nutzerName, passwort);
 		fuegeMitarbeiterEin(mitarbeiter);
 	}
 }

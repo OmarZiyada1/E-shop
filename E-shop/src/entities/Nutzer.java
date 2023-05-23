@@ -27,6 +27,15 @@ public abstract class Nutzer {
 		this.passwort = passwort;
 		this.adresse = adresse;
 	}
+	/**
+	 * Konstruktor für den Nutzer ohne Adresse.
+	 * 
+	 * @param name     Der Name des Nutzers.
+	 * @param vorname  Der Vorname des Nutzers.
+	 * @param nutzerNr Die Nutzernummer des Nutzers.
+	 * @param passwort Das Passwort des Nutzers.
+	 */
+	
 
 	public Nutzer(String name, String vorname, String nutzerNr, String passwort) {
 		this.name = name;

@@ -1,9 +1,8 @@
 
 package entities;
 
-/**
- * Eine Klasse, die eine Adresse repräsentiert.
- */
+/*
+ * Eine Klasse, die eine Adresse repräsentiert.*/
 public class Adresse {
 	private String strasse;
 	private String hNr;

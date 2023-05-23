@@ -1,6 +1,5 @@
 package domain;
 
-import java.util.HashMap;
 import java.util.List;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertNichtException;
@@ -19,6 +18,8 @@ import entities.Nutzer;
 import entities.Rechnung;
 import entities.Verlauf;
 import entities.Warenkorb;
+
+
 
 public class E_Shop {
 
@@ -160,7 +161,6 @@ public class E_Shop {
 	public void leereWarenkorb(Kunde kunde) {
 		warenKorbVW.leereWarenKorb(kunde);
 	}
-
 
 	public Warenkorb getKundenWarenkorb(Kunde kunde) {
 		return warenKorbVW.getWarenkorb(kunde);
