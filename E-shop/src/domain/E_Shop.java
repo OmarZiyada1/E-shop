@@ -46,8 +46,7 @@ public class E_Shop {
 		return artikelVW.getArtikelListe();
 	}
 
-	public Artikel sucheNachName(String name) {
-
+	public Artikel sucheNachName(String name) throws ArtikelExistiertNichtException {
 		return artikelVW.sucheArtikel(name);
 	}
 
@@ -67,22 +66,32 @@ public class E_Shop {
 		return artikel;
 	}
 
-	public Artikel loescheArtikel(String name, String beschreibung, int bestand, double preis)
+	public Artikel loescheArtikel(int id, String name, String beschreibung, int bestand, double preis, boolean verfügbarkeit)
 			throws ArtikelExistiertNichtException {
-		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
+		Artikel artikel = new Artikel(id, name, beschreibung, bestand, preis, verfügbarkeit);
 		artikelVW.artikelloeschen(artikel);
 		return artikel;
 
 	}
 
-	public Artikel erhoeheArtikelBestand(String name, int anzahl) {
+	public Artikel erhoeheArtikelBestand(String name, int anzahl) throws ArtikelExistiertNichtException {
 		Artikel artikel = artikelVW.bestandErhoehen(name, anzahl);
 		return artikel;
 	}
 
-	public Artikel senkenArtikelBestand(String name, int anzahl) {
+	public Artikel senkenArtikelBestand(String name, int anzahl) throws ArtikelExistiertNichtException {
 		Artikel artikel = artikelVW.bestandSenken(name, anzahl);
 		return artikel;
+	}
+	
+	public  void gibArtikelnlisteAus(List<Artikel> artikelListe) {
+		if (artikelListe.isEmpty()) {
+			System.out.println("Liste ist leer.");
+		} else {
+			for (Artikel artikel : artikelListe) {
+				System.out.println(artikel);
+			}
+		}
 	}
 
 	// Kunde Methoden

@@ -106,14 +106,16 @@ public class Verlauf {
 
 		builder.append("\nÄnderung:\n ");
 		builder.append(aktion);
-		builder.append("Name: ");
+		builder.append("Name: '");
 		builder.append(nutzer.getName());
-		builder.append(" hat der Bestand folgende Artikel:  ");
-		builder.append(artikel.getName());
-		builder.append(",am ");
+		builder.append(" ");
+		builder.append(nutzer.getVorname());
+		builder.append("' hat der Bestand folgende Artikel:  ");
+		builder.append("'"+ artikel.getName()+"'");
+		builder.append(" ,am ");
 		builder.append(formattedDatumZeit);
 		builder.append(", geändert \n");
-		builder.append("Der Bestand Des Artikels beträgt jetzt ");
+		builder.append("Der Bestand des Artikels beträgt jetzt ");
 		builder.append(artikel.getBestand());
 		builder.append(" Stück ");
 

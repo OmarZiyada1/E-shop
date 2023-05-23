@@ -79,9 +79,10 @@ public class ArtikelVerwaltung {
 	 * 
 	 * @param name   Der Name des Artikels.
 	 * @param anzahl Die Anzahl, um die der Bestand erhöht werden soll.
+	 * @throws ArtikelExistiertNichtException
 	 */
 
-	public Artikel bestandErhoehen(String name, int anzahl) {
+	public Artikel bestandErhoehen(String name, int anzahl) throws ArtikelExistiertNichtException {
 		Artikel artikel = sucheArtikel(name);
 		artikel.setBestand(artikel.getBestand() + anzahl);
 		updateVerfuegbarkeit(artikel);
@@ -96,8 +97,9 @@ public class ArtikelVerwaltung {
 	 * 
 	 * @param name   Der Name des Artikels.
 	 * @param anzahl Die Anzahl, um die der Bestand verringert werden soll.
+	 * @throws ArtikelExistiertNichtException
 	 */
-	public Artikel bestandSenken(String name, int anzahl) {
+	public Artikel bestandSenken(String name, int anzahl) throws ArtikelExistiertNichtException {
 		Artikel artikel = sucheArtikel(name);
 		artikel.setBestand(artikel.getBestand() - anzahl);
 		updateVerfuegbarkeit(artikel);
@@ -142,16 +144,31 @@ public class ArtikelVerwaltung {
 	 * @param name Der Name des zu suchenden Artikels.
 	 * @return Der gefundene Artikel oder null, wenn kein Artikel mit dem
 	 *         angegebenen Namen gefunden wurde.
+	 * @throws ArtikelExistiertNichtException
 	 */
 
-	public Artikel sucheArtikel(String name) {
+	public Artikel sucheArtikel(String name) throws ArtikelExistiertNichtException {
 		Artikel suchArtikel = null;
-		Iterator<Artikel> iter = artikelListe.iterator();
-		while (iter.hasNext()) {
-			Artikel a = iter.next();
-			if (a.getName().equals(name))
-				suchArtikel = a;
+		boolean artikelGefunden = false;
+
+		if (artikelListe.isEmpty()) {
+			throw new ArtikelExistiertNichtException();
+		} else {
+			Iterator<Artikel> iter = artikelListe.iterator();
+			while (iter.hasNext()) {
+				Artikel a = iter.next();
+				if (a.getName().equals(name)) {
+					suchArtikel = a;
+					artikelGefunden = true;
+					break;
+				}
+			}
 		}
+
+		if (!artikelGefunden) {
+			throw new ArtikelExistiertNichtException();
+		}
+
 		return suchArtikel;
 	}
 

@@ -47,6 +47,15 @@ public class Artikel {
 		this.preis = preis;
 		this.verfuegbar = verfuegbar;
 	}
+	
+	public Artikel(int id, String name, String beschreibung, int bestand, double preis, boolean verfuegbar) {
+		this.artikelId= id;
+		this.name = name;
+		this.beschreibung = beschreibung;
+		this.bestand = bestand;
+		this.preis = preis;
+		this.verfuegbar = verfuegbar;
+	}
 
 	/**
 	 * Gibt die Artikel-ID zurück.
