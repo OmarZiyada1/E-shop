@@ -400,7 +400,6 @@ public class E_shop_CUI {
 		sh.fuegeArtikelEin("Hose", "Jeans SlimFit", 5, 30.0);
 		sh.fuegeArtikelEin("Hemd", "kurze hemdärmel", 2, 35.0);
 		sh.fuegeArtikelEin("Shirt", "wolle", 10, 10);
-		System.out.println(sh.sucheNachName("Hemd"));
 
 		String input = "";
 		do {
