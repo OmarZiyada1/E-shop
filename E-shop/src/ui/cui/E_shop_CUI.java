@@ -76,7 +76,8 @@ public class E_shop_CUI {
 
 		System.out.print("         \n  Warenkorb leeren: 'r'");
 		System.out.print("         \n  Bestellen:  'm'");
-		System.out.print("         \n  Zeige Verlauf:  'v'");
+//		System.out.print("         \n  Meine Bestellungen:  'b'");
+//		System.out.print("         \n  Zeige Verlauf:  'v'");
 		System.out.print("         \n  Logout:  'g'");
 		// System.out.print(" \n Daten sichern: 's'");
 		System.out.print("           \n  ---------------------");
@@ -391,7 +392,7 @@ public class E_shop_CUI {
 				}
 				System.out.println("\n" + sh.erstelleRechnung(aktuelleBestellung) + "\n");
 				sh.leereWarenkorb(loggedkunde);
-				
+
 			} catch (WarenkorbLeerException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
@@ -404,6 +405,9 @@ public class E_shop_CUI {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
 			break;
+//		case "b":
+//			System.out.println(sh.GibAlleMeineBestellungen(loggedkunde));
+//			break;
 		case "g":
 			sh.loggeKundeAus(loggedkunde);
 			break;
@@ -425,55 +429,54 @@ public class E_shop_CUI {
 		String input = "";
 
 		do {
-		    do {
-		        gibStartMenuAus();
-		        try {
-		            input = liesEingabe();
-		            verarbeiteLogin(input);
-		        } catch (IOException e) {
-		            // e.printStackTrace();
-		        }
-		    } while (loggedkunde == null && loggedMitarbeiter == null && !input.equals("q"));
+			do {
+				gibStartMenuAus();
+				try {
+					input = liesEingabe();
+					verarbeiteLogin(input);
+				} catch (IOException e) {
+					// e.printStackTrace();
+				}
+			} while (loggedkunde == null && loggedMitarbeiter == null && !input.equals("q"));
 
-		    if (loggedMitarbeiter != null) {
-		        do {
-		            gibMitarbeiterMenueAus();
-		            try {
-		                input = liesEingabe();
-		                verarbeiteEingabe(input);
-		                if (input.equals("g")) {
-		                    sh.loggeMitarbeiterAus(loggedMitarbeiter);
-		                    loggedkunde = null;
-		                    loggedMitarbeiter = null;
-		                    break; // Beende die Schleife nach dem Ausloggen
-		                }
-		            } catch (IOException e) {
-		                // e.printStackTrace();
-		            }
+			if (loggedMitarbeiter != null) {
+				do {
+					gibMitarbeiterMenueAus();
+					try {
+						input = liesEingabe();
+						verarbeiteEingabe(input);
+						if (input.equals("g")) {
+							sh.loggeMitarbeiterAus(loggedMitarbeiter);
 
-		        } while (loggedMitarbeiter != null && !input.equals("q")); // Verwende '&&' statt '||'
+							loggedMitarbeiter = null;
+							break; // Beende die Schleife nach dem Ausloggen
+						}
+					} catch (IOException e) {
+						// e.printStackTrace();
+					}
 
-		    } else if (loggedkunde != null) {
-		        do {
-		            gibKundeMenueAus();
-		            try {
-		                input = liesEingabe();
-		                verarbeiteKundenEingabe(input);
+				} while (loggedMitarbeiter != null && !input.equals("q")); // Verwende '&&' statt '||'
 
-		                if (input.equals("g")) {
-		                    sh.loggeKundeAus(loggedkunde);
-		                    loggedkunde = null;
-		                    loggedMitarbeiter = null;
-		                    break; // Beende die Schleife nach dem Ausloggen
-		                }
-		            } catch (IOException e) {
-		                // e.printStackTrace();
-		            }
-		        } while (loggedkunde != null && !input.equals("q")); // Verwende '&&' statt '||'
-		    }
+			} else if (loggedkunde != null) {
+				do {
+					gibKundeMenueAus();
+					try {
+						input = liesEingabe();
+						verarbeiteKundenEingabe(input);
+
+						if (input.equals("g")) {
+							sh.loggeKundeAus(loggedkunde);
+							loggedkunde = null;
+
+							break; // Beende die Schleife nach dem Ausloggen
+						}
+					} catch (IOException e) {
+						// e.printStackTrace();
+					}
+				} while (loggedkunde != null && !input.equals("q")); // Verwende '&&' statt '||'
+			}
 
 		} while (!input.equals("q"));
-
 
 	}
 
