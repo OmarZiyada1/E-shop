@@ -48,18 +48,20 @@ public class ArtikelVerwaltung {
 		}
 	}
 
-	public void bestandErhoehen(String name, int anzahl) {
+	public Artikel bestandErhoehen(String name, int anzahl) {
 		Artikel artikel = sucheArtikel(name);
 		artikel.setBestand(artikel.getBestand() + anzahl);
 		updateVerfuegbarkeit(artikel);
+		return artikel;
 
 	}
 
-	public void bestandSenken(String name, int anzahl) {
+	public Artikel bestandSenken(String name, int anzahl) {
 		Artikel artikel = sucheArtikel(name);
 		System.out.println(artikel.getBestand());
 		artikel.setBestand(artikel.getBestand() - anzahl);
 		updateVerfuegbarkeit(artikel);
+		return artikel;
 
 	}
 	
@@ -67,6 +69,7 @@ public class ArtikelVerwaltung {
 	public void bestandSenken(Artikel artikel, int anzahl) {
 		artikel.setBestand(artikel.getBestand() - anzahl);
 		updateVerfuegbarkeit(artikel);
+		
 
 	}
 

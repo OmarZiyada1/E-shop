@@ -11,6 +11,8 @@ public class Rechnung {
 	private double gesamtPreis;
 	private int rechnungNr;
 	private Bestellung bestellung;
+	
+	
 	/**
 	 * konstruktor
 	 * @param bestellung

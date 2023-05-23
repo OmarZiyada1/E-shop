@@ -8,12 +8,13 @@ import java.util.List;
 
 import domain.E_Shop;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
-import domain.exceptions.ArtikelExistiertBereitsException;
+
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.KundeIDistbenutztException;
 import domain.exceptions.MitarbeiterIDIstBenutztException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
+import domain.exceptions.VerlaufLeerException;
 import domain.exceptions.WarenkorbLeerException;
 import entities.Artikel;
 import entities.Bestellung;
@@ -53,10 +54,11 @@ public class E_shop_CUI {
 		System.out.print("         \n  Artikel löschen: 'd'");
 		System.out.print("         \n  Artikel einfügen: 'e'");
 		System.out.print("         \n  Artikel suchen:  'f'");
-		System.out.print("         \n  Daten sichern:  's'");
+		//System.out.print("         \n  Daten sichern:  's'");
 		System.out.print("         \n  Mitarbeiter regestrieren:  'm'");
 		System.out.print("         \n  Artikelbestand erhöhen:  'h'");
 		System.out.print("         \n  Artikelbestand senken:  'w'");
+		System.out.print("         \n  Zeige Verlauf:  'v'");
 		System.out.print("         \n  ---------------------");
 		System.out.println("         \n  Beenden:        'q'");
 		System.out.print("> "); // Prompt
@@ -72,6 +74,7 @@ public class E_shop_CUI {
 
 		System.out.print("         \n  Warenkorb leeren: 'r'");
 		System.out.print("         \n  Bestellen:  'm'");
+		System.out.print("         \n  Zeige Verlauf:  'v'");
 		// System.out.print(" \n Daten sichern: 's'");
 		System.out.print("           \n  ---------------------");
 		System.out.println("         \n  Beenden:        'q'");
@@ -147,7 +150,7 @@ public class E_shop_CUI {
 	}
 
 	private void verarbeiteEingabe(String line)
-			throws IOException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException {
+			throws IOException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException, VerlaufLeerException {
 
 		String artikelName;
 		String beschreibung;
@@ -179,7 +182,9 @@ public class E_shop_CUI {
 			System.out.print("Artikel Preis  > ");
 			preis = Double.parseDouble(liesEingabe());
 
-			sh.loescheArtikel(artikelName, beschreibung, bestand, preis);
+			gesuchteArtikel = sh.loescheArtikel(artikelName, beschreibung, bestand, preis);
+			
+			sh.addVerlauf("Mitarbeiter (Artikellöschen): ", loggedMitarbeiter, gesuchteArtikel);
 
 			break;
 		case "e":
@@ -193,7 +198,8 @@ public class E_shop_CUI {
 			System.out.print("Bestand  > ");
 			bestand = Integer.parseInt(liesEingabe());
 
-			sh.fuegeArtikelEin(artikelName, beschreibung, bestand, preis, bestand);
+			gesuchteArtikel = sh.fuegeArtikelEin(artikelName, beschreibung, bestand, preis, bestand);
+			sh.addVerlauf("Mitarbeiter (Artikel eingefügt): ", loggedMitarbeiter, gesuchteArtikel);
 			System.out.println("Einfügen ok");
 			break;
 		case "f":
@@ -223,19 +229,26 @@ public class E_shop_CUI {
 			artikelName = liesEingabe();
 			System.out.println("Um wiel viel erhöhen?  >");
 			anzahl = Integer.parseInt(liesEingabe());
-			sh.erhoeheArtikelBestand(artikelName, anzahl);
+			gesuchteArtikel = sh.erhoeheArtikelBestand(artikelName, anzahl);
+			System.out.println("gesuchteArtikel  "+ gesuchteArtikel);
+			sh.addVerlauf("Mitarbeiter (Artikel bestand erhöht): ", loggedMitarbeiter, gesuchteArtikel);
 			break;
 		case "w":
 			System.out.println("Artikel name >");
 			artikelName = liesEingabe();
 			System.out.println("Um wiel viel senken?  >");
 			anzahl = Integer.parseInt(liesEingabe());
-			sh.senkenArtikelBestand(artikelName, anzahl);
+			gesuchteArtikel = sh.senkenArtikelBestand(artikelName, anzahl);
+			sh.addVerlauf("kund (Bestellung): ", loggedMitarbeiter, gesuchteArtikel);
 			break;
+
+		case "v":
+			System.out.println(sh.gibVerlauflistaus());
 		}
 	}
 
-	private void verarbeiteKundenEingabe(String line) throws IOException, NichtGenugArtikelVorhandenException,  WarenkorbLeerException {
+	private void verarbeiteKundenEingabe(String line)
+			throws IOException, NichtGenugArtikelVorhandenException, WarenkorbLeerException, VerlaufLeerException {
 		List<Artikel> artikelListe;
 		String artikelName;
 		Artikel gesuchteArtikel;
@@ -251,7 +264,7 @@ public class E_shop_CUI {
 			System.out.print("Artikel Name  > ");
 			artikelName = liesEingabe();
 			gesuchteArtikel = sh.sucheNachName(artikelName);
-			System.out.println(gesuchteArtikel+ "\n");
+			System.out.println(gesuchteArtikel + "\n");
 			break;
 		case "d":
 			System.out.println("Bitte name des Artikels eingeben  >");
@@ -266,30 +279,32 @@ public class E_shop_CUI {
 			System.out.println("Bitte name des Artikels eingeben  >");
 			artikelName = liesEingabe();
 			gesuchteArtikel = sh.sucheNachName(artikelName);
-			String line2 ="";
+			String line2 = "";
 			System.out.print(
 					"Wenn Sie Anzahl erhöhen möchten bitte '+' Eingeben. Sollten Sie den Anzahl senken wollen '-' eingeben \n ");
-					line2=liesEingabe();
-			switch(line2) {
+			line2 = liesEingabe();
+			switch (line2) {
 			case "+":
 				System.out.print("Stückzahl eingeben bitte  >");
-				anzahl =Integer.parseInt(liesEingabe());
+				anzahl = Integer.parseInt(liesEingabe());
 				try {
 					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
-					System.out.println("Bestand des Artikel '"+gesuchteArtikel+"' wurde um '"+anzahl+"' Stückzahl erhöht");
+					System.out.println(
+							"Bestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl + "' Stückzahl erhöht");
 				} catch (NichtGenugArtikelVorhandenException e) {
 					e.printStackTrace();
 				}
-				
+
 				break;
 			case "-":
 				System.out.print("Stückzahl eingeben bitte  >");
-				anzahl =Integer.parseInt(liesEingabe());
+				anzahl = Integer.parseInt(liesEingabe());
 				try {
 					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
-					System.out.println("Bestand des Artikel '"+gesuchteArtikel+"' wurde um '"+anzahl+"' Stückzahl gesenkt");
+					System.out.println("Bestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl
+							+ "' Stückzahl gesenkt");
 				} catch (NichtGenugArtikelVorhandenException e) {
-					
+
 					e.printStackTrace();
 				}
 				break;
@@ -300,16 +315,23 @@ public class E_shop_CUI {
 			System.out.println("Ihre Warenkorb ist jetzt leer\n");
 			sh.getKundenWarenkorb(loggedkunde);
 			break;
-			
+
 		case "w":
-			System.out.println("\n"+ sh.getKundenWarenkorb(loggedkunde)+"\n");
+			System.out.println("\n" + sh.getKundenWarenkorb(loggedkunde) + "\n");
 			break;
-			
+
 		case "m":
 			aktuelleBestellung = sh.bestellen(loggedkunde);
-			System.out.println("\n"+sh.erstelleRechnung(aktuelleBestellung)+"\n");
+
+			for (Artikel artikel : aktuelleBestellung.getBestellteArtikeln().keySet()) {
+				sh.addVerlauf("Mitarbeiter (Artikellöschen): ", loggedkunde, artikel);
+			}
+
+			System.out.println("\n" + sh.erstelleRechnung(aktuelleBestellung) + "\n");
 			sh.leereWarenkorb(loggedkunde);
 			break;
+		case "v":
+			System.out.println(sh.gibVerlauflistaus());
 
 		}
 
@@ -326,15 +348,16 @@ public class E_shop_CUI {
 	}
 
 	public void run() throws ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException,
-			MitarbeiterIDIstBenutztException, KundeIDistbenutztException, NichtGenugArtikelVorhandenException, WarenkorbLeerException {
+			MitarbeiterIDIstBenutztException, KundeIDistbenutztException, NichtGenugArtikelVorhandenException,
+			WarenkorbLeerException, VerlaufLeerException {
 		// Variable fÃ¼r Eingaben von der Konsole
 		sh.mitarbeiterEinfügen("Omar", "Ziyada", "oz", "123456");
-		
+
 		sh.kundenRegistrieren("Sudki", "Koulak", "sk", "12345", "Wartburg", "86", "28201", "Bremen", "DE");
 		sh.fuegeArtikelEin("Hose", "Jeans SlimFit", 5, 30.0);
 		sh.fuegeArtikelEin("Hemd", "kurze hemdärmel", 2, 35.0);
 		sh.fuegeArtikelEin("Shirt", "wolle", 10, 10);
-		
+
 		String input = "";
 		do {
 
@@ -368,14 +391,15 @@ public class E_shop_CUI {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 			} while (!input.equals("q"));
 		}
 
 	}
 
 	public static void main(String[] args) throws IOException, MitarbeiterIDIstBenutztException,
-			ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException, KundeIDistbenutztException, NichtGenugArtikelVorhandenException, WarenkorbLeerException {
+			ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException, KundeIDistbenutztException,
+			NichtGenugArtikelVorhandenException, WarenkorbLeerException, VerlaufLeerException {
 		E_shop_CUI cui;
 		try {
 			cui = new E_shop_CUI();

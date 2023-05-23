@@ -8,13 +8,16 @@ import domain.exceptions.KundeIDistbenutztException;
 import domain.exceptions.MitarbeiterIDIstBenutztException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
+import domain.exceptions.VerlaufLeerException;
 import domain.exceptions.WarenkorbLeerException;
 import entities.Adresse;
 import entities.Artikel;
 import entities.Bestellung;
 import entities.Kunde;
 import entities.Mitarbeiter;
+import entities.Nutzer;
 import entities.Rechnung;
+import entities.Verlauf;
 import entities.Warenkorb;
 
 public class E_Shop {
@@ -25,6 +28,7 @@ public class E_Shop {
 	public KundeVerwaltung kundeVW;
 	public MitarbeiterVerwaltung mitarbeiterVW;
 	public RechnungsVerwaltung rechnungVW;
+	public VerlaufsVerwaltung verlaufVW;
 
 	public E_Shop() {
 		artikelVW = new ArtikelVerwaltung();
@@ -54,34 +58,36 @@ public class E_Shop {
 	}
 
 	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis)
-			throws AnzahlIsNichtDefiniertException
-			 {
+			throws AnzahlIsNichtDefiniertException {
 
 		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
 		artikelVW.fugeArtikelEin(artikel);
 		return artikel;
 	}
 
-	public void loescheArtikel(String name, String beschreibung, int bestand, double preis)
+	public Artikel loescheArtikel(String name, String beschreibung, int bestand, double preis)
 			throws ArtikelExistiertNichtException {
 		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
 		artikelVW.artikelloeschen(artikel);
+		return artikel;
 
 	}
 
-	public void erhoeheArtikelBestand(String name,  int anzahl) {
-		artikelVW.bestandErhoehen(name, anzahl);
+	public Artikel erhoeheArtikelBestand(String name, int anzahl) {
+		Artikel artikel = artikelVW.bestandErhoehen(name, anzahl);
+		return artikel;
 	}
 
-	public void senkenArtikelBestand(String name,  int anzahl) {
-		artikelVW.bestandSenken(name, anzahl);
+	public Artikel senkenArtikelBestand(String name, int anzahl) {
+		Artikel artikel = artikelVW.bestandSenken(name, anzahl);
+		return artikel;
 	}
 
 	// Kunde Methoden
 	public void kundenRegistrieren(String name, String vorname, String nutzerNr, String passwort, String strasse,
 			String hNr, String plz, String ort, String land) throws KundeIDistbenutztException {
 		Adresse adresse = new Adresse(strasse, hNr, plz, ort, land);
-		Kunde kunde = new Kunde(name,vorname,nutzerNr,passwort,adresse);
+		Kunde kunde = new Kunde(name, vorname, nutzerNr, passwort, adresse);
 		kundeVW.kundeRegistieren(kunde);
 
 	}
@@ -163,12 +169,25 @@ public class E_Shop {
 	}
 
 	// Bestellung
-	public Bestellung bestellen(Kunde kunde) throws  WarenkorbLeerException {
+	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException {
 		return bestellVW.bestellen(kunde);
 	}
 
 	public List<Bestellung> getBestellungList() {
 		return bestellVW.getBestellungList();
+	}
+
+	// Verlauf
+	public void addVerlauf(String aktion, Nutzer nutzer, Artikel artikel) {
+//		System.out.println("aktion  " + aktion);
+//		System.out.println("nutzer  " + nutzer);
+//		System.out.println("\nartikel " + artikel);
+		verlaufVW.addVerlauf(aktion, nutzer, artikel);
+
+	}
+
+	public List<Verlauf> gibVerlauflistaus() throws VerlaufLeerException {
+		return verlaufVW.getVerlauflListe();
 	}
 
 }

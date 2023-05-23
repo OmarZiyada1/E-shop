@@ -116,7 +116,6 @@ public abstract class Nutzer {
 		builder.append(vorname);
 		builder.append(", NutzerName: ");
 		builder.append(nutzerName);
-		builder.append(adresse);
 		builder.append("");
 		return builder.toString();
 	}
