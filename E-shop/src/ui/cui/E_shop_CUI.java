@@ -158,17 +158,17 @@ public class E_shop_CUI {
 			throws IOException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException, VerlaufLeerException {
 		boolean verfügbarkeit;
 		int artikelID;
+		int bestand;
+		int anzahl;
+		double preis;
 		String artikelName;
 		String beschreibung;
-		int bestand;
-		double preis;
-		List<Artikel> artikelListe;
 		String mitarbeiterName;
 		String mitarbeiterNameVorname;
 		String mitarbeiterNutzername;
 		String mitarbeiterPasswort;
 		Artikel gesuchteArtikel = null;
-		int anzahl;
+		List<Artikel> artikelListe;
 
 		// Eingabe bearbeiten:
 		switch (line.toLowerCase()) {
@@ -188,7 +188,7 @@ public class E_shop_CUI {
 			System.out.print("Artikel Bestand  > ");
 			bestand = Integer.parseInt(liesEingabe());
 			System.out.print("Artikel Preis  > ");
-			preis = Double.parseDouble(liesEingabe());
+			preis = Double.parseDouble(liesEingabe().replace(",", "."));
 			System.out.print("Verfügbarkeit  > ");
 			verfügbarkeit = Boolean.parseBoolean(liesEingabe());
 
@@ -315,7 +315,7 @@ public class E_shop_CUI {
 
 		case "f":
 			System.out.print("Artikel Name  > ");
-			artikelName = liesEingabe();
+			artikelName = liesEingabe().trim();
 			try {
 				gesuchteArtikel = sh.sucheNachName(artikelName);
 			} catch (ArtikelExistiertNichtException e) {
@@ -324,20 +324,20 @@ public class E_shop_CUI {
 			break;
 		case "d":
 			System.out.println("Bitte name des Artikels eingeben  >");
-			artikelName = liesEingabe();
+			artikelName = liesEingabe().trim();
 			try {
 				gesuchteArtikel = sh.sucheNachName(artikelName);
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
 			System.out.println("Stückanzahl  >");
-			anzahl = Integer.parseInt(liesEingabe());
+			anzahl = Integer.parseInt(liesEingabe().trim());
 			sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
 			System.out.println("\nArtikel wurde erfolgreich im Warenkorb hinzugefügt\n");
 			break;
 		case "c":
 			System.out.println("Bitte name des Artikels eingeben  >");
-			artikelName = liesEingabe();
+			artikelName = liesEingabe().trim();
 			try {
 				gesuchteArtikel = sh.sucheNachName(artikelName);
 			} catch (ArtikelExistiertNichtException e) {
@@ -350,7 +350,7 @@ public class E_shop_CUI {
 			switch (line2) {
 			case "+":
 				System.out.print("Stückzahl eingeben bitte  >");
-				anzahl = Integer.parseInt(liesEingabe());
+				anzahl = Integer.parseInt(liesEingabe().trim());
 				try {
 					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
 					System.out.println("\nBestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl
@@ -362,7 +362,7 @@ public class E_shop_CUI {
 				break;
 			case "-":
 				System.out.print("Stückzahl eingeben bitte  >");
-				anzahl = Integer.parseInt(liesEingabe());
+				anzahl = Integer.parseInt(liesEingabe().trim());
 				try {
 					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
 					System.out.println("\nBestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl
@@ -432,7 +432,7 @@ public class E_shop_CUI {
 			do {
 				gibStartMenuAus();
 				try {
-					input = liesEingabe();
+					input = liesEingabe().trim();
 					verarbeiteLogin(input);
 				} catch (IOException e) {
 					// e.printStackTrace();
@@ -443,7 +443,7 @@ public class E_shop_CUI {
 				do {
 					gibMitarbeiterMenueAus();
 					try {
-						input = liesEingabe();
+						input = liesEingabe().trim();
 						verarbeiteEingabe(input);
 						if (input.equals("g")) {
 							sh.loggeMitarbeiterAus(loggedMitarbeiter);
@@ -461,7 +461,7 @@ public class E_shop_CUI {
 				do {
 					gibKundeMenueAus();
 					try {
-						input = liesEingabe();
+						input = liesEingabe().trim();
 						verarbeiteKundenEingabe(input);
 
 						if (input.equals("g")) {
