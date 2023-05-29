@@ -38,6 +38,22 @@ public class Kunde extends Nutzer {
 	}
 
 	/**
+	 * @param kndNr
+	 * @param name
+	 * @param vorname
+	 * @param nutzerNr
+	 * @param passwort
+	 * @param adresse
+	 * @param kundeWarenkorb
+	 * @param meineBestellungen
+	 * @param aktuelleBestellung
+	 */
+	public Kunde(int kndNr, String name, String vorname, String nutzerNr, String passwort, Adresse adresse) {
+		super(name, vorname, nutzerNr, passwort, adresse);
+		this.kndNr = kndNr;
+	}
+
+	/**
 	 * Gibt die Kundennummer zurück
 	 * 
 	 * @return die Kundennummer

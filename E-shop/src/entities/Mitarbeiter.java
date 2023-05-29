@@ -46,6 +46,23 @@ public class Mitarbeiter extends Nutzer {
 	}
 
 	/**
+	 * Konstruktor 2 für die Klasse Mitarbeiter ohne Adresse.
+	 * 
+	 * Der Konstruktor initialisiert einen Mitarbeiter mit den angegebenen Werten
+	 * für Name, Vorname, Nutzername und Passwort. Dabei wird der Konstruktor der
+	 * Basisklasse "Nutzer" aufgerufen.
+	 * 
+	 * @param name     Der Name des Mitarbeiters.
+	 * @param vorname  Der Vorname des Mitarbeiters.
+	 * @param nutzerNr Die Nutzernummer des Mitarbeiters.
+	 * @param passwort Das Passwort des Mitarbeiters.
+	 */
+
+	public Mitarbeiter(int maId,String name, String vorname, String nutzerNr, String passwort) {
+		super(name, vorname, nutzerNr, passwort);
+		this.maId=maId;
+	}
+	/**
 	 * Gibt die Mitarbeiter-ID zurück.
 	 * 
 	 * @return Die Mitarbeiter-ID.

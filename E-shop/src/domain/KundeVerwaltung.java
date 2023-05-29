@@ -4,7 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+
+import entities.Artikel;
 import entities.Bestellung;
+import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.KundeIDistbenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import entities.Kunde;
@@ -85,6 +88,30 @@ public class KundeVerwaltung {
 
 		return kunde;
 
+	}
+
+	public Kunde sucheKunde(String nutzerName) {
+		Kunde suchKunde = null;
+		boolean kundeGefunden = false;
+
+		if (list_Kunde.isEmpty()) {
+			System.out.println("Exceptoin Kunde Exsitiert nicht ");
+		} else {
+			Iterator<Kunde> iter = list_Kunde.iterator();
+			while (iter.hasNext()) {
+				Kunde k = iter.next();
+				if (k.getNutzerName().equals(nutzerName)) {
+					suchKunde = k;
+					kundeGefunden = true;
+					break;
+				}
+			}
+		}
+		if (!kundeGefunden) {
+			System.out.println("Exceptoin Kunde Exsitiert nicht ");
+		}
+
+		return suchKunde;
 	}
 
 	public void kundeAusloggen(Kunde kunde) {

@@ -1,9 +1,12 @@
 package domain;
-
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import persistence.FilePersistenceManager;
+import persistence.PersistenceManager;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
+import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
 import entities.Artikel;
 
@@ -14,6 +17,45 @@ import entities.Artikel;
 public class ArtikelVerwaltung {
 
 	private List<Artikel> artikelListe = new Vector<>(); // list mit alle eingefügte Artikeln
+
+	private PersistenceManager pm = new FilePersistenceManager();
+
+	public void liesDaten(String datei) throws IOException, ArtikelExistiertBereitsException {
+		pm.openForReading(datei);
+		Artikel einArtikel;
+		do {
+			einArtikel = pm.ladeArtikel();
+			if (einArtikel != null) {
+				try {
+					fugeArtikelEin(einArtikel);
+				} catch (ArtikelExistiertBereitsException e) {
+					e.getMessage();
+				}
+			}
+		} while (einArtikel != null);
+		pm.close();
+	}
+	
+	
+	
+	
+	public void schreibeDaten(String datei) throws IOException {
+		pm.openForWriting(datei);
+		for (Artikel artikel : artikelListe) {
+		pm.speichereArtikel(artikel);
+	}
+
+//		// Alternative Implementierung mit Iterator:
+//		Iterator<Artikel> iter = artikelListe.iterator();
+//		while (iter.hasNext()) {
+//			Artikel artikel = iter.next();
+//			pm.speichereArtikel(artikel);
+//		}
+
+	// Persistenz-Schnittstelle wieder schlieÃŸen
+		pm.close();
+	}
+
 
 	/**
 	 * 
@@ -49,11 +91,17 @@ public class ArtikelVerwaltung {
 	 * @param artikel Der hinzuzufügende Artikel.
 	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
 	 */
-	public void fugeArtikelEin(Artikel artikel) throws AnzahlIsNichtDefiniertException {
-		artikel.setBestand(artikel.getBestand());
-		genertaeArtiekelNr(artikel);
-		artikelListe.add(artikel);
-		updateVerfuegbarkeit(artikel);
+	public void fugeArtikelEin(Artikel artikel) throws ArtikelExistiertBereitsException {
+		if (artikelListe.contains(artikel)) {
+			artikel.setBestand(artikel.getBestand());
+			genertaeArtiekelNr(artikel);
+			artikelListe.add(artikel);
+			updateVerfuegbarkeit(artikel);
+		}
+
+		else {
+			throw new ArtikelExistiertBereitsException(artikel, "");
+		}
 	}
 
 	/**
@@ -68,7 +116,7 @@ public class ArtikelVerwaltung {
 			artikel.setArtikelId(1322);
 		} else {
 			int lastRechnungNr = artikelListe.get(artikelListe.size() - 1).getArtikelId();
-			artikel.setArtikelId(lastRechnungNr + 322);
+			artikel.setArtikelId(lastRechnungNr + 2);
 		}
 	}
 

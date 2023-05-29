@@ -10,7 +10,30 @@ public class Verlauf {
 	private String formattedDatumZeit;
 	private Nutzer nutzer;
 	private Artikel artikel;
-	private String aktion;
+	private AKTIONSTYP aktion;
+	public enum AKTIONSTYP{
+		Neue("Mitarbeiter: (Neue Artikel hinzugefügt)"), 
+		ERHOEHEN("Mitarbeiter: (Artikelbestand erhöht)"),
+		BESTELLEN("Kunde: (Kundenbestllung)"),
+		SENKEN("Mitarbeiter: (Bestand gesenkt) "),
+		LOESCHEN("Mitarbeiter: (Artikel gelöscht)");
+		
+		private final String value;
+		
+		/**
+		 * @return the value
+		 */
+		public String getValue() {
+			return value;
+		}
+
+		private AKTIONSTYP(String value){
+	         this.value = value;
+	        
+	     }
+		 
+	}
+	
 
 	/**
 	 * 
@@ -18,19 +41,19 @@ public class Verlauf {
 	 * Erstellt einen neuen Verlauf mit der angegebenen Aktion, dem betroffenen
 	 * Nutzer, dem betroffenen Artikel und dem formatierten Datum und Uhrzeit.*
 	 * 
-	 * @param aktion             die durchgeführte Aktion
 	 * @param nutzer             der betroffene Nutzer
 	 * @param artikel            der betroffene Artikel
 	 * @param formattedDatumZeit das formatierte Datum und die formatierte Uhrzeit
 	 */
-	public Verlauf(String aktion, Nutzer nutzer, Artikel artikel, String formattedDatumZeit) {
-
+	public Verlauf(AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, String formattedDatumZeit) {
+		this.aktion=aktion;
 		this.formattedDatumZeit = formattedDatumZeit;
-		this.aktion = aktion;
 		this.nutzer = nutzer;
 		this.artikel = artikel;
 
 	}
+	
+	
 
 	/**
 	 * 
@@ -73,26 +96,16 @@ public class Verlauf {
 		return artikel;
 	}
 
+
+
 	/**
-	 * 
-	 * Gibt die durchgeführte Aktion zurück.*
-	 * 
-	 * @return die durchgeführte Aktion
+	 * @return the aktion
 	 */
-	public String getAktion() {
+	public AKTIONSTYP getAktion() {
 		return aktion;
 	}
 
-	/**
-	 * 
-	 * Setzt die durchgeführte Aktion.*
-	 * 
-	 * @param aktion die durchgeführte Aktion
-	 */
 
-	public void setAktion(String aktion) {
-		this.aktion = aktion;
-	}
 
 	/**
 	 * 
@@ -104,9 +117,9 @@ public class Verlauf {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("\nÄnderung:\n ");
-		builder.append(aktion);
-		builder.append("Name: '");
+		builder.append("\nÄnderung:  ");
+		builder.append(aktion.value);
+		builder.append(" Name: '");
 		builder.append(nutzer.getName());
 		builder.append(" ");
 		builder.append(nutzer.getVorname());
@@ -114,7 +127,7 @@ public class Verlauf {
 		builder.append("'"+ artikel.getName()+"'");
 		builder.append(" ,am ");
 		builder.append(formattedDatumZeit);
-		builder.append(", geändert \n");
+		builder.append(", geändert. ");
 		builder.append("Der Bestand des Artikels beträgt jetzt ");
 		builder.append(artikel.getBestand());
 		builder.append(" Stück ");

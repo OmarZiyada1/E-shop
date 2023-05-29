@@ -26,7 +26,7 @@ public class VerlaufsVerwaltung {
 	 * @param nutzer  der betroffene Nutzer
 	 * @param artikel der betroffene Artikel
 	 */
-	public void addVerlauf(String aktion, Nutzer nutzer, Artikel artikel) {
+	public void addVerlauf(Verlauf.AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel) {
 		updateTime();
 		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
 		Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit);

@@ -1,7 +1,9 @@
 package domain;
 
+import java.io.IOException;
 import java.util.List;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
+import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.KundeIDistbenutztException;
 import domain.exceptions.MitarbeiterIDIstBenutztException;
@@ -17,6 +19,7 @@ import entities.Mitarbeiter;
 import entities.Nutzer;
 import entities.Rechnung;
 import entities.Verlauf;
+import entities.Verlauf.AKTIONSTYP;
 import entities.Warenkorb;
 
 public class E_Shop {
@@ -28,9 +31,13 @@ public class E_Shop {
 	private MitarbeiterVerwaltung mitarbeiterVW;
 	private RechnungsVerwaltung rechnungVW;
 	private VerlaufsVerwaltung verlaufVW;
+	private String datei = "";
 
-	public E_Shop() {
+	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException {
+		
+		this.datei = datei;
 		artikelVW = new ArtikelVerwaltung();
+		artikelVW.liesDaten(datei+"_Artikel.txt");
 		warenKorbVW = new WarenkorbVerwaltung();
 		bestellVW = new BestellungVerwaltung();
 		kundeVW = new KundeVerwaltung();
@@ -38,6 +45,9 @@ public class E_Shop {
 		rechnungVW = new RechnungsVerwaltung();
 		verlaufVW = new VerlaufsVerwaltung();
 	}
+	
+	
+	
 
 	// Artikel Methoden
 	public List<Artikel> gibAlleArtikeln() {
@@ -48,37 +58,42 @@ public class E_Shop {
 		return artikelVW.sucheArtikel(name);
 	}
 
-	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis, int anzahl)
-			throws AnzahlIsNichtDefiniertException {
-
-		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
-		artikelVW.fugeArtikelEin(artikel, anzahl);
-		return artikel;
-	}
-
 	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis)
-			throws AnzahlIsNichtDefiniertException {
+			throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException {
 
 		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
 		artikelVW.fugeArtikelEin(artikel);
 		return artikel;
 	}
 
-	public Artikel loescheArtikel(int id, String name, String beschreibung, int bestand, double preis,
-			boolean verfügbarkeit) throws ArtikelExistiertNichtException {
-		Artikel artikel = new Artikel(id, name, beschreibung, bestand, preis, verfügbarkeit);
+	public Artikel fuegeArtikelEin(Mitarbeiter mitarbeiter, String name, String beschreibung, int bestand, double preis)
+			throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException {
+
+		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
+		artikelVW.fugeArtikelEin(artikel);
+		verlaufVW.addVerlauf(AKTIONSTYP.Neue, mitarbeiter, artikel);
+
+		return artikel;
+	}
+
+	public Artikel loescheArtikel(Mitarbeiter mitarbeiter,  String name) throws ArtikelExistiertNichtException {
+		Artikel artikel = artikelVW.sucheArtikel(name);
 		artikelVW.artikelloeschen(artikel);
+		verlaufVW.addVerlauf(AKTIONSTYP.LOESCHEN, mitarbeiter, artikel);
+
 		return artikel;
 
 	}
 
-	public Artikel erhoeheArtikelBestand(String name, int anzahl) throws ArtikelExistiertNichtException {
+	public Artikel erhoeheArtikelBestand(Mitarbeiter mitarbeiter, String name, int anzahl) throws ArtikelExistiertNichtException {
 		Artikel artikel = artikelVW.bestandErhoehen(name, anzahl);
+		verlaufVW.addVerlauf(AKTIONSTYP.ERHOEHEN, mitarbeiter, artikel);
 		return artikel;
 	}
 
-	public Artikel senkenArtikelBestand(String name, int anzahl) throws ArtikelExistiertNichtException {
+	public Artikel senkenArtikelBestand(Mitarbeiter mitarbeiter,String name, int anzahl) throws ArtikelExistiertNichtException {
 		Artikel artikel = artikelVW.bestandSenken(name, anzahl);
+		verlaufVW.addVerlauf(AKTIONSTYP.SENKEN, mitarbeiter, artikel);
 		return artikel;
 	}
 
@@ -90,6 +105,11 @@ public class E_Shop {
 				System.out.println(artikel);
 			}
 		}
+	}
+	
+	
+	public void schreibeArtikel() throws IOException {
+		artikelVW.schreibeDaten(datei+"_Artikel.txt");
 	}
 
 	// Kunde Methoden
@@ -108,6 +128,7 @@ public class E_Shop {
 
 	public List<Bestellung> GibAlleMeineBestellungen(Kunde kunde) {
 		return kundeVW.getMeineBestellungen(kunde);
+		
 	}
 
 	public void loggeKundeAus(Kunde kunde) {
@@ -182,8 +203,13 @@ public class E_Shop {
 	}
 
 	// Bestellung
-	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException {
-		return bestellVW.bestellen(kunde);
+	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException, NichtGenugArtikelVorhandenException {
+		Bestellung best= bestellVW.bestellen(kunde);
+		for (Artikel artikel : best.getBestellteArtikeln().keySet()) {
+			verlaufVW.addVerlauf(AKTIONSTYP.BESTELLEN, kunde, artikel);
+		}
+		
+		return best;
 	}
 
 	public List<Bestellung> getBestellungList() {
@@ -191,10 +217,7 @@ public class E_Shop {
 	}
 
 	// Verlauf
-	public void addVerlauf(String aktion, Nutzer nutzer, Artikel artikel) {
-		verlaufVW.addVerlauf(aktion, nutzer, artikel);
-
-	}
+	
 
 	public List<Verlauf> gibVerlauflistaus() throws VerlaufLeerException {
 		return verlaufVW.getVerlauflListe();

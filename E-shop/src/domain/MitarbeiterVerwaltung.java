@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import domain.exceptions.MitarbeiterIDIstBenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
+import entities.Kunde;
 import entities.Mitarbeiter;
 
 /*
@@ -97,6 +98,33 @@ public class MitarbeiterVerwaltung {
 		return mitarbeiter;
 
 	}
+	
+	
+	public Mitarbeiter sucheMitarbeiter(String nutzerName) {
+		Mitarbeiter suchMitarbeiter = null;
+		boolean mitarbeiterGefunden = false;
+
+		if (list_Mitarbeiter.isEmpty()) {
+			System.out.println("Exceptoin Mitarbeiter Exsitiert nicht ");
+		} else {
+			Iterator<Mitarbeiter> iter = list_Mitarbeiter.iterator();
+			while (iter.hasNext()) {
+				Mitarbeiter m = iter.next();
+				if (m.getNutzerName().equals(nutzerName)) {
+					suchMitarbeiter = m;
+					mitarbeiterGefunden = true;
+					break;
+				}
+			}
+		}
+		if (!mitarbeiterGefunden) {
+			System.out.println("Exceptoin Kunde Exsitiert nicht ");
+		}
+
+		return suchMitarbeiter;
+	}
+	
+	
 
 	public void mitarbeiterAusloggen(Mitarbeiter mitarbeiter) {
 

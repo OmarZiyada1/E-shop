@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
+
+import domain.exceptions.NichtGenugArtikelVorhandenException;
 import domain.exceptions.WarenkorbLeerException;
 import entities.Artikel;
 import entities.Bestellung;
@@ -40,7 +42,7 @@ public class BestellungVerwaltung {
 	 * @return Die erstellte Bestellung.
 	 * @throws WarenkorbLeerException Wenn der Warenkorb des Kunden leer ist.
 	 */
-	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException {
+	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException, NichtGenugArtikelVorhandenException {
 		updateTime();
 		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
 		HashMap<Artikel, Integer> artikelnInWarenkorbList = kunde.getKundeWarenkorb().getKorbArtikelListe();
@@ -48,9 +50,13 @@ public class BestellungVerwaltung {
 		if (artikelnInWarenkorbList.isEmpty()) {
 			throw new WarenkorbLeerException();
 		} else {
+			
 			// loop Reduziert den Bestand der Artikel in Unserem Bestand
 			for (Artikel artikel : artikelnInWarenkorbList.keySet()) {
 				Artikel warenkorpartikel = artikel;
+				if(artikel.getBestand()== 0) {
+					throw new NichtGenugArtikelVorhandenException(artikel);
+				}
 				int anzahlArtikelWK = artikelnInWarenkorbList.get(artikel);
 				artikelVW.bestandSenken(warenkorpartikel, anzahlArtikelWK);
 			}
