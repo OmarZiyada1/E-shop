@@ -1,4 +1,5 @@
 package domain;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -26,36 +27,19 @@ public class ArtikelVerwaltung {
 		do {
 			einArtikel = pm.ladeArtikel();
 			if (einArtikel != null) {
-				try {
-					fugeArtikelEin(einArtikel);
-				} catch (ArtikelExistiertBereitsException e) {
-					e.getMessage();
-				}
+				fugeArtikelBeimLesenEin(einArtikel);
 			}
 		} while (einArtikel != null);
 		pm.close();
 	}
-	
-	
-	
-	
+
 	public void schreibeDaten(String datei) throws IOException {
 		pm.openForWriting(datei);
 		for (Artikel artikel : artikelListe) {
-		pm.speichereArtikel(artikel);
-	}
-
-//		// Alternative Implementierung mit Iterator:
-//		Iterator<Artikel> iter = artikelListe.iterator();
-//		while (iter.hasNext()) {
-//			Artikel artikel = iter.next();
-//			pm.speichereArtikel(artikel);
-//		}
-
-	// Persistenz-Schnittstelle wieder schließen
+			pm.speichereArtikel(artikel);
+		}
 		pm.close();
 	}
-
 
 	/**
 	 * 
@@ -66,20 +50,8 @@ public class ArtikelVerwaltung {
 	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
 	 */
 
-	public void fugeArtikelEin(Artikel artikel, int anzahl) throws AnzahlIsNichtDefiniertException {
-		if (this.artikelListe.contains(artikel)) {
-			artikel.setBestand(artikel.getBestand() + anzahl);
-			updateVerfuegbarkeit(artikel);
-		} else {
-			if (anzahl > 0) {
-				artikel.setBestand(anzahl);
-				genertaeArtiekelNr(artikel);
-				artikelListe.add(artikel);
-				updateVerfuegbarkeit(artikel);
-			} else {
-				throw new AnzahlIsNichtDefiniertException();
-			}
-		}
+	public void fugeArtikelBeimLesenEin(Artikel artikel) {
+		artikelListe.add(artikel);
 	}
 
 	/**
@@ -92,7 +64,7 @@ public class ArtikelVerwaltung {
 	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
 	 */
 	public void fugeArtikelEin(Artikel artikel) throws ArtikelExistiertBereitsException {
-		if (artikelListe.contains(artikel)) {
+		if (!artikelListe.contains(artikel)) {
 			artikel.setBestand(artikel.getBestand());
 			genertaeArtiekelNr(artikel);
 			artikelListe.add(artikel);

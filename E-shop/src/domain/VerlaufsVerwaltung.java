@@ -1,15 +1,19 @@
 package domain;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
+import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.VerlaufLeerException;
 import entities.Artikel;
 import entities.Nutzer;
 import entities.Verlauf;
+import persistence.FilePersistenceManager;
+import persistence.PersistenceManager;
 
 public class VerlaufsVerwaltung {
 	private LocalDateTime aktuelleDatumZeit = LocalDateTime.now();
@@ -18,6 +22,27 @@ public class VerlaufsVerwaltung {
 
 	private List<Verlauf> verlauflListe = new Vector<>();
 
+	private PersistenceManager pm = new FilePersistenceManager();
+
+	public void liesDaten(String datei) throws IOException, ArtikelExistiertNichtException {
+		pm.openForReading(datei);
+		Verlauf einVerlauf;
+		do {
+			einVerlauf = pm.ladeVerlauf();
+			if (einVerlauf != null) {
+				verlauflListe.add(einVerlauf);
+			}
+		} while (einVerlauf == null);
+		pm.close();
+	}
+	
+	public void schreibeDaten(String datei) throws IOException {
+		pm.openForWriting(datei);
+		for (Verlauf verlauf : verlauflListe) {
+			pm.speichereVerlauf(verlauf);
+		}
+		pm.close();
+	}
 	/**
 	 * 
 	 * Fügt einen neuen Verlauf zur Verlaufsliste hinzu.

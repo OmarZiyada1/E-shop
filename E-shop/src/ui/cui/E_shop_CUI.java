@@ -28,7 +28,7 @@ public class E_shop_CUI {
 	private Mitarbeiter loggedMitarbeiter;
 	private Bestellung aktuelleBestellung;
 
-	public E_shop_CUI(String datei) throws IOException, ArtikelExistiertBereitsException {
+	public E_shop_CUI(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterIDIstBenutztException {
 
 		sh = new E_Shop(datei);
 		// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
@@ -45,6 +45,7 @@ public class E_shop_CUI {
 		System.out.print("\nLogin als Kunde:  'k'");
 		System.out.print("\nRegestrieren als Kunde: 'r'");
 		System.out.print("\nQuit: 'q'");
+		System.out.print(" \nDaten sichern: 's'");
 		System.out.print("\n> ");// Prompt
 		System.out.flush();
 	}
@@ -79,7 +80,7 @@ public class E_shop_CUI {
 //		System.out.print("         \n  Meine Bestellungen:  'b'");
 //		System.out.print("         \n  Zeige Verlauf:  'v'");
 		System.out.print("         \n  Logout:  'g'");
-		// System.out.print(" \n Daten sichern: 's'");
+		//System.out.print(" \n Daten sichern: 's'");
 		System.out.print("           \n  ---------------------");
 		System.out.println("         \n  Beenden:        'q'");
 		System.out.print("> "); // Prompt
@@ -149,6 +150,10 @@ public class E_shop_CUI {
 			} catch (NutzernameOderPasswortFalschException e) {
 				System.err.println(e.getMessage() + "\n");
 			}
+			break;
+			
+		case "s":
+			sh.schreibeKunde();
 			break;
 
 		}
@@ -280,6 +285,7 @@ public class E_shop_CUI {
 			break;
 		case "s":
 			sh.schreibeArtikel();
+			sh.schreibeMitarbeiter();
 			break;
 		case "g":
 			sh.loggeMitarbeiterAus(loggedMitarbeiter);
@@ -397,20 +403,20 @@ public class E_shop_CUI {
 //		case "b":
 //			System.out.println(sh.GibAlleMeineBestellungen(loggedkunde));
 //			break;
-		case "g":
-			sh.loggeKundeAus(loggedkunde);
-			break;
+		
+			
+		
 		}
-
 	}
+	
 
 	public void run() throws ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException,
 			MitarbeiterIDIstBenutztException, KundeIDistbenutztException, NichtGenugArtikelVorhandenException,
 			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertBereitsException {
 		// Variable fÃ¼r Eingaben von der Konsole
-		sh.mitarbeiterEinfügen("Omar", "Ziyada", "oz", "123456");
-		sh.kundenRegistrieren("Sudki", "Koulak", "sk", "12345", "Wartburg", "86", "28201", "Bremen", "DE");
+		//sh.fuegeArtikelEin(loggedMitarbeiter, "sdsd", "sdsww", 3, 3);
 
+		
 
 		String input = "";
 

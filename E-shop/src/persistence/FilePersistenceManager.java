@@ -54,12 +54,13 @@ public class FilePersistenceManager implements PersistenceManager {
 	}
 
 	public Artikel ladeArtikel() throws IOException {
-
-		int artikelId = Integer.parseInt(liesZeile());
-		if (liesZeile() == null) {
-			// keine Daten mehr vorhanden
+		String artikelId_Check = liesZeile();
+		if (artikelId_Check == null) {
+			// keine Daten vorhanden
 			return null;
 		}
+		int artikelId = Integer.parseInt(artikelId_Check);
+
 		String name = liesZeile();
 		String beschreibung = liesZeile();
 		int bestand = Integer.parseInt(liesZeile());
@@ -71,6 +72,7 @@ public class FilePersistenceManager implements PersistenceManager {
 
 		Artikel artikel = new Artikel(artikelId, name, beschreibung, bestand, preis, verfuegbar);
 		return artikel;
+
 	}
 
 	public boolean speichereArtikel(Artikel artikel) throws IOException {
@@ -80,16 +82,22 @@ public class FilePersistenceManager implements PersistenceManager {
 		schreibeZeile(artikel.getBestand() + "");
 		schreibeZeile(artikel.getPreis() + "");
 		if (artikel.isVerfuegbar())
-			schreibeZeile("true");
+			schreibeZeile("t");
 		else
-			schreibeZeile("false");
+			schreibeZeile("f");
 
 		return true;
 	}
 
 	// kunde
 	public Kunde ladeKunde() throws IOException {
-		int kndNr = Integer.parseInt(liesZeile());
+		String kndNr_Check = liesZeile();
+		if (kndNr_Check == null) {
+			// keine Daten vorhanden
+			return null;
+		}
+
+		int kndNr = Integer.parseInt(kndNr_Check);
 		String name = liesZeile();
 		String vorName = liesZeile();
 		String nutzerNr = liesZeile();
@@ -122,7 +130,12 @@ public class FilePersistenceManager implements PersistenceManager {
 
 	// kunde
 	public Mitarbeiter ladeMitarbeiter() throws IOException {
-		int maNr = Integer.parseInt(liesZeile());
+		String maNr_Check = liesZeile();
+		if (maNr_Check == null) {
+			// keine Daten vorhanden
+			return null;
+		}
+		int maNr = Integer.parseInt(maNr_Check);
 		String name = liesZeile();
 		String vorName = liesZeile();
 		String nutzerNr = liesZeile();
@@ -142,23 +155,27 @@ public class FilePersistenceManager implements PersistenceManager {
 
 	// Verlauf
 	public Verlauf ladeVerlauf() throws IOException, ArtikelExistiertNichtException {
+		artVW = new ArtikelVerwaltung();
 		String aktionS = liesZeile();
-		 AKTIONSTYP aktion = AKTIONSTYP.valueOf(aktionS);
-		String nutzerVorname = liesZeile();
-		String artikelName = liesZeile();
-		String formattedDatumZeit = liesZeile();
-		Artikel artikel =artVW.sucheArtikel(artikelName);
-		Nutzer nutzer = null;
-		if(kundVW.sucheKunde(nutzerVorname)!= null) {
-			nutzer =kundVW.sucheKunde(nutzerVorname);
-		}
-		else if (mitarbeiterVW.sucheMitarbeiter(nutzerVorname)!= null) {
-			nutzer =mitarbeiterVW.sucheMitarbeiter(nutzerVorname);
-		}
-		
-		Verlauf verlauf = new Verlauf(aktion,nutzer,artikel,formattedDatumZeit);
-		return verlauf;
+		if (aktionS == null) {
+			System.out.println(aktionS);
+			return null;
+		} else {
+			AKTIONSTYP aktion = AKTIONSTYP.valueOf(aktionS);
+			String nutzerVorname = liesZeile();
+			String artikelName = liesZeile();
+			String formattedDatumZeit = liesZeile();
+			Artikel artikel = artVW.sucheArtikel(artikelName);
 
+			Nutzer nutzer = null;
+			if (kundVW.sucheKunde(nutzerVorname) != null) {
+				nutzer = kundVW.sucheKunde(nutzerVorname);
+			} else if (mitarbeiterVW.sucheMitarbeiter(nutzerVorname) != null) {
+				nutzer = mitarbeiterVW.sucheMitarbeiter(nutzerVorname);
+			}
+			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit);
+			return verlauf;
+		}
 	}
 
 	public boolean speichereVerlauf(Verlauf verlauf) throws IOException {

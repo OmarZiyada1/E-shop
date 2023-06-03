@@ -33,21 +33,21 @@ public class E_Shop {
 	private VerlaufsVerwaltung verlaufVW;
 	private String datei = "";
 
-	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException {
-		
+	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterIDIstBenutztException {
+
 		this.datei = datei;
 		artikelVW = new ArtikelVerwaltung();
-		artikelVW.liesDaten(datei+"_Artikel.txt");
+		artikelVW.liesDaten(datei + "_Artikel.txt");
 		warenKorbVW = new WarenkorbVerwaltung();
 		bestellVW = new BestellungVerwaltung();
 		kundeVW = new KundeVerwaltung();
+		kundeVW.liesDaten(datei+"_Kunde.txt");
 		mitarbeiterVW = new MitarbeiterVerwaltung();
+		mitarbeiterVW.liesDaten(datei+ "_Mitarbeiter.txt");
 		rechnungVW = new RechnungsVerwaltung();
 		verlaufVW = new VerlaufsVerwaltung();
+		// (proplem)verlaufVW.liesDaten(datei + "_Verlauf.txt");
 	}
-	
-	
-	
 
 	// Artikel Methoden
 	public List<Artikel> gibAlleArtikeln() {
@@ -76,7 +76,7 @@ public class E_Shop {
 		return artikel;
 	}
 
-	public Artikel loescheArtikel(Mitarbeiter mitarbeiter,  String name) throws ArtikelExistiertNichtException {
+	public Artikel loescheArtikel(Mitarbeiter mitarbeiter, String name) throws ArtikelExistiertNichtException {
 		Artikel artikel = artikelVW.sucheArtikel(name);
 		artikelVW.artikelloeschen(artikel);
 		verlaufVW.addVerlauf(AKTIONSTYP.LOESCHEN, mitarbeiter, artikel);
@@ -85,13 +85,15 @@ public class E_Shop {
 
 	}
 
-	public Artikel erhoeheArtikelBestand(Mitarbeiter mitarbeiter, String name, int anzahl) throws ArtikelExistiertNichtException {
+	public Artikel erhoeheArtikelBestand(Mitarbeiter mitarbeiter, String name, int anzahl)
+			throws ArtikelExistiertNichtException {
 		Artikel artikel = artikelVW.bestandErhoehen(name, anzahl);
 		verlaufVW.addVerlauf(AKTIONSTYP.ERHOEHEN, mitarbeiter, artikel);
 		return artikel;
 	}
 
-	public Artikel senkenArtikelBestand(Mitarbeiter mitarbeiter,String name, int anzahl) throws ArtikelExistiertNichtException {
+	public Artikel senkenArtikelBestand(Mitarbeiter mitarbeiter, String name, int anzahl)
+			throws ArtikelExistiertNichtException {
 		Artikel artikel = artikelVW.bestandSenken(name, anzahl);
 		verlaufVW.addVerlauf(AKTIONSTYP.SENKEN, mitarbeiter, artikel);
 		return artikel;
@@ -106,10 +108,9 @@ public class E_Shop {
 			}
 		}
 	}
-	
-	
+
 	public void schreibeArtikel() throws IOException {
-		artikelVW.schreibeDaten(datei+"_Artikel.txt");
+		artikelVW.schreibeDaten(datei + "_Artikel.txt");
 	}
 
 	// Kunde Methoden
@@ -128,7 +129,7 @@ public class E_Shop {
 
 	public List<Bestellung> GibAlleMeineBestellungen(Kunde kunde) {
 		return kundeVW.getMeineBestellungen(kunde);
-		
+
 	}
 
 	public void loggeKundeAus(Kunde kunde) {
@@ -137,6 +138,10 @@ public class E_Shop {
 
 	public List<Kunde> gibAlleKunden() {
 		return kundeVW.getList_Kunde();
+	}
+	
+	public void schreibeKunde() throws IOException {
+		kundeVW.schreibeDaten(datei+"_Kunde.txt");
 	}
 	// Mitarbeiter Methoden
 
@@ -167,6 +172,10 @@ public class E_Shop {
 
 	public List<Mitarbeiter> gibAlleMitarbeiter() {
 		return mitarbeiterVW.getList_Mitarbeiter();
+	}
+	
+	public void schreibeMitarbeiter() throws IOException {
+		mitarbeiterVW.schreibeDaten(datei + "_Mitarbeiter.txt");
 	}
 	// Rechnung Methoden
 
@@ -204,11 +213,11 @@ public class E_Shop {
 
 	// Bestellung
 	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException, NichtGenugArtikelVorhandenException {
-		Bestellung best= bestellVW.bestellen(kunde);
+		Bestellung best = bestellVW.bestellen(kunde);
 		for (Artikel artikel : best.getBestellteArtikeln().keySet()) {
 			verlaufVW.addVerlauf(AKTIONSTYP.BESTELLEN, kunde, artikel);
 		}
-		
+
 		return best;
 	}
 
@@ -217,10 +226,14 @@ public class E_Shop {
 	}
 
 	// Verlauf
-	
 
 	public List<Verlauf> gibVerlauflistaus() throws VerlaufLeerException {
 		return verlaufVW.getVerlauflListe();
+	}
+
+	//
+	public void schreibeDaten() throws IOException {
+		verlaufVW.schreibeDaten(datei + "_Verlauf.txt");
 	}
 
 }

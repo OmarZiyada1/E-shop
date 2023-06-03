@@ -2,11 +2,17 @@
 Hose
 Jeans SlimFit
 5
-30
+30.0
 t
 1324
 Hemd
 kurze hemdärmel
 2
-35
+35.0
+t
+1326
+sd
+ses
+3
+3.0
 t

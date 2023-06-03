@@ -1,5 +1,7 @@
 package domain;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -11,6 +13,8 @@ import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.KundeIDistbenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import entities.Kunde;
+import persistence.FilePersistenceManager;
+import persistence.PersistenceManager;
 
 /**
  * 
@@ -19,6 +23,7 @@ import entities.Kunde;
  */
 public class KundeVerwaltung {
 	private List<Kunde> list_Kunde = new Vector<Kunde>(); // list mit alle Kunden Mitarbeiter
+	private PersistenceManager pm = new FilePersistenceManager();
 
 	/**
 	 * 
@@ -37,9 +42,7 @@ public class KundeVerwaltung {
 				throw new KundeIDistbenutztException(kunde, "in Mitarbeiter einfuegen()");
 			}
 		}
-
 		generateKundenId(kunde);
-
 		list_Kunde.add(kunde);
 	}
 
@@ -137,6 +140,28 @@ public class KundeVerwaltung {
 	 */
 	public List<Bestellung> getMeineBestellungen(Kunde kunde) {
 		return kunde.getMeineBestellungen();
+	}
+
+	//
+	public Kunde liesDaten(String datei) throws IOException {
+		pm.openForReading(datei);
+		Kunde einKunde;
+		do {
+			einKunde = pm.ladeKunde();
+			if (einKunde != null) {
+				list_Kunde.add(einKunde);
+			}
+		} while (einKunde != null);
+		pm.close();
+		return einKunde;
+	}
+	
+	public void schreibeDaten(String datei) throws IOException {
+		pm.openForWriting(datei);
+		for (Kunde kunde : list_Kunde) {
+			pm.speichereKunde(kunde);
+		}
+		pm.close();
 	}
 
 }

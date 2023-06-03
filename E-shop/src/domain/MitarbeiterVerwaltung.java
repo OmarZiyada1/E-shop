@@ -1,13 +1,18 @@
 package domain;
 
+import java.io.IOException;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.MitarbeiterIDIstBenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
-import entities.Kunde;
+import entities.Artikel;
 import entities.Mitarbeiter;
+import persistence.FilePersistenceManager;
+import persistence.PersistenceManager;
 
 /*
 *Diese Klasse verwaltet Mitarbeiterobjekte und bietet Funktionen zur
@@ -16,7 +21,7 @@ import entities.Mitarbeiter;
 public class MitarbeiterVerwaltung {
 
 	public List<Mitarbeiter> list_Mitarbeiter = new Vector<Mitarbeiter>(); // list mit alle regestrierte Mitarbeiter
-
+	private PersistenceManager pm = new FilePersistenceManager();
 	/*
 	 * Gibt die Liste der Mitarbeiter zurück.*
 	 * 
@@ -25,7 +30,37 @@ public class MitarbeiterVerwaltung {
 	public List<Mitarbeiter> getList_Mitarbeiter() {
 		return list_Mitarbeiter;
 	}
+	
+	
+	public void liesDaten(String datei) throws IOException, ArtikelExistiertBereitsException, MitarbeiterIDIstBenutztException {
+		pm.openForReading(datei);
+		Mitarbeiter einMitarbeiter;
+		do {
+			einMitarbeiter = pm.ladeMitarbeiter();
+			if (einMitarbeiter != null) {
+				//System.out.println(einArtikel);
+				list_Mitarbeiter.add(einMitarbeiter);
+			}
+		} while (einMitarbeiter != null);
+		pm.close();
+	}
+	
+	
+	
+	
+	public void schreibeDaten(String datei) throws IOException {
+		pm.openForWriting(datei);
+		for (Mitarbeiter mitarbeiter : list_Mitarbeiter) {
+		pm.speichereMitarbeiter(mitarbeiter);
+	}
+		pm.close();
+	}
 
+	
+	
+	
+	
+	
 	/**
 	 * Fügt einen neuen Mitarbeiter zur Liste hinzu.*
 	 * 
