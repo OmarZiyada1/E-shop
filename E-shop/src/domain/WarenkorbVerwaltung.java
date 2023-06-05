@@ -26,7 +26,7 @@ public class WarenkorbVerwaltung {
 	 */
 	public void fuegeArtikelInKorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException {
 		int aktuelleMengeInWarenKorb = 0;
-
+		System.out.println("gesucht: "+ kunde.getKundeWarenkorb());
 		if (kunde.getKundeWarenkorb().getKorbArtikelListe().containsKey(art)) {
 			aktuelleMengeInWarenKorb = kunde.getKundeWarenkorb().getKorbArtikelListe().get(art);
 

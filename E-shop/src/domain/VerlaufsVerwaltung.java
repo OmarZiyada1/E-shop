@@ -20,25 +20,24 @@ public class VerlaufsVerwaltung {
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.GERMANY);
 	private String formattedDatumZeit;
 
-	private List<Verlauf> verlauflListe = new Vector<>();
+	private List<Verlauf> verlaufListe = new Vector<>();
 
 	private PersistenceManager pm = new FilePersistenceManager();
 
-	public void liesDaten(String datei) throws IOException, ArtikelExistiertNichtException {
+	public void liesDaten(String datei , ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt) throws IOException, ArtikelExistiertNichtException {
 		pm.openForReading(datei);
-		Verlauf einVerlauf;
-		do {
-			einVerlauf = pm.ladeVerlauf();
-			if (einVerlauf != null) {
-				verlauflListe.add(einVerlauf);
-			}
-		} while (einVerlauf == null);
-		pm.close();
+	    Verlauf einVerlauf;
+	    einVerlauf = pm.ladeVerlauf(art, kd, mt);
+	    while (einVerlauf != null) {
+	    	verlaufListe.add(einVerlauf);
+	        einVerlauf = pm.ladeVerlauf(art, kd, mt);
+	    }
+	    pm.close();
 	}
 	
 	public void schreibeDaten(String datei) throws IOException {
 		pm.openForWriting(datei);
-		for (Verlauf verlauf : verlauflListe) {
+		for (Verlauf verlauf : verlaufListe) {
 			pm.speichereVerlauf(verlauf);
 		}
 		pm.close();
@@ -55,7 +54,7 @@ public class VerlaufsVerwaltung {
 		updateTime();
 		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
 		Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit);
-		verlauflListe.add(verlauf);
+		verlaufListe.add(verlauf);
 	}
 
 	/**
@@ -66,10 +65,10 @@ public class VerlaufsVerwaltung {
 	 * @throws VerlaufLeerException wenn die Verlaufsliste leer ist
 	 */
 	public List<Verlauf> getVerlauflListe() throws VerlaufLeerException {
-		if (verlauflListe.isEmpty()) {
+		if (verlaufListe.isEmpty()) {
 			throw new VerlaufLeerException();
 		} else {
-			return verlauflListe;
+			return verlaufListe;
 		}
 
 	}

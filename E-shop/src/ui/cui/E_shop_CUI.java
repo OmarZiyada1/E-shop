@@ -10,8 +10,8 @@ import domain.E_Shop;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
-import domain.exceptions.KundeIDistbenutztException;
-import domain.exceptions.MitarbeiterIDIstBenutztException;
+import domain.exceptions.KundeUsernameIstbenutztException;
+import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import domain.exceptions.VerlaufLeerException;
@@ -28,7 +28,7 @@ public class E_shop_CUI {
 	private Mitarbeiter loggedMitarbeiter;
 	private Bestellung aktuelleBestellung;
 
-	public E_shop_CUI(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterIDIstBenutztException {
+	public E_shop_CUI(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException {
 
 		sh = new E_Shop(datei);
 		// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
@@ -122,8 +122,9 @@ public class E_shop_CUI {
 			land = liesEingabe();
 			try {
 				sh.kundenRegistrieren(name, vorname, nutzerName, passwort, strasse, hNr, plz, ort, land);
+				sh.schreibeKunde();
 				System.out.println("\nSie Haben Sich erfolgreich regestriert. Sie Können Sich jetzt anmelden\n");
-			} catch (KundeIDistbenutztException e) {
+			} catch (KundeUsernameIstbenutztException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
 			break;
@@ -152,14 +153,14 @@ public class E_shop_CUI {
 			}
 			break;
 			
-		case "s":
-			sh.schreibeKunde();
-			break;
+//		case "s":
+//			sh.schreibeKunde();
+//			break;
 
 		}
 	}
 
-	private void verarbeiteEingabe(String line)
+	private void verarbeiteMitarbeiterEingabe(String line)
 			throws IOException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException, VerlaufLeerException, ArtikelExistiertBereitsException {
 		boolean verfügbarkeit;
 		int artikelID;
@@ -172,7 +173,7 @@ public class E_shop_CUI {
 		String mitarbeiterNameVorname;
 		String mitarbeiterNutzername;
 		String mitarbeiterPasswort;
-		Artikel gesuchteArtikel = null;
+		Artikel gesuchteArtikel=null ;
 		List<Artikel> artikelListe;
 
 		// Eingabe bearbeiten:
@@ -209,7 +210,7 @@ public class E_shop_CUI {
 			try {
 				gesuchteArtikel = sh.fuegeArtikelEin(loggedMitarbeiter, artikelName, beschreibung, bestand, preis);
 				System.out.println("\nEinfügen ok\n");
-			} catch (AnzahlIsNichtDefiniertException e) {
+			} catch (ArtikelExistiertBereitsException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
 
@@ -236,7 +237,7 @@ public class E_shop_CUI {
 				sh.regestiereNeueMitarbeiter(mitarbeiterName, mitarbeiterNameVorname, mitarbeiterNutzername,
 						mitarbeiterPasswort);
 				System.out.println("\nNeue Mitarbeiter regestrierung ok\n");
-			} catch (MitarbeiterIDIstBenutztException e) {
+			} catch (MitarbeiterUsernameIstBenutztException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
 			break;
@@ -286,6 +287,7 @@ public class E_shop_CUI {
 		case "s":
 			sh.schreibeArtikel();
 			sh.schreibeMitarbeiter();
+			sh.schreibeVerlauf();
 			break;
 		case "g":
 			sh.loggeMitarbeiterAus(loggedMitarbeiter);
@@ -384,6 +386,8 @@ public class E_shop_CUI {
 			try {
 				aktuelleBestellung = sh.bestellen(loggedkunde);
 				System.out.println("\n" + sh.erstelleRechnung(aktuelleBestellung) + "\n");
+				sh.schreibeArtikel();
+				sh.schreibeVerlauf();
 				sh.leereWarenkorb(loggedkunde);
 
 			} catch (WarenkorbLeerException e) {
@@ -411,10 +415,10 @@ public class E_shop_CUI {
 	
 
 	public void run() throws ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException,
-			MitarbeiterIDIstBenutztException, KundeIDistbenutztException, NichtGenugArtikelVorhandenException,
+			MitarbeiterUsernameIstBenutztException, KundeUsernameIstbenutztException, NichtGenugArtikelVorhandenException,
 			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertBereitsException {
 		// Variable fÃ¼r Eingaben von der Konsole
-		//sh.fuegeArtikelEin(loggedMitarbeiter, "sdsd", "sdsww", 3, 3);
+		
 
 		
 
@@ -436,7 +440,7 @@ public class E_shop_CUI {
 					gibMitarbeiterMenueAus();
 					try {
 						input = liesEingabe().trim();
-						verarbeiteEingabe(input);
+						verarbeiteMitarbeiterEingabe(input);
 						if (input.equals("g")) {
 							sh.loggeMitarbeiterAus(loggedMitarbeiter);
 
@@ -473,8 +477,8 @@ public class E_shop_CUI {
 	}
 
 	public static void main(String[] args)
-			throws IOException, MitarbeiterIDIstBenutztException, ArtikelExistiertNichtException,
-			AnzahlIsNichtDefiniertException, KundeIDistbenutztException, NichtGenugArtikelVorhandenException,
+			throws IOException, MitarbeiterUsernameIstBenutztException, ArtikelExistiertNichtException,
+			AnzahlIsNichtDefiniertException, KundeUsernameIstbenutztException, NichtGenugArtikelVorhandenException,
 			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertBereitsException {
 		E_shop_CUI cui;
 		try {

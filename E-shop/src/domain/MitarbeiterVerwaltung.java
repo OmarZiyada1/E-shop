@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Vector;
 
 import domain.exceptions.ArtikelExistiertBereitsException;
-import domain.exceptions.MitarbeiterIDIstBenutztException;
+import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import entities.Artikel;
 import entities.Mitarbeiter;
@@ -22,6 +22,7 @@ public class MitarbeiterVerwaltung {
 
 	public List<Mitarbeiter> list_Mitarbeiter = new Vector<Mitarbeiter>(); // list mit alle regestrierte Mitarbeiter
 	private PersistenceManager pm = new FilePersistenceManager();
+
 	/*
 	 * Gibt die Liste der Mitarbeiter zurück.*
 	 * 
@@ -30,51 +31,42 @@ public class MitarbeiterVerwaltung {
 	public List<Mitarbeiter> getList_Mitarbeiter() {
 		return list_Mitarbeiter;
 	}
-	
-	
-	public void liesDaten(String datei) throws IOException, ArtikelExistiertBereitsException, MitarbeiterIDIstBenutztException {
+
+	public Mitarbeiter liesDaten(String datei)
+			throws IOException, ArtikelExistiertBereitsException, MitarbeiterUsernameIstBenutztException {
 		pm.openForReading(datei);
 		Mitarbeiter einMitarbeiter;
-		do {
+		einMitarbeiter = pm.ladeMitarbeiter();
+		while (einMitarbeiter != null) {
+			list_Mitarbeiter.add(einMitarbeiter);
 			einMitarbeiter = pm.ladeMitarbeiter();
-			if (einMitarbeiter != null) {
-				//System.out.println(einArtikel);
-				list_Mitarbeiter.add(einMitarbeiter);
-			}
-		} while (einMitarbeiter != null);
+		}
 		pm.close();
+		return einMitarbeiter;
 	}
-	
-	
-	
-	
+
 	public void schreibeDaten(String datei) throws IOException {
 		pm.openForWriting(datei);
 		for (Mitarbeiter mitarbeiter : list_Mitarbeiter) {
-		pm.speichereMitarbeiter(mitarbeiter);
-	}
+			pm.speichereMitarbeiter(mitarbeiter);
+		}
 		pm.close();
 	}
 
-	
-	
-	
-	
-	
 	/**
 	 * Fügt einen neuen Mitarbeiter zur Liste hinzu.*
 	 * 
 	 * @param mitarbeiter Der hinzuzufügende Mitarbeiter.
-	 * @throws MitarbeiterIDIstBenutztException Wenn die Mitarbeiter bereits
-	 *                                          verwendet wird.
+	 * @throws MitarbeiterUsernameIstBenutztException Wenn die Mitarbeiter bereits
+	 *                                                verwendet wird.
 	 */
-	public void fuegeMitarbeiterEin(Mitarbeiter mitarbeiter) throws MitarbeiterIDIstBenutztException {
+	public void fuegeMitarbeiterEin(Mitarbeiter mitarbeiter) throws MitarbeiterUsernameIstBenutztException {
 		Iterator<Mitarbeiter> iter = list_Mitarbeiter.iterator();
 
 		while (iter.hasNext()) {
 			Mitarbeiter ma = iter.next();
 			if (ma.getNutzerName().equals(mitarbeiter.getNutzerName()) || ma.getMaId() == mitarbeiter.getMaId()) {
-				throw new MitarbeiterIDIstBenutztException(mitarbeiter, "in Mitarbeiter einfuegen()");
+				throw new MitarbeiterUsernameIstBenutztException(mitarbeiter, "");
 			}
 		}
 
@@ -133,14 +125,14 @@ public class MitarbeiterVerwaltung {
 		return mitarbeiter;
 
 	}
-	
-	
+
 	public Mitarbeiter sucheMitarbeiter(String nutzerName) {
 		Mitarbeiter suchMitarbeiter = null;
 		boolean mitarbeiterGefunden = false;
 
 		if (list_Mitarbeiter.isEmpty()) {
-			System.out.println("Exceptoin Mitarbeiter Exsitiert nicht ");
+			// Exception to do
+			return null;
 		} else {
 			Iterator<Mitarbeiter> iter = list_Mitarbeiter.iterator();
 			while (iter.hasNext()) {
@@ -153,13 +145,12 @@ public class MitarbeiterVerwaltung {
 			}
 		}
 		if (!mitarbeiterGefunden) {
-			System.out.println("Exceptoin Kunde Exsitiert nicht ");
+			// Exception to do
+			return null;
 		}
 
 		return suchMitarbeiter;
 	}
-	
-	
 
 	public void mitarbeiterAusloggen(Mitarbeiter mitarbeiter) {
 
@@ -175,12 +166,12 @@ public class MitarbeiterVerwaltung {
 	 * @param vorName    Der Vorname des Mitarbeiters.
 	 * @param nutzerName Der Nutzername des Mitarbeiters.
 	 * @param passwort   Das Passwort des Mitarbeiters.
-	 * @throws MitarbeiterIDIstBenutztException Wenn die Mitarbeiter-ID bereits
-	 *                                          verwendet wird.
+	 * @throws MitarbeiterUsernameIstBenutztException Wenn die Mitarbeiter-ID
+	 *                                                bereits verwendet wird.
 	 */
 
 	public void neueMitarbeiterRegistieren(String name, String vorName, String nutzerName, String passwort)
-			throws MitarbeiterIDIstBenutztException {
+			throws MitarbeiterUsernameIstBenutztException {
 		Mitarbeiter mitarbeiter = new Mitarbeiter(name, vorName, nutzerName, passwort);
 		fuegeMitarbeiterEin(mitarbeiter);
 	}

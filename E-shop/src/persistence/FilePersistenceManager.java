@@ -1,6 +1,7 @@
 package persistence;
 
 import java.io.BufferedReader;
+
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,9 +26,7 @@ public class FilePersistenceManager implements PersistenceManager {
 
 	private BufferedReader reader = null;
 	private PrintWriter writer = null;
-	private ArtikelVerwaltung artVW;
-	private KundeVerwaltung kundVW;
-	private MitarbeiterVerwaltung mitarbeiterVW;
+
 
 	public void openForReading(String datei) throws FileNotFoundException {
 		reader = new BufferedReader(new FileReader(datei));
@@ -154,24 +153,24 @@ public class FilePersistenceManager implements PersistenceManager {
 	}
 
 	// Verlauf
-	public Verlauf ladeVerlauf() throws IOException, ArtikelExistiertNichtException {
-		artVW = new ArtikelVerwaltung();
+	public Verlauf ladeVerlauf(ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt) throws IOException, ArtikelExistiertNichtException {
 		String aktionS = liesZeile();
 		if (aktionS == null) {
-			System.out.println(aktionS);
 			return null;
 		} else {
 			AKTIONSTYP aktion = AKTIONSTYP.valueOf(aktionS);
-			String nutzerVorname = liesZeile();
+			String nutzerName = liesZeile();
 			String artikelName = liesZeile();
 			String formattedDatumZeit = liesZeile();
-			Artikel artikel = artVW.sucheArtikel(artikelName);
+			Artikel artikel = art.sucheArtikel(artikelName);
 
 			Nutzer nutzer = null;
-			if (kundVW.sucheKunde(nutzerVorname) != null) {
-				nutzer = kundVW.sucheKunde(nutzerVorname);
-			} else if (mitarbeiterVW.sucheMitarbeiter(nutzerVorname) != null) {
-				nutzer = mitarbeiterVW.sucheMitarbeiter(nutzerVorname);
+			if (kd.sucheKunde(nutzerName) != null) {
+				nutzer = kd.sucheKunde(nutzerName);
+			} 
+			
+			if (mt.sucheMitarbeiter(nutzerName) != null) {
+				nutzer = mt.sucheMitarbeiter(nutzerName);
 			}
 			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit);
 			return verlauf;
@@ -183,7 +182,6 @@ public class FilePersistenceManager implements PersistenceManager {
 		schreibeZeile(verlauf.getNutzer().getNutzerName());
 		schreibeZeile(verlauf.getArtikel().getName());
 		schreibeZeile(verlauf.getFormattedDatumZeit());
-		schreibeZeile(verlauf.getArtikel().getBestand() + "");
 
 		return true;
 	}

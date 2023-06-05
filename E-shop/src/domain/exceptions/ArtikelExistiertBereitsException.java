@@ -12,8 +12,7 @@ public class ArtikelExistiertBereitsException extends Exception {
 	public ArtikelExistiertBereitsException(Artikel artikel , String zusatzMsg) {
 		// TODO Auto-generated constructor stub
 
-		super("Artikel mit Titel " + artikel.getName() + " und Nummer " + artikel.getArtikelId()
-		+ " existiert bereits" + zusatzMsg);
+		super("Artikel mit Name '" + artikel.getName() + "'" + " existiert bereits" + zusatzMsg);
 		this.artikel = artikel;
 	}
 

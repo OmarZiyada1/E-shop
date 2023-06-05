@@ -10,7 +10,7 @@ import java.util.Vector;
 import entities.Artikel;
 import entities.Bestellung;
 import domain.exceptions.ArtikelExistiertNichtException;
-import domain.exceptions.KundeIDistbenutztException;
+import domain.exceptions.KundeUsernameIstbenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import entities.Kunde;
 import persistence.FilePersistenceManager;
@@ -30,16 +30,17 @@ public class KundeVerwaltung {
 	 * Registriert einen neuen Kunden.*
 	 * 
 	 * @param kunde Der zu registrierende Kunde.
-	 * @throws KundeIDistbenutztException Wenn die Kunden-ID bereits verwendet wird.
+	 * @throws KundeUsernameIstbenutztException Wenn die Kunden-ID bereits verwendet
+	 *                                          wird.
 	 */
-	public void kundeRegistieren(Kunde kunde) throws KundeIDistbenutztException {
+	public void kundeRegistieren(Kunde kunde) throws KundeUsernameIstbenutztException {
 
 		Iterator<Kunde> iter = list_Kunde.iterator();
 
 		while (iter.hasNext()) {
 			Kunde ku = iter.next();
 			if (ku.getNutzerName().equals(kunde.getNutzerName()) || ku.getKndNr() == kunde.getKndNr()) {
-				throw new KundeIDistbenutztException(kunde, "in Mitarbeiter einfuegen()");
+				throw new KundeUsernameIstbenutztException(kunde, "in Mitarbeiter einfuegen()");
 			}
 		}
 		generateKundenId(kunde);
@@ -98,7 +99,8 @@ public class KundeVerwaltung {
 		boolean kundeGefunden = false;
 
 		if (list_Kunde.isEmpty()) {
-			System.out.println("Exceptoin Kunde Exsitiert nicht ");
+			// Exception to do
+			return null;
 		} else {
 			Iterator<Kunde> iter = list_Kunde.iterator();
 			while (iter.hasNext()) {
@@ -111,7 +113,8 @@ public class KundeVerwaltung {
 			}
 		}
 		if (!kundeGefunden) {
-			System.out.println("Exceptoin Kunde Exsitiert nicht ");
+			// Exception to do
+			return null;
 		}
 
 		return suchKunde;
@@ -146,16 +149,15 @@ public class KundeVerwaltung {
 	public Kunde liesDaten(String datei) throws IOException {
 		pm.openForReading(datei);
 		Kunde einKunde;
-		do {
+		einKunde = pm.ladeKunde();
+		while (einKunde != null) {
+			list_Kunde.add(einKunde);
 			einKunde = pm.ladeKunde();
-			if (einKunde != null) {
-				list_Kunde.add(einKunde);
-			}
-		} while (einKunde != null);
+		}
 		pm.close();
 		return einKunde;
 	}
-	
+
 	public void schreibeDaten(String datei) throws IOException {
 		pm.openForWriting(datei);
 		for (Kunde kunde : list_Kunde) {

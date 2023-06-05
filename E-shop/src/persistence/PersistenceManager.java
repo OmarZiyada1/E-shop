@@ -2,6 +2,9 @@ package persistence;
 
 import java.io.IOException;
 
+import domain.ArtikelVerwaltung;
+import domain.KundeVerwaltung;
+import domain.MitarbeiterVerwaltung;
 import domain.exceptions.ArtikelExistiertNichtException;
 import entities.Artikel;
 import entities.Kunde;
@@ -27,7 +30,7 @@ public interface PersistenceManager {
 	public Mitarbeiter ladeMitarbeiter() throws IOException;
 	public boolean speichereMitarbeiter(Mitarbeiter mitarbeiter) throws IOException;
 	
-	public Verlauf ladeVerlauf() throws IOException, ArtikelExistiertNichtException;
+	public Verlauf ladeVerlauf(ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt) throws IOException, ArtikelExistiertNichtException;
 	public boolean speichereVerlauf(Verlauf verlauf) throws IOException;
 	
 

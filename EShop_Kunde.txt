@@ -2,9 +2,9 @@
 Sudki
 Koulak
 sk
-12345
-Wartburg
-86
-28201
-Bremen
-DE
+1
+sd
+sd
+sd
+sd
+sd

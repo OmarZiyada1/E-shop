@@ -5,8 +5,8 @@ import java.util.List;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
-import domain.exceptions.KundeIDistbenutztException;
-import domain.exceptions.MitarbeiterIDIstBenutztException;
+import domain.exceptions.KundeUsernameIstbenutztException;
+import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import domain.exceptions.VerlaufLeerException;
@@ -33,7 +33,7 @@ public class E_Shop {
 	private VerlaufsVerwaltung verlaufVW;
 	private String datei = "";
 
-	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterIDIstBenutztException {
+	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException {
 
 		this.datei = datei;
 		artikelVW = new ArtikelVerwaltung();
@@ -46,7 +46,7 @@ public class E_Shop {
 		mitarbeiterVW.liesDaten(datei+ "_Mitarbeiter.txt");
 		rechnungVW = new RechnungsVerwaltung();
 		verlaufVW = new VerlaufsVerwaltung();
-		// (proplem)verlaufVW.liesDaten(datei + "_Verlauf.txt");
+		verlaufVW.liesDaten(datei + "_Verlauf.txt", artikelVW, kundeVW, mitarbeiterVW);
 	}
 
 	// Artikel Methoden
@@ -115,7 +115,7 @@ public class E_Shop {
 
 	// Kunde Methoden
 	public void kundenRegistrieren(String name, String vorname, String nutzerNr, String passwort, String strasse,
-			String hNr, String plz, String ort, String land) throws KundeIDistbenutztException {
+			String hNr, String plz, String ort, String land) throws KundeUsernameIstbenutztException {
 		Adresse adresse = new Adresse(strasse, hNr, plz, ort, land);
 		Kunde kunde = new Kunde(name, vorname, nutzerNr, passwort, adresse);
 		kundeVW.kundeRegistieren(kunde);
@@ -146,7 +146,7 @@ public class E_Shop {
 	// Mitarbeiter Methoden
 
 	public void mitarbeiterEinfügen(String name, String vorName, String nutzerName, String passwort)
-			throws MitarbeiterIDIstBenutztException {
+			throws MitarbeiterUsernameIstBenutztException {
 
 		Mitarbeiter mitarbeiter = new Mitarbeiter(name, vorName, nutzerName, passwort);
 		mitarbeiterVW.fuegeMitarbeiterEin(mitarbeiter);
@@ -160,7 +160,7 @@ public class E_Shop {
 	}
 
 	public void regestiereNeueMitarbeiter(String name, String vorName, String nutzerName, String passwort)
-			throws MitarbeiterIDIstBenutztException {
+			throws MitarbeiterUsernameIstBenutztException {
 
 		mitarbeiterVW.neueMitarbeiterRegistieren(name, vorName, nutzerName, passwort);
 
@@ -232,7 +232,7 @@ public class E_Shop {
 	}
 
 	//
-	public void schreibeDaten() throws IOException {
+	public void schreibeVerlauf() throws IOException {
 		verlaufVW.schreibeDaten(datei + "_Verlauf.txt");
 	}
 

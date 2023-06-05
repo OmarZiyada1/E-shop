@@ -9,7 +9,9 @@ import persistence.PersistenceManager;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
+import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import entities.Artikel;
+import entities.Mitarbeiter;
 
 /**
  * 
@@ -23,14 +25,13 @@ public class ArtikelVerwaltung {
 
 	public void liesDaten(String datei) throws IOException, ArtikelExistiertBereitsException {
 		pm.openForReading(datei);
-		Artikel einArtikel;
-		do {
-			einArtikel = pm.ladeArtikel();
-			if (einArtikel != null) {
-				fugeArtikelBeimLesenEin(einArtikel);
-			}
-		} while (einArtikel != null);
-		pm.close();
+	    Artikel einArtikel;
+	    einArtikel = pm.ladeArtikel();
+	    while (einArtikel != null) {
+	    	fugeArtikelEin(einArtikel);
+	        einArtikel = pm.ladeArtikel();
+	    }
+	    pm.close();
 	}
 
 	public void schreibeDaten(String datei) throws IOException {
@@ -49,10 +50,8 @@ public class ArtikelVerwaltung {
 	 * @param anzahl  Die Anzahl des Artikels.
 	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
 	 */
-
-	public void fugeArtikelBeimLesenEin(Artikel artikel) {
-		artikelListe.add(artikel);
-	}
+	
+	
 
 	/**
 	 * 
@@ -64,16 +63,17 @@ public class ArtikelVerwaltung {
 	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
 	 */
 	public void fugeArtikelEin(Artikel artikel) throws ArtikelExistiertBereitsException {
-		if (!artikelListe.contains(artikel)) {
-			artikel.setBestand(artikel.getBestand());
-			genertaeArtiekelNr(artikel);
-			artikelListe.add(artikel);
-			updateVerfuegbarkeit(artikel);
-		}
+		Iterator<Artikel> iter = artikelListe.iterator();
 
-		else {
-			throw new ArtikelExistiertBereitsException(artikel, "");
+		while (iter.hasNext()) {
+			Artikel art = iter.next();
+			if (art.getName().equals(artikel.getName()) ) {
+				throw new ArtikelExistiertBereitsException(artikel, ". Sie können sonst die Artikel Bestand ändern ");
+			}
 		}
+		genertaeArtiekelNr(artikel);
+		artikelListe.add(artikel);
+		updateVerfuegbarkeit(artikel);
 	}
 
 	/**
