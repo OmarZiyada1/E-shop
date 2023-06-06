@@ -19,7 +19,7 @@ import entities.Mitarbeiter;
  */
 public class ArtikelVerwaltung {
 
-	private List<Artikel> artikelListe = new Vector<>(); // list mit alle eingefügte Artikeln
+	private List<Artikel> artikelListe = new Vector<>(); // list mit alle eingefï¿½gte Artikeln
 
 	private PersistenceManager pm = new FilePersistenceManager();
 
@@ -44,9 +44,9 @@ public class ArtikelVerwaltung {
 
 	/**
 	 * 
-	 * Fügt einen Artikel mit der angegebenen Anzahl hinzu.*
+	 * Fï¿½gt einen Artikel mit der angegebenen Anzahl hinzu.*
 	 * 
-	 * @param artikel Der hinzuzufügende Artikel.
+	 * @param artikel Der hinzuzufï¿½gende Artikel.
 	 * @param anzahl  Die Anzahl des Artikels.
 	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
 	 */
@@ -55,11 +55,11 @@ public class ArtikelVerwaltung {
 
 	/**
 	 * 
-	 * Fügt einen Artikel ohne Angabe der Anzahl hinzu. Artikel kriegt bei einfügen
+	 * Fï¿½gt einen Artikel ohne Angabe der Anzahl hinzu. Artikel kriegt bei einfï¿½gen
 	 * Bestand* und man braucht nicht immer anzahl einzugeben bei der eingabe
 	 * addiert es sich mit dem Bestand
 	 * 
-	 * @param artikel Der hinzuzufügende Artikel.
+	 * @param artikel Der hinzuzufï¿½gende Artikel.
 	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
 	 */
 	public void fugeArtikelEin(Artikel artikel) throws ArtikelExistiertBereitsException {
@@ -68,7 +68,7 @@ public class ArtikelVerwaltung {
 		while (iter.hasNext()) {
 			Artikel art = iter.next();
 			if (art.getName().equals(artikel.getName()) ) {
-				throw new ArtikelExistiertBereitsException(artikel, ". Sie können sonst die Artikel Bestand ändern ");
+				throw new ArtikelExistiertBereitsException(artikel, ". Sie kï¿½nnen sonst die Artikel Bestand ï¿½ndern ");
 			}
 		}
 		genertaeArtiekelNr(artikel);
@@ -78,9 +78,9 @@ public class ArtikelVerwaltung {
 
 	/**
 	 * 
-	 * Generiert eine eindeutige Artikel-ID für den übergebenen Artikel.*
+	 * Generiert eine eindeutige Artikel-ID fï¿½r den ï¿½bergebenen Artikel.*
 	 * 
-	 * @param artikel Der Artikel, für den eine ID generiert werden soll.
+	 * @param artikel Der Artikel, fï¿½r den eine ID generiert werden soll.
 	 */
 
 	private void genertaeArtiekelNr(Artikel artikel) {
@@ -94,11 +94,11 @@ public class ArtikelVerwaltung {
 
 	/**
 	 * 
-	 * Erhöht den Bestand des Artikels mit dem angegebenen Namen um die angegebene
+	 * Erhï¿½ht den Bestand des Artikels mit dem angegebenen Namen um die angegebene
 	 * Anzahl.*
 	 * 
 	 * @param name   Der Name des Artikels.
-	 * @param anzahl Die Anzahl, um die der Bestand erhöht werden soll.
+	 * @param anzahl Die Anzahl, um die der Bestand erhï¿½ht werden soll.
 	 * @throws ArtikelExistiertNichtException
 	 */
 
@@ -143,9 +143,9 @@ public class ArtikelVerwaltung {
 
 	/**
 	 * 
-	 * Löscht den angegebenen Artikel.*
+	 * Lï¿½scht den angegebenen Artikel.*
 	 * 
-	 * @param artikel Der zu löschende Artikel.
+	 * @param artikel Der zu lï¿½schende Artikel.
 	 * @throws ArtikelExistiertNichtException Wenn der Artikel nicht existiert.
 	 */
 
@@ -194,14 +194,14 @@ public class ArtikelVerwaltung {
 
 	/**
 	 * 
-	 * Aktualisiert die Verfügbarkeit des angegebenen Artikels.*
+	 * Aktualisiert die Verfï¿½gbarkeit des angegebenen Artikels.*
 	 * 
-	 * @param artikel Der Artikel, dessen Verfügbarkeit aktualisiert werden soll.
-	 * @return true, wenn der Artikel verfügbar ist, andernfalls false.
+	 * @param artikel Der Artikel, dessen Verfï¿½gbarkeit aktualisiert werden soll.
+	 * @return true, wenn der Artikel verfï¿½gbar ist, andernfalls false.
 	 */
 	public boolean updateVerfuegbarkeit(Artikel artikel) {
 		if (artikel.getBestand() == 0) {
-			artikel.setVerfügbar(false);
+			artikel.setVerfuegbar(false);
 			return false;
 		} else {
 			return true;

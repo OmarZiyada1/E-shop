@@ -110,6 +110,7 @@ public class FilePersistenceManager implements PersistenceManager {
 		String land = liesZeile();
 		Adresse adresse = new Adresse(strassenName, hausNr, plz, ort, land);
 		Kunde kunde = new Kunde(kndNr, name, vorName, nutzerNr, password, adresse);
+		
 		return kunde;
 	}
 
@@ -124,6 +125,7 @@ public class FilePersistenceManager implements PersistenceManager {
 		schreibeZeile(kunde.getAdresse().getPlz());
 		schreibeZeile(kunde.getAdresse().getOrt());
 		schreibeZeile(kunde.getAdresse().getLand());
+		
 		return true;
 	}
 
@@ -169,7 +171,7 @@ public class FilePersistenceManager implements PersistenceManager {
 				nutzer = kd.sucheKunde(nutzerName);
 			} 
 			
-			if (mt.sucheMitarbeiter(nutzerName) != null) {
+			else if (mt.sucheMitarbeiter(nutzerName) != null) {
 				nutzer = mt.sucheMitarbeiter(nutzerName);
 			}
 			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit);

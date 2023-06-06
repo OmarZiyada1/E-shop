@@ -16,17 +16,16 @@ public class WarenkorbVerwaltung {
 
 	/**
 	 * 
-	 * Fügt einen Artikel mit der angegebenen Anzahl zum Warenkorb des Kunden hinzu.
+	 * Fï¿½gt einen Artikel mit der angegebenen Anzahl zum Warenkorb des Kunden hinzu.
 	 * 
-	 * @param kunde   Der Kunde, dem der Artikel hinzugefügt wird.
-	 * @param artikel Der Artikel, der hinzugefügt wird.
+	 * @param kunde   Der Kunde, dem der Artikel hinzugefï¿½gt wird.
+	 * @param artikel Der Artikel, der hinzugefï¿½gt wird.
 	 * @param anzahl  Die Anzahl des Artikels.
-	 * @throws NichtGenugArtikelVorhandenException Wenn nicht genügend Artikel
+	 * @throws NichtGenugArtikelVorhandenException Wenn nicht genï¿½gend Artikel
 	 *                                             vorhanden sind.
 	 */
 	public void fuegeArtikelInKorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException {
 		int aktuelleMengeInWarenKorb = 0;
-		System.out.println("gesucht: "+ kunde.getKundeWarenkorb());
 		if (kunde.getKundeWarenkorb().getKorbArtikelListe().containsKey(art)) {
 			aktuelleMengeInWarenKorb = kunde.getKundeWarenkorb().getKorbArtikelListe().get(art);
 
@@ -75,7 +74,7 @@ public class WarenkorbVerwaltung {
 
 	/**
 	 * 
-	 * Entfernt einen Artikel vollständig aus dem Warenkorb des Kunden.
+	 * Entfernt einen Artikel vollstï¿½ndig aus dem Warenkorb des Kunden.
 	 * 
 	 * @param kunde Der Kunde, dem der Artikel entfernt wird.
 	 * @param art   Der Artikel, der entfernt wird.
@@ -119,9 +118,9 @@ public class WarenkorbVerwaltung {
 
 	/**
 	 * 
-	 * Gibt den Warenkorb des Kunden zurück.
+	 * Gibt den Warenkorb des Kunden zurï¿½ck.
 	 * 
-	 * @param kunde Der Kunde, dessen Warenkorb zurückgegeben wird.
+	 * @param kunde Der Kunde, dessen Warenkorb zurï¿½ckgegeben wird.
 	 * @return Der Warenkorb des Kunden.
 	 */
 	public Warenkorb getWarenkorb(Kunde kunde) {

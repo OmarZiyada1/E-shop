@@ -1,8 +1,8 @@
 package entities;
 
 /**
- * Die Klasse "Mitarbeiter" repräsentiert einen Mitarbeiter und erbt von der
- * Klasse "Nutzer". Sie enthält Informationen über den Mitarbeiter wie
+ * Die Klasse "Mitarbeiter" reprï¿½sentiert einen Mitarbeiter und erbt von der
+ * Klasse "Nutzer". Sie enthï¿½lt Informationen ï¿½ber den Mitarbeiter wie
  * MitarbeiterID und Rolle.
  */
 
@@ -11,10 +11,10 @@ public class Mitarbeiter extends Nutzer {
 	private static final char rolle = 'm';
 
 	/**
-	 * Konstruktor1 für die Klasse Mitarbeiter.
+	 * Konstruktor1 fï¿½r die Klasse Mitarbeiter.
 	 * 
 	 * Der Konstruktor initialisiert einen Mitarbeiter mit den angegebenen Werten
-	 * für Name, Vorname, Nutzername, Passwort und Adresse. Dabei wird der
+	 * fï¿½r Name, Vorname, Nutzername, Passwort und Adresse. Dabei wird der
 	 * Konstruktor der Basisklasse "Nutzer" aufgerufen.
 	 * 
 	 * @param name     Der Name des Mitarbeiters.
@@ -29,10 +29,10 @@ public class Mitarbeiter extends Nutzer {
 	}
 
 	/**
-	 * Konstruktor 2 für die Klasse Mitarbeiter ohne Adresse.
+	 * Konstruktor 2 fï¿½r die Klasse Mitarbeiter ohne Adresse.
 	 * 
 	 * Der Konstruktor initialisiert einen Mitarbeiter mit den angegebenen Werten
-	 * für Name, Vorname, Nutzername und Passwort. Dabei wird der Konstruktor der
+	 * fï¿½r Name, Vorname, Nutzername und Passwort. Dabei wird der Konstruktor der
 	 * Basisklasse "Nutzer" aufgerufen.
 	 * 
 	 * @param name     Der Name des Mitarbeiters.
@@ -46,10 +46,10 @@ public class Mitarbeiter extends Nutzer {
 	}
 
 	/**
-	 * Konstruktor 2 für die Klasse Mitarbeiter ohne Adresse.
+	 * Konstruktor 2 fï¿½r die Klasse Mitarbeiter ohne Adresse.
 	 * 
 	 * Der Konstruktor initialisiert einen Mitarbeiter mit den angegebenen Werten
-	 * für Name, Vorname, Nutzername und Passwort. Dabei wird der Konstruktor der
+	 * fï¿½r Name, Vorname, Nutzername und Passwort. Dabei wird der Konstruktor der
 	 * Basisklasse "Nutzer" aufgerufen.
 	 * 
 	 * @param name     Der Name des Mitarbeiters.
@@ -63,7 +63,7 @@ public class Mitarbeiter extends Nutzer {
 		this.maId=maId;
 	}
 	/**
-	 * Gibt die Mitarbeiter-ID zurück.
+	 * Gibt die Mitarbeiter-ID zurï¿½ck.
 	 * 
 	 * @return Die Mitarbeiter-ID.
 	 */
@@ -81,7 +81,7 @@ public class Mitarbeiter extends Nutzer {
 	}
 
 	/**
-	 * Gibt die Rolle des Mitarbeiters zurück.
+	 * Gibt die Rolle des Mitarbeiters zurï¿½ck.
 	 * 
 	 * @return Die Rolle des Mitarbeiters.
 	 */
@@ -99,9 +99,9 @@ public class Mitarbeiter extends Nutzer {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Mitarbeiter ");
 		builder.append(super.toString());
-		builder.append("[maId=");
+		builder.append(" maId:");
 		builder.append(maId);
-		builder.append("]");
+		builder.append("\n");
 		return builder.toString();
 	}
 

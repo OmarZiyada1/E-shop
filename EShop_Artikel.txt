@@ -1,6 +1,12 @@
 1322
 Hose
 Slimfit
-8
+6
 50.0
+t
+1324
+Hemd
+Sommer Hemd
+14
+15.0
 t

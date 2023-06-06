@@ -15,9 +15,9 @@ public class Rechnung {
 	private String formattedDatumZeit;
 
 	/**
-	 * Konstruktor für die Rechnung.
+	 * Konstruktor fï¿½r die Rechnung.
 	 * 
-	 * @param bestellung Die Bestellung, für die die Rechnung erstellt wird.
+	 * @param bestellung Die Bestellung, fï¿½r die die Rechnung erstellt wird.
 	 */
 	public Rechnung(Bestellung bestellung, String formattedDatumZeit) {
 		this.formattedDatumZeit = formattedDatumZeit;
@@ -26,7 +26,7 @@ public class Rechnung {
 	}
 
 	/**
-	 * Gibt die Bestellung zurück, für die die Rechnung erstellt wurde.
+	 * Gibt die Bestellung zurï¿½ck, fï¿½r die die Rechnung erstellt wurde.
 	 * 
 	 * @return Die Bestellung.
 	 */
@@ -35,7 +35,7 @@ public class Rechnung {
 	}
 
 	/**
-	 * Setzt die Bestellung, für die die Rechnung erstellt wird.
+	 * Setzt die Bestellung, fï¿½r die die Rechnung erstellt wird.
 	 * 
 	 * @param bestellung Die Bestellung.
 	 */
@@ -44,7 +44,7 @@ public class Rechnung {
 	}
 
 	/**
-	 * Gibt den Gesamtpreis der Rechnung zurück.
+	 * Gibt den Gesamtpreis der Rechnung zurï¿½ck.
 	 * 
 	 * @return Der Gesamtpreis der Rechnung.
 	 */
@@ -62,7 +62,7 @@ public class Rechnung {
 	}
 
 	/**
-	 * Gibt die Rechnungsnummer zurück.
+	 * Gibt die Rechnungsnummer zurï¿½ck.
 	 * 
 	 * @return Die Rechnungsnummer.
 	 */
@@ -80,7 +80,7 @@ public class Rechnung {
 	}
 
 	/**
-	 * Gibt das formatierte Datum und die Uhrzeit der Rechnung zurück.
+	 * Gibt das formatierte Datum und die Uhrzeit der Rechnung zurï¿½ck.
 	 * 
 	 * @return Das formatierte Datum und die Uhrzeit der Rechnung.
 	 */
@@ -109,7 +109,7 @@ public class Rechnung {
 			i++;
 		}
 		builder.append("\n\t Summe: " + bestellung.getGesamtprise());
-		builder.append("€ ink. 19% mwst");
+		builder.append("â‚¬ ink. 19% mwst");
 
 		return builder.toString();
 	}

@@ -145,7 +145,7 @@ public class E_Shop {
 	}
 	// Mitarbeiter Methoden
 
-	public void mitarbeiterEinfügen(String name, String vorName, String nutzerName, String passwort)
+	public void mitarbeiterEinfuegen(String name, String vorName, String nutzerName, String passwort)
 			throws MitarbeiterUsernameIstBenutztException {
 
 		Mitarbeiter mitarbeiter = new Mitarbeiter(name, vorName, nutzerName, passwort);

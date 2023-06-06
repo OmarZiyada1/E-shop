@@ -22,7 +22,7 @@ import persistence.PersistenceManager;
  * Kundenverwaltung.
  */
 public class KundeVerwaltung {
-	private List<Kunde> list_Kunde = new Vector<Kunde>(); // list mit alle Kunden Mitarbeiter
+	private List<Kunde> list_Kunde = new Vector<Kunde>(); // list mit alle Kunden 
 	private PersistenceManager pm = new FilePersistenceManager();
 
 	/**
@@ -49,9 +49,9 @@ public class KundeVerwaltung {
 
 	/**
 	 * 
-	 * Generiert eine eindeutige Kunden-ID für den übergebenen Kunden.*
+	 * Generiert eine eindeutige Kunden-ID fï¿½r den ï¿½bergebenen Kunden.*
 	 * 
-	 * @param kunde Der Kunde, für den eine ID generiert werden soll.
+	 * @param kunde Der Kunde, fï¿½r den eine ID generiert werden soll.
 	 */
 	private void generateKundenId(Kunde kunde) {
 		if (list_Kunde.isEmpty()) {
@@ -73,13 +73,14 @@ public class KundeVerwaltung {
 	 *                                               Passwort falsch sind.
 	 */
 	public Kunde kundeEinloggen(String nutzerName, String passwort) throws NutzernameOderPasswortFalschException {
-		// TODO: Implementiere die Methode "einloggen" für den Nutzer.
+		// TODO: Implementiere die Methode "einloggen" fï¿½r den Nutzer.
 		ListIterator<Kunde> iter = list_Kunde.listIterator();
 
 		Kunde kunde = null;
 		boolean treffer = false;
 		while (iter.hasNext()) {
 			Kunde ku = iter.next();
+			
 			if (ku.getNutzerName().equals(nutzerName) && ku.getPasswort().equals(passwort)) {
 				kunde = ku;
 				treffer = true;
@@ -126,7 +127,7 @@ public class KundeVerwaltung {
 
 	/**
 	 * 
-	 * Gibt die Liste der Kunden zurück.*
+	 * Gibt die Liste der Kunden zurï¿½ck.*
 	 * 
 	 * @return Die Liste der Kunden.
 	 */
@@ -136,7 +137,7 @@ public class KundeVerwaltung {
 
 	/**
 	 * 
-	 * Gibt die Bestellungen des angegebenen Kunden zurück.*
+	 * Gibt die Bestellungen des angegebenen Kunden zurï¿½ck.*
 	 * 
 	 * @param kunde Der Kunde, dessen Bestellungen abgerufen werden sollen.
 	 * @return Eine Liste der Bestellungen des Kunden.
@@ -150,9 +151,11 @@ public class KundeVerwaltung {
 		pm.openForReading(datei);
 		Kunde einKunde;
 		einKunde = pm.ladeKunde();
+		
 		while (einKunde != null) {
 			list_Kunde.add(einKunde);
 			einKunde = pm.ladeKunde();
+			
 		}
 		pm.close();
 		return einKunde;
@@ -161,6 +164,7 @@ public class KundeVerwaltung {
 	public void schreibeDaten(String datei) throws IOException {
 		pm.openForWriting(datei);
 		for (Kunde kunde : list_Kunde) {
+			
 			pm.speichereKunde(kunde);
 		}
 		pm.close();

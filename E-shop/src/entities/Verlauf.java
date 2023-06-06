@@ -2,7 +2,7 @@ package entities;
 
 /**
  * 
- * Die Klasse Verlauf repräsentiert einen Verlauf einer Aktion in Bezug auf
+ * Die Klasse Verlauf reprï¿½sentiert einen Verlauf einer Aktion in Bezug auf
  * einen bestimmten Artikel und Nutzer.
  */
 public class Verlauf {
@@ -12,11 +12,11 @@ public class Verlauf {
 	private Artikel artikel;
 	private AKTIONSTYP aktion;
 	public enum AKTIONSTYP{
-		Neue("Mitarbeiter: (Neue Artikel hinzugefügt)"), 
-		ERHOEHEN("Mitarbeiter: (Artikelbestand erhöht)"),
+		Neue("Mitarbeiter: (Neue Artikel hinzugefï¿½gt)"), 
+		ERHOEHEN("Mitarbeiter: (Artikelbestand erhï¿½ht)"),
 		BESTELLEN("Kunde: (Kundenbestllung)"),
 		SENKEN("Mitarbeiter: (Bestand gesenkt) "),
-		LOESCHEN("Mitarbeiter: (Artikel gelöscht)");
+		LOESCHEN("Mitarbeiter: (Artikel gelï¿½scht)");
 		
 		private final String value;
 		
@@ -57,7 +57,7 @@ public class Verlauf {
 
 	/**
 	 * 
-	 * Gibt den betroffenen Nutzer zurück.*
+	 * Gibt den betroffenen Nutzer zurï¿½ck.*
 	 * 
 	 * @return der betroffene Nutzer
 	 */
@@ -78,7 +78,7 @@ public class Verlauf {
 
 	/**
 	 * 
-	 * Gibt das formatierte Datum und die formatierte Uhrzeit zurück.*
+	 * Gibt das formatierte Datum und die formatierte Uhrzeit zurï¿½ck.*
 	 * 
 	 * @return das formatierte Datum und die formatierte Uhrzeit
 	 */
@@ -88,7 +88,7 @@ public class Verlauf {
 
 	/**
 	 * 
-	 * Gibt den betroffenen Artikel zurück.*
+	 * Gibt den betroffenen Artikel zurï¿½ck.*
 	 * 
 	 * @return der betroffene Artikel
 	 */
@@ -109,15 +109,15 @@ public class Verlauf {
 
 	/**
 	 * 
-	 * Gibt Alle gespeicherte Änderungen im Verlauf in einen Zeichenkette zurück.*
+	 * Gibt Alle gespeicherte ï¿½nderungen im Verlauf in einen Zeichenkette zurï¿½ck.*
 	 * 
-	 * @return gespeicherte Änderungen im Verlauf.
+	 * @return gespeicherte ï¿½nderungen im Verlauf.
 	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("\nÄnderung:  ");
+		builder.append("\nÃ„nderung:  ");
 		builder.append(aktion.value);
 		builder.append(" Name: '");
 		builder.append(nutzer.getName());
@@ -127,10 +127,10 @@ public class Verlauf {
 		builder.append("'"+ artikel.getName()+"'");
 		builder.append(" ,am ");
 		builder.append(formattedDatumZeit);
-		builder.append(", geändert. ");
-		builder.append("Der Bestand des Artikels beträgt jetzt ");
+		builder.append(", geÃ¤ndert. ");
+		builder.append("Der Bestand des Artikels betrÃ¤gt jetzt ");
 		builder.append(artikel.getBestand());
-		builder.append(" Stück ");
+		builder.append(" StÃ¼ck ");
 
 		return builder.toString();
 	}

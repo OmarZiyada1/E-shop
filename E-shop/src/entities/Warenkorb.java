@@ -3,7 +3,7 @@ package entities;
 import java.util.HashMap;
 
 /**
- * Die Klasse "Warenkorb" repräsentiert den Warenkorb eines Kunden. Sie enthält
+ * Die Klasse "Warenkorb" reprï¿½sentiert den Warenkorb eines Kunden. Sie enthï¿½lt
  * eine Liste von Artikeln mit ihrer jeweiligen Anzahl und den Gesamtpreis.
  */
 public class Warenkorb {
@@ -20,7 +20,7 @@ public class Warenkorb {
 	}
 
 	/**
-	 * Gibt die Liste der Artikel im Warenkorb zurück.
+	 * Gibt die Liste der Artikel im Warenkorb zurï¿½ck.
 	 * 
 	 * @return die Artikel-Liste des Warenkorbs
 	 */
@@ -31,15 +31,15 @@ public class Warenkorb {
 	/**
 	 * Setzt die Liste der Artikel im Warenkorb.
 	 * 
-	 * @param art    der Artikel, der hinzugefügt werden soll
-	 * @param anzahl die Anzahl des Artikels, die hinzugefügt werden soll
+	 * @param art    der Artikel, der hinzugefï¿½gt werden soll
+	 * @param anzahl die Anzahl des Artikels, die hinzugefï¿½gt werden soll
 	 */
 	public void setKorbArtikelListe(Artikel art, int anzahl) {
 		this.korbArtikelListe.put(art, anzahl);
 	}
 
 	/**
-	 * Gibt den Gesamtpreis des Warenkorbs zurück.
+	 * Gibt den Gesamtpreis des Warenkorbs zurï¿½ck.
 	 * 
 	 * @return der Gesamtpreis des Warenkorbs
 	 */
@@ -74,7 +74,7 @@ public class Warenkorb {
 			i++;
 		}
 
-		builder.append("Die Gesamtsumme beträgt: " + gesamtPrise + " € \n");
+		builder.append("Die Gesamtsumme betrÃ¤gt: " + gesamtPrise + " â‚¬ \n");
 		return builder.toString();
 	}
 

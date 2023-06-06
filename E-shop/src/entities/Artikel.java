@@ -1,8 +1,8 @@
 package entities;
 
 /**
- * Die Klasse "Artikel" repräsentiert einen Artikel und enthält Informationen
- * wie Artikel-ID, Name, Beschreibung, Bestand, Preis und Verfügbarkeit.
+ * Die Klasse "Artikel" reprï¿½sentiert einen Artikel und enthï¿½lt Informationen
+ * wie Artikel-ID, Name, Beschreibung, Bestand, Preis und Verfï¿½gbarkeit.
  */
 public class Artikel {
 	private int artikelId;
@@ -13,9 +13,9 @@ public class Artikel {
 	private boolean verfuegbar;
 
 	/**
-	 * Konstruktor1 für die Klasse Artikel. Erzeugt einen Artikel mit den
-	 * angegebenen Werten für Name, Beschreibung, Bestand und Preis. Der Artikel
-	 * wird standardmäßig als verfügbar markiert.
+	 * Konstruktor1 fï¿½r die Klasse Artikel. Erzeugt einen Artikel mit den
+	 * angegebenen Werten fï¿½r Name, Beschreibung, Bestand und Preis. Der Artikel
+	 * wird standardmï¿½ï¿½ig als verfï¿½gbar markiert.
 	 * 
 	 * @param name         der Name des Artikels
 	 * @param beschreibung die Beschreibung des Artikels
@@ -31,14 +31,14 @@ public class Artikel {
 	}
 
 	/**
-	 * Konstruktor2 für die Klasse Artikel. Erzeugt einen Artikel mit den
-	 * angegebenen Werten für Name, Beschreibung, Bestand, Preis und Verfügbarkeit.
+	 * Konstruktor2 fï¿½r die Klasse Artikel. Erzeugt einen Artikel mit den
+	 * angegebenen Werten fï¿½r Name, Beschreibung, Bestand, Preis und Verfï¿½gbarkeit.
 	 * 
 	 * @param name         der Name des Artikels
 	 * @param beschreibung die Beschreibung des Artikels
 	 * @param bestand      der Bestand des Artikels
 	 * @param preis        der Preis des Artikels
-	 * @param verfuegbar   die Verfügbarkeit des Artikels
+	 * @param verfuegbar   die Verfï¿½gbarkeit des Artikels
 	 */
 	public Artikel(String name, String beschreibung, int bestand, double preis, boolean verfuegbar) {
 		this.name = name;
@@ -58,7 +58,7 @@ public class Artikel {
 	}
 
 	/**
-	 * Gibt die Artikel-ID zurück.
+	 * Gibt die Artikel-ID zurï¿½ck.
 	 * 
 	 * @return die Artikel-ID
 	 */
@@ -67,7 +67,7 @@ public class Artikel {
 	}
 
 	/**
-	 * Gibt den Namen des Artikels zurück.
+	 * Gibt den Namen des Artikels zurï¿½ck.
 	 * 
 	 * @return der Name des Artikels
 	 */
@@ -76,7 +76,7 @@ public class Artikel {
 	}
 
 	/**
-	 * Gibt die Beschreibung des Artikels zurück.
+	 * Gibt die Beschreibung des Artikels zurï¿½ck.
 	 * 
 	 * @return die Beschreibung des Artikels
 	 */
@@ -85,7 +85,7 @@ public class Artikel {
 	}
 
 	/**
-	 * Gibt den Bestand des Artikels zurück.
+	 * Gibt den Bestand des Artikels zurï¿½ck.
 	 * 
 	 * @return der Bestand des Artikels
 	 */
@@ -94,9 +94,9 @@ public class Artikel {
 	}
 
 	/**
-	 * Gibt die Verfügbarkeit des Artikels zurück.
+	 * Gibt die Verfï¿½gbarkeit des Artikels zurï¿½ck.
 	 * 
-	 * @return true, wenn der Artikel verfügbar ist, andernfalls false
+	 * @return true, wenn der Artikel verfï¿½gbar ist, andernfalls false
 	 */
 	public boolean isVerfuegbar() {
 		return verfuegbar;
@@ -112,11 +112,11 @@ public class Artikel {
 	}
 
 	/**
-	 * Setzt die Verfügbarkeit des Artikels.
+	 * Setzt die Verfï¿½gbarkeit des Artikels.
 	 * 
-	 * @param verfuegbar die neue Verfügbarkeit des Artikels
+	 * @param verfuegbar die neue Verfï¿½gbarkeit des Artikels
 	 */
-	public void setVerfügbar(boolean verfuegbar) {
+	public void setVerfuegbar(boolean verfuegbar) {
 		this.verfuegbar = verfuegbar;
 	}
 
@@ -157,7 +157,7 @@ public class Artikel {
 	}
 
 	/**
-	 * Gibt den Preis des Artikels zurück.
+	 * Gibt den Preis des Artikels zurï¿½ck.
 	 * 
 	 * @return der Preis des Artikels
 	 */
@@ -166,7 +166,7 @@ public class Artikel {
 	}
 
 	/**
-	 * Überprüft, ob der Artikel mit einem anderen Artikelobjekt identisch ist.
+	 * ï¿½berprï¿½ft, ob der Artikel mit einem anderen Artikelobjekt identisch ist.
 	 * 
 	 * @param andereArtikel das andere Artikelobjekt, mit dem verglichen wird
 	 * @return true, wenn die Artikel identisch sind, andernfalls false
@@ -198,7 +198,7 @@ public class Artikel {
 		builder.append(", Beschreibung = " + beschreibung);
 		builder.append(", Bestand = " + bestand);
 		builder.append(", Preis = " + preis);
-		builder.append(", Verfügbarkeit = " + verfuegbar);
+		builder.append(", VerfÃ¼gbarkeit = " + verfuegbar);
 		builder.append(")");
 		builder.append("\n");
 

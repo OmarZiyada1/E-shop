@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * Die Klasse "Kunde" repräsentiert einen Kunden und erbt von der Klasse
- * "Nutzer". Sie enthält Informationen über den Kunden wie Kundennummer, Rolle
+ * Die Klasse "Kunde" reprï¿½sentiert einen Kunden und erbt von der Klasse
+ * "Nutzer". Sie enthï¿½lt Informationen ï¿½ber den Kunden wie Kundennummer, Rolle
  * und den Kunden-Warenkorb.
  */
 
@@ -20,9 +20,9 @@ public class Kunde extends Nutzer {
 	 * Constructor
 	 * 
 	 * Der Konstruktor der Klasse initialisiert einen Kunden mit den angegebenen
-	 * Werten für Name, Vorname, Nutzername, Passwort und Adresse. Dabei wird der
+	 * Werten fï¿½r Name, Vorname, Nutzername, Passwort und Adresse. Dabei wird der
 	 * Konstruktor der Basisklasse "Nutzer" aufgerufen und ein neuer
-	 * Kunden-Warenkorb für den Kunden erstellt.
+	 * Kunden-Warenkorb fï¿½r den Kunden erstellt.
 	 * 
 	 * @param kndNr    Die Kundennummer
 	 * @param name     Der Name des Kunden
@@ -51,10 +51,11 @@ public class Kunde extends Nutzer {
 	public Kunde(int kndNr, String name, String vorname, String nutzerNr, String passwort, Adresse adresse) {
 		super(name, vorname, nutzerNr, passwort, adresse);
 		this.kndNr = kndNr;
+		this.kundeWarenkorb = new Warenkorb();
 	}
 
 	/**
-	 * Gibt die Kundennummer zurück
+	 * Gibt die Kundennummer zurï¿½ck
 	 * 
 	 * @return die Kundennummer
 	 */
@@ -72,7 +73,7 @@ public class Kunde extends Nutzer {
 	}
 
 	/**
-	 * Gibt die Rolle des Kunden zurück
+	 * Gibt die Rolle des Kunden zurï¿½ck
 	 * 
 	 * @return die rolle
 	 */
@@ -81,7 +82,7 @@ public class Kunde extends Nutzer {
 	}
 
 	/**
-	 * Gibt den Warenkorb des Kunden zurück
+	 * Gibt den Warenkorb des Kunden zurï¿½ck
 	 * 
 	 * @return der kundeWarenkorb
 	 */
@@ -92,7 +93,7 @@ public class Kunde extends Nutzer {
 	/**
 	 * Setzt den Warenkorb des Kunden.
 	 * 
-	 * @param artikel Der Artikel, der zum Warenkorb hinzugefügt wird
+	 * @param artikel Der Artikel, der zum Warenkorb hinzugefï¿½gt wird
 	 * @param anzahl  Die Anzahl des Artikels
 	 */
 	public void setKundeWarenkorb(Artikel artikel, int anzahl) {
@@ -101,7 +102,7 @@ public class Kunde extends Nutzer {
 	}
 
 	/**
-	 * Gibt die Liste der Bestellungen des Kunden zurück.
+	 * Gibt die Liste der Bestellungen des Kunden zurï¿½ck.
 	 * 
 	 * @return Die Liste der Bestellungen des Kunden
 	 */
@@ -110,16 +111,16 @@ public class Kunde extends Nutzer {
 	}
 
 	/**
-	 * Fügt dem Kunden eine Bestellung hinzu.
+	 * Fï¿½gt dem Kunden eine Bestellung hinzu.
 	 * 
-	 * @param best Die hinzuzufügende Bestellung
+	 * @param best Die hinzuzufï¿½gende Bestellung
 	 */
 	public void setMeineBestellungen(Bestellung best) {
 		this.meineBestellungen.add(best);
 	}
 
 	/**
-	 * Gibt die aktuelle Bestellung des Kunden zurück.
+	 * Gibt die aktuelle Bestellung des Kunden zurï¿½ck.
 	 * 
 	 * @return Die aktuelle Bestellung des Kunden
 	 */
