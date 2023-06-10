@@ -29,28 +29,27 @@ public class E_shop_CUI {
 	private Bestellung aktuelleBestellung;
 
 	public E_shop_CUI(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException {
-
+		
 		sh = new E_Shop(datei);
-		// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
-		in = new BufferedReader(new InputStreamReader(System.in));
+		in = new BufferedReader(new InputStreamReader(System.in));// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
 	}
 
 	private String liesEingabe() throws IOException {
-		// einlesen von Konsole
-		return in.readLine();
+		
+		return in.readLine(); // einlesen von Konsole
 	}
 
-	private void gibStartMenuAus() {
-		System.out.print("Befehle:\nLogin als Mitarbeiter:  'l'");
-		System.out.print("\nLogin als Kunde:  'k'");
-		System.out.print("\nRegestrieren als Kunde: 'r'");
-		System.out.print("\nQuit: 'q'");
-		System.out.print(" \nDaten sichern: 's'");
-		System.out.print("\n> ");// Prompt
+	private void start_menue() {
+		System.out.println("Befehle:\nLogin als Mitarbeiter:  'l'");
+		System.out.println("Login als Kunde:  'k'");
+		System.out.println("Regestrieren als Kunde: 'r'");
+		System.out.println("Quit: 'q'");
+		System.out.println("Daten sichern: 's'");
+		System.out.print("> ");
 		System.out.flush();
 	}
 
-	private void gibMitarbeiterMenueAus() {
+	private void mitarbeiter_menue() {
 		System.out.print("Befehle: \n  Artikel ausgeben:  'a'");
 		System.out.print("         \n  Artikel löschen: 'd'");
 		System.out.print("         \n  Artikel einfügen: 'e'");
@@ -68,24 +67,24 @@ public class E_shop_CUI {
 		System.out.flush();
 	}
 
-	private void gibKundeMenueAus() {
-		System.out.print("Befehle: \n  Artikel ausgeben:  'a'");
-		System.out.print("         \n  Artikel suchen:  'f'");
-		System.out.print("         \n  Artikel in Warenkorb anlegen: 'd'");
-		System.out.print("         \n  Artikel Stückzahl ändern: 'c'");
-		System.out.print("         \n  Warenkorb anzeigen: 'w'");
+	private void kunde_menue() {
+		System.out.println("Befehle: \nArtikel ausgeben:  'a'");
+		System.out.println("           Artikel suchen:  'f'");
+		System.out.println("           Artikel in Warenkorb anlegen: 'd'");
+		System.out.println("           Artikel Stückzahl ändern: 'c'");
+		System.out.println("           Warenkorb anzeigen: 'w'");
 
-		System.out.print("         \n  Warenkorb leeren: 'r'");
-		System.out.print("         \n  Bestellen:  'm'");
-		System.out.print("         \n  Zeige Verlauf:  'v'");
-		System.out.print("         \n  Logout:  'g'");
-		System.out.print("           \n  ---------------------");
-		System.out.println("         \n  Beenden:        'q'");
+		System.out.println("           Warenkorb leeren: 'r'");
+		System.out.println("           Bestellen:  'm'");
+		System.out.println("           Zeige Verlauf:  'v'");
+		System.out.println("           Logout:  'g'");
+		System.out.println("             ---------------------");
+		System.out.println("           Beenden:        'q'");
 		System.out.print("> "); // Prompt
 		System.out.flush();
 	}
 
-	private void verarbeiteLogin(String line) throws IOException {
+	private void verarbeiteEingabe_start_menue(String line) throws IOException {
 		String name;
 		String vorname;
 		String nutzerName;
@@ -108,7 +107,7 @@ public class E_shop_CUI {
 			nutzerName = liesEingabe();
 			System.out.print("Passwort   > ");
 			passwort = liesEingabe();
-			System.out.print("Straße  > ");
+			System.out.print("Strasse  > ");
 			strasse = liesEingabe();
 			System.out.print("HausNr.   > ");
 			hNr = liesEingabe();
@@ -156,7 +155,7 @@ public class E_shop_CUI {
 		}
 	}
 
-	private void verarbeiteMitarbeiterEingabe(String line)
+	private void verarbeiteEingebe_mitarbeiter_menue(String line)
 			throws IOException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException, VerlaufLeerException, ArtikelExistiertBereitsException {
 		boolean verfuegbarkeit;
 		int artikelID;
@@ -303,7 +302,7 @@ public class E_shop_CUI {
 
 	}
 
-	private void verarbeiteKundenEingabe(String line) throws IOException, NichtGenugArtikelVorhandenException,
+	private void verarbeiteEingabe_kunde_menue(String line) throws IOException, NichtGenugArtikelVorhandenException,
 			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertNichtException {
 		List<Artikel> artikelListe;
 		String artikelName;
@@ -434,28 +433,26 @@ public class E_shop_CUI {
 			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertBereitsException {
 		// Variable für Eingaben von der Konsole
 		
-
-		
-
 		String input = "";
 
 		do {
 			do {
-				gibStartMenuAus();
+				start_menue();
 				try {
 					input = liesEingabe().trim();
-					verarbeiteLogin(input);
+					verarbeiteEingabe_start_menue(input);
 				} catch (IOException e) {
 					// e.printStackTrace();
 				}
 			} while (loggedkunde == null && loggedMitarbeiter == null && !input.equals("q"));
-			
+
 			if (loggedMitarbeiter != null) {
 				do {
-					gibMitarbeiterMenueAus();
+					mitarbeiter_menue();
 					try {
-						input = liesEingabe().trim();
-						verarbeiteMitarbeiterEingabe(input);
+						input = liesEingabe().trim().toLowerCase();
+						verarbeiteEingebe_mitarbeiter_menue(input);
+						
 						if (input.equals("g")) {
 							sh.loggeMitarbeiterAus(loggedMitarbeiter);
 
@@ -470,10 +467,10 @@ public class E_shop_CUI {
 
 			} else if (loggedkunde != null) {
 				do {
-					gibKundeMenueAus();
+					kunde_menue();
 					try {
 						input = liesEingabe().trim();
-						verarbeiteKundenEingabe(input);
+						verarbeiteEingabe_kunde_menue(input);
 
 						if (input.equals("g")) {
 							sh.loggeKundeAus(loggedkunde);
