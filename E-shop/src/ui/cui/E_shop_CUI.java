@@ -29,35 +29,35 @@ public class E_shop_CUI {
 	private Bestellung aktuelleBestellung;
 
 	public E_shop_CUI(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException {
-		
+
 		sh = new E_Shop(datei);
-		in = new BufferedReader(new InputStreamReader(System.in));// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
+		// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
+		in = new BufferedReader(new InputStreamReader(System.in));
 	}
 
 	private String liesEingabe() throws IOException {
-		
-		return in.readLine(); // einlesen von Konsole
+		// einlesen von Konsole
+		return in.readLine();
 	}
 
-	private void start_menue() {
-		System.out.println("Befehle:\nLogin als Mitarbeiter:  'l'");
-		System.out.println("Login als Kunde:  'k'");
-		System.out.println("Regestrieren als Kunde: 'r'");
-		System.out.println("Quit: 'q'");
-		System.out.println("Daten sichern: 's'");
-		System.out.print("> ");
+	private void gibStartMenuAus() {
+		System.out.print("Befehle:\nLogin als Mitarbeiter:  'l'");
+		System.out.print("\nLogin als Kunde:  'k'");
+		System.out.print("\nRegestrieren als Kunde: 'r'");
+		System.out.print("\nQuit: 'q'");
+		System.out.print(" \nDaten sichern: 's'");
+		System.out.print("\n> ");// Prompt
 		System.out.flush();
 	}
 
-	private void mitarbeiter_menue() {
+	private void gibMitarbeiterMenueAus() {
 		System.out.print("Befehle: \n  Artikel ausgeben:  'a'");
-		System.out.print("         \n  Artikel lÃ¶schen: 'd'");
-		System.out.print("         \n  Artikel einfÃ¼gen: 'e'");
+		System.out.print("         \n  Artikel löschen: 'd'");
+		System.out.print("         \n  Artikel einfügen: 'e'");
 		System.out.print("         \n  Artikel suchen:  'f'");
-		System.out.print(" \n Daten sichern: 's'");
 		System.out.print("         \n  Mitarbeiter regestrieren:  'm'");
 		System.out.print("         \n  Mitarbeiterliste anzeigen:  'l'");
-		System.out.print("         \n  Artikelbestand erhÃ¶hen:  'h'");
+		System.out.print("         \n  Artikelbestand erhöhen:  'h'");
 		System.out.print("         \n  Artikelbestand senken:  'w'");
 		System.out.print("         \n  Zeige Verlauf:  'v'");
 		System.out.print("         \n  Logout:  'g'");
@@ -67,24 +67,24 @@ public class E_shop_CUI {
 		System.out.flush();
 	}
 
-	private void kunde_menue() {
-		System.out.println("Befehle: \nArtikel ausgeben:  'a'");
-		System.out.println("           Artikel suchen:  'f'");
-		System.out.println("           Artikel in Warenkorb anlegen: 'd'");
-		System.out.println("           Artikel StÃ¼ckzahl Ã¤ndern: 'c'");
-		System.out.println("           Warenkorb anzeigen: 'w'");
+	private void gibKundeMenueAus() {
+		System.out.print("Befehle: \n  Artikel ausgeben:  'a'");
+		System.out.print("         \n  Artikel suchen:  'f'");
+		System.out.print("         \n  Artikel in Warenkorb anlegen: 'd'");
+		System.out.print("         \n  Artikel Stückzahl ändern: 'c'");
+		System.out.print("         \n  Warenkorb anzeigen: 'w'");
 
-		System.out.println("           Warenkorb leeren: 'r'");
-		System.out.println("           Bestellen:  'm'");
-		System.out.println("           Zeige Verlauf:  'v'");
-		System.out.println("           Logout:  'g'");
-		System.out.println("             ---------------------");
-		System.out.println("           Beenden:        'q'");
+		System.out.print("         \n  Warenkorb leeren: 'r'");
+		System.out.print("         \n  Bestellen:  'm'");
+		System.out.print("         \n  Zeige Verlauf:  'v'");
+		System.out.print("         \n  Logout:  'g'");
+		System.out.print("           \n  ---------------------");
+		System.out.println("         \n  Beenden:        'q'");
 		System.out.print("> "); // Prompt
 		System.out.flush();
 	}
 
-	private void verarbeiteEingabe_start_menue(String line) throws IOException {
+	private void verarbeiteLogin(String line) throws IOException {
 		String name;
 		String vorname;
 		String nutzerName;
@@ -107,7 +107,7 @@ public class E_shop_CUI {
 			nutzerName = liesEingabe();
 			System.out.print("Passwort   > ");
 			passwort = liesEingabe();
-			System.out.print("Strasse  > ");
+			System.out.print("Straße  > ");
 			strasse = liesEingabe();
 			System.out.print("HausNr.   > ");
 			hNr = liesEingabe();
@@ -120,7 +120,7 @@ public class E_shop_CUI {
 			try {
 				sh.kundenRegistrieren(name, vorname, nutzerName, passwort, strasse, hNr, plz, ort, land);
 				sh.schreibeKunde();
-				System.out.println("\nSie Haben Sich erfolgreich regestriert. Sie Kï¿½nnen Sich jetzt anmelden\n");
+				System.out.println("\nSie Haben Sich erfolgreich regestriert. Sie K nnen Sich jetzt anmelden\n");
 			} catch (KundeUsernameIstbenutztException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
@@ -155,7 +155,7 @@ public class E_shop_CUI {
 		}
 	}
 
-	private void verarbeiteEingebe_mitarbeiter_menue(String line)
+	private void verarbeiteMitarbeiterEingabe(String line)
 			throws IOException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException, VerlaufLeerException, ArtikelExistiertBereitsException {
 		boolean verfuegbarkeit;
 		int artikelID;
@@ -185,7 +185,7 @@ public class E_shop_CUI {
 
 			try {
 				gesuchteArtikel = sh.loescheArtikel(loggedMitarbeiter, artikelName);
-				System.out.println("\nLÃ¶schen ok\n");
+				System.out.println("\nLöschen ok\n");
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
@@ -204,7 +204,7 @@ public class E_shop_CUI {
 
 			try {
 				gesuchteArtikel = sh.fuegeArtikelEin(loggedMitarbeiter, artikelName, beschreibung, bestand, preis);
-				System.out.println("\nEinfÃ¼gen ok\n");
+				System.out.println("\nEinfügen ok\n");
 			} catch (ArtikelExistiertBereitsException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
@@ -239,11 +239,11 @@ public class E_shop_CUI {
 		case "h":
 			System.out.println("Artikel name >");
 			artikelName = liesEingabe();
-			System.out.println("Um wiel viel erhÃ¶hen?  >");
+			System.out.println("Um wiel viel erhöhen?  >");
 			anzahl = Integer.parseInt(liesEingabe());
 			try {
 				gesuchteArtikel = sh.erhoeheArtikelBestand(loggedMitarbeiter, artikelName, anzahl);
-				System.out.println("\nBestand erhÃ¶ht.\n");
+				System.out.println("\nBestand erhöht.\n");
 
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
@@ -279,30 +279,14 @@ public class E_shop_CUI {
 				System.out.println("Mitarbeiterliste leer");
 			}
 			break;
-		case "s":
-			sh.schreibeArtikel();
-			sh.schreibeMitarbeiter();
-			sh.schreibeVerlauf();
-			System.out.println("Ihe Ã„nderungen wurden gespeichert.");
-			break;
 		case "g":
-			sh.schreibeArtikel();
-			sh.schreibeMitarbeiter();
-			sh.schreibeVerlauf();
-			System.out.println("Logout Erfolgreich. Ihe Ã„nderungen wurden gespeichert. ");
+			System.out.println("Logout Erfolgreich. Ihe Änderungen wurden gespeichert. ");
 			sh.loggeMitarbeiterAus(loggedMitarbeiter);
 			break;
-		case"q":
-			sh.schreibeArtikel();
-			sh.schreibeMitarbeiter();
-			sh.schreibeVerlauf();
-			sh.schreibeKunde();
-			break;
 		}
-
 	}
 
-	private void verarbeiteEingabe_kunde_menue(String line) throws IOException, NichtGenugArtikelVorhandenException,
+	private void verarbeiteKundenEingabe(String line) throws IOException, NichtGenugArtikelVorhandenException,
 			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertNichtException {
 		List<Artikel> artikelListe;
 		String artikelName;
@@ -327,12 +311,12 @@ public class E_shop_CUI {
 		case "d":
 			System.out.println("Bitte name des Artikels eingeben  >");
 			artikelName = liesEingabe().trim();
-			System.out.println("StÃ¼ckanzahl  >");
+			System.out.println("Stückanzahl  >");
 			anzahl = Integer.parseInt(liesEingabe().trim());
 			try {
 				gesuchteArtikel = sh.sucheNachName(artikelName);
 				sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
-				System.out.println("\nArtikel wurde erfolgreich im Warenkorb hinzugefÃ¼gt\n");
+				System.out.println("\nArtikel wurde erfolgreich im Warenkorb hinzugefügt\n");
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			} catch (NichtGenugArtikelVorhandenException e) {
@@ -349,28 +333,28 @@ public class E_shop_CUI {
 			}
 			String line2 = "";
 			System.out.print(
-					"Wenn Sie Anzahl erhÃ¶hen mÃ¶chten bitte '+' Eingeben. Sollten Sie den Anzahl senken wollen '-' eingeben \n ");
+					"Wenn Sie Anzahl erhöhen möchten bitte '+' Eingeben. Sollten Sie den Anzahl senken wollen '-' eingeben \n ");
 			line2 = liesEingabe();
 			switch (line2) {
 			case "+":
-				System.out.print("StÃ¼ckzahl eingeben bitte  >");
+				System.out.print("Stückzahl eingeben bitte  >");
 				anzahl = Integer.parseInt(liesEingabe().trim());
 				try {
 					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, anzahl);
 					System.out.println("\nBestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl
-							+ "' StÃ¼ckzahl erhÃ¶ht\n");
+							+ "' Stückzahl erhöht\n");
 				} catch (NichtGenugArtikelVorhandenException e) {
 					System.err.println("\n" + e.getMessage() + "\n");
 				}
 
 				break;
 			case "-":
-				System.out.print("StÃ¼ckzahl eingeben bitte  >");
+				System.out.print("Stückzahl eingeben bitte  >");
 				anzahl = Integer.parseInt(liesEingabe().trim());
 				try {
 					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
 					System.out.println("\nBestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl
-							+ "' StÃ¼ckzahl gesenkt\n");
+							+ "' Stückzahl gesenkt\n");
 				} catch (NichtGenugArtikelVorhandenException e) {
 
 					System.err.println("\n" + e.getMessage() + "\n");
@@ -431,28 +415,30 @@ public class E_shop_CUI {
 	public void run() throws ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException,
 			MitarbeiterUsernameIstBenutztException, KundeUsernameIstbenutztException, NichtGenugArtikelVorhandenException,
 			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertBereitsException {
-		// Variable fÃ¼r Eingaben von der Konsole
+		// Variable für Eingaben von der Konsole
 		
+
+		
+
 		String input = "";
 
 		do {
 			do {
-				start_menue();
+				gibStartMenuAus();
 				try {
 					input = liesEingabe().trim();
-					verarbeiteEingabe_start_menue(input);
+					verarbeiteLogin(input);
 				} catch (IOException e) {
 					// e.printStackTrace();
 				}
 			} while (loggedkunde == null && loggedMitarbeiter == null && !input.equals("q"));
-
+			
 			if (loggedMitarbeiter != null) {
 				do {
-					mitarbeiter_menue();
+					gibMitarbeiterMenueAus();
 					try {
-						input = liesEingabe().trim().toLowerCase();
-						verarbeiteEingebe_mitarbeiter_menue(input);
-						
+						input = liesEingabe().trim();
+						verarbeiteMitarbeiterEingabe(input);
 						if (input.equals("g")) {
 							sh.loggeMitarbeiterAus(loggedMitarbeiter);
 
@@ -467,10 +453,10 @@ public class E_shop_CUI {
 
 			} else if (loggedkunde != null) {
 				do {
-					kunde_menue();
+					gibKundeMenueAus();
 					try {
 						input = liesEingabe().trim();
-						verarbeiteEingabe_kunde_menue(input);
+						verarbeiteKundenEingabe(input);
 
 						if (input.equals("g")) {
 							sh.loggeKundeAus(loggedkunde);
