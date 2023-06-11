@@ -24,17 +24,18 @@ public class VerlaufsVerwaltung {
 
 	private PersistenceManager pm = new FilePersistenceManager();
 
-	public void liesDaten(String datei , ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt) throws IOException, ArtikelExistiertNichtException {
+	public void liesDaten(String datei, ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt)
+			throws IOException, ArtikelExistiertNichtException {
 		pm.openForReading(datei);
-	    Verlauf einVerlauf;
-	    einVerlauf = pm.ladeVerlauf(art, kd, mt);
-	    while (einVerlauf != null) {
-	    	verlaufListe.add(einVerlauf);
-	        einVerlauf = pm.ladeVerlauf(art, kd, mt);
-	    }
-	    pm.close();
+		Verlauf einVerlauf;
+		einVerlauf = pm.ladeVerlauf(art, kd, mt);
+		while (einVerlauf != null) {
+			verlaufListe.add(einVerlauf);
+			einVerlauf = pm.ladeVerlauf(art, kd, mt);
+		}
+		pm.close();
 	}
-	
+
 	public void schreibeDaten(String datei) throws IOException {
 		pm.openForWriting(datei);
 		for (Verlauf verlauf : verlaufListe) {
@@ -42,6 +43,7 @@ public class VerlaufsVerwaltung {
 		}
 		pm.close();
 	}
+
 	/**
 	 * 
 	 * Fügt einen neuen Verlauf zur Verlaufsliste hinzu.
@@ -50,10 +52,11 @@ public class VerlaufsVerwaltung {
 	 * @param nutzer  der betroffene Nutzer
 	 * @param artikel der betroffene Artikel
 	 */
-	public void addVerlauf(Verlauf.AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel) {
+	public void addVerlauf(Verlauf.AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, int aenderungsMenge) {
 		updateTime();
 		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
-		Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit);
+		Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit, artikel.getBestand());
+		verlauf.setAenderungsMenge(aenderungsMenge);
 		verlaufListe.add(verlauf);
 	}
 

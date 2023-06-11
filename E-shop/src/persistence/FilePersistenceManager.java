@@ -165,6 +165,7 @@ public class FilePersistenceManager implements PersistenceManager {
 			String artikelName = liesZeile();
 			String formattedDatumZeit = liesZeile();
 			Artikel artikel = art.sucheArtikel(artikelName);
+			int aenderungsMenge= Integer.parseInt(liesZeile());
 
 			Nutzer nutzer = null;
 			if (kd.sucheKunde(nutzerName) != null) {
@@ -174,7 +175,7 @@ public class FilePersistenceManager implements PersistenceManager {
 			else if (mt.sucheMitarbeiter(nutzerName) != null) {
 				nutzer = mt.sucheMitarbeiter(nutzerName);
 			}
-			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit);
+			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit, aenderungsMenge);
 			return verlauf;
 		}
 	}
@@ -184,6 +185,7 @@ public class FilePersistenceManager implements PersistenceManager {
 		schreibeZeile(verlauf.getNutzer().getNutzerName());
 		schreibeZeile(verlauf.getArtikel().getName());
 		schreibeZeile(verlauf.getFormattedDatumZeit());
+		schreibeZeile(verlauf.getAenderungsMenge()+"");
 
 		return true;
 	}

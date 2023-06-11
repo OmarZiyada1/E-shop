@@ -33,7 +33,12 @@ public class Verlauf {
 	     }
 		 
 	}
+	private int aenderungsMenge;
 	
+	
+
+
+
 
 	/**
 	 * 
@@ -45,11 +50,12 @@ public class Verlauf {
 	 * @param artikel            der betroffene Artikel
 	 * @param formattedDatumZeit das formatierte Datum und die formatierte Uhrzeit
 	 */
-	public Verlauf(AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, String formattedDatumZeit) {
+	public Verlauf(AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, String formattedDatumZeit,int aenderungsMenge ) {
 		this.aktion=aktion;
 		this.formattedDatumZeit = formattedDatumZeit;
 		this.nutzer = nutzer;
 		this.artikel = artikel;
+		this.aenderungsMenge=aenderungsMenge;
 
 	}
 	
@@ -105,6 +111,18 @@ public class Verlauf {
 		return aktion;
 	}
 
+	
+	
+
+	public int getAenderungsMenge() {
+		return aenderungsMenge;
+	}
+
+
+
+	public void setAenderungsMenge(int aenderungsMenge) {
+		this.aenderungsMenge = aenderungsMenge;
+	}
 
 
 	/**
@@ -117,7 +135,7 @@ public class Verlauf {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("\nÃ„nderung:  ");
+		builder.append("\nÄnderung:  ");
 		builder.append(aktion.value);
 		builder.append(" Name: '");
 		builder.append(nutzer.getName());
@@ -128,9 +146,9 @@ public class Verlauf {
 		builder.append(" ,am ");
 		builder.append(formattedDatumZeit);
 		builder.append(", geÃ¤ndert. ");
-		builder.append("Der Bestand des Artikels betrÃ¤gt jetzt ");
-		builder.append(artikel.getBestand());
-		builder.append(" StÃ¼ck ");
+		builder.append("Der Bestand des Artikels hat sich um  ");
+		builder.append(aenderungsMenge);
+		builder.append(" Stück geändert");
 
 		return builder.toString();
 	}
