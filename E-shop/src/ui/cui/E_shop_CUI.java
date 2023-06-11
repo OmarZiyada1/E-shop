@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.util.List;
 
 import domain.E_Shop;
@@ -28,7 +29,7 @@ public class E_shop_CUI {
 	private Mitarbeiter loggedMitarbeiter;
 	private Bestellung aktuelleBestellung;
 
-	public E_shop_CUI(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException {
+	public E_shop_CUI(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException, ParseException {
 
 		sh = new E_Shop(datei);
 		// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
@@ -45,7 +46,6 @@ public class E_shop_CUI {
 		System.out.print("\nLogin als Kunde:  'k'");
 		System.out.print("\nRegestrieren als Kunde: 'r'");
 		System.out.print("\nQuit: 'q'");
-		System.out.print(" \nDaten sichern: 's'");
 		System.out.print("\n> ");// Prompt
 		System.out.flush();
 	}
@@ -60,6 +60,7 @@ public class E_shop_CUI {
 		System.out.print("         \n  Artikelbestand erhöhen:  'h'");
 		System.out.print("         \n  Artikelbestand senken:  'w'");
 		System.out.print("         \n  Zeige Verlauf:  'v'");
+		System.out.print("         \n  Zeige Verlauf eines Artikel in den letzten 30 Tage:  'y'");
 		System.out.print("         \n  Logout:  'g'");
 		System.out.print("         \n  ---------------------");
 		System.out.println("         \n  Beenden:        'q'");
@@ -279,6 +280,17 @@ public class E_shop_CUI {
 				System.out.println("Mitarbeiterliste leer");
 			}
 			break;
+		case "y":
+			System.out.println("Artikel Name  > ");
+			artikelName = liesEingabe();
+			
+			try {
+				System.out.println(sh.zeigeVerlaufArtikelDreissigTage(artikelName));
+			} catch (ArtikelExistiertNichtException e) {
+				System.err.println(e.getMessage());
+			}
+			
+			break;
 		case "g":
 			System.out.println("Logout Erfolgreich. Ihe Änderungen wurden gespeichert. ");
 			sh.loggeMitarbeiterAus(loggedMitarbeiter);
@@ -477,7 +489,7 @@ public class E_shop_CUI {
 	public static void main(String[] args)
 			throws IOException, MitarbeiterUsernameIstBenutztException, ArtikelExistiertNichtException,
 			AnzahlIsNichtDefiniertException, KundeUsernameIstbenutztException, NichtGenugArtikelVorhandenException,
-			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertBereitsException {
+			WarenkorbLeerException, VerlaufLeerException, ArtikelExistiertBereitsException, ParseException {
 		E_shop_CUI cui;
 		try {
 			cui = new E_shop_CUI("EShop");

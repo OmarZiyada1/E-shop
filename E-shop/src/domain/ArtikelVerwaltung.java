@@ -153,7 +153,7 @@ public class ArtikelVerwaltung {
 		if (this.artikelListe.contains(artikel)) {
 			artikelListe.remove(artikel);
 		} else {
-			throw new ArtikelExistiertNichtException();
+			throw new ArtikelExistiertNichtException(artikel,"");
 		}
 	}
 
@@ -172,7 +172,7 @@ public class ArtikelVerwaltung {
 		boolean artikelGefunden = false;
 
 		if (artikelListe.isEmpty()) {
-			throw new ArtikelExistiertNichtException();
+			throw new ArtikelExistiertNichtException(suchArtikel, ". Artikel Liste ist Leer");
 		} else {
 			Iterator<Artikel> iter = artikelListe.iterator();
 			while (iter.hasNext()) {
@@ -186,7 +186,7 @@ public class ArtikelVerwaltung {
 		}
 
 		if (!artikelGefunden) {
-			throw new ArtikelExistiertNichtException();
+			throw new ArtikelExistiertNichtException(suchArtikel, "");
 		}
 
 		return suchArtikel;

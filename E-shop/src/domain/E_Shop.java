@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertBereitsException;
@@ -33,7 +34,7 @@ public class E_Shop {
 	private VerlaufsVerwaltung verlaufVW;
 	private String datei = "";
 
-	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException {
+	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException, ParseException {
 
 		this.datei = datei;
 		artikelVW = new ArtikelVerwaltung();
@@ -238,6 +239,11 @@ public class E_Shop {
 	//
 	public void schreibeVerlauf() throws IOException {
 		verlaufVW.schreibeDaten(datei + "_Verlauf.txt");
+	}
+	
+	public List<Verlauf> zeigeVerlaufArtikelDreissigTage(String name) throws ArtikelExistiertNichtException{
+		Artikel artikel = artikelVW.sucheArtikel(name);
+		return verlaufVW.getLetzeDreissigTageVerlauf(artikel);
 	}
 
 }

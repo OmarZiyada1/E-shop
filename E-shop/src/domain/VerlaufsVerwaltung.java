@@ -1,12 +1,9 @@
 package domain;
-
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Vector;
-
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.VerlaufLeerException;
 import entities.Artikel;
@@ -16,16 +13,15 @@ import persistence.FilePersistenceManager;
 import persistence.PersistenceManager;
 
 public class VerlaufsVerwaltung {
-	private LocalDateTime aktuelleDatumZeit = LocalDateTime.now();
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.GERMANY);
-	private String formattedDatumZeit;
+	
+	private Date date;
 
 	private List<Verlauf> verlaufListe = new Vector<>();
 
 	private PersistenceManager pm = new FilePersistenceManager();
 
 	public void liesDaten(String datei, ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt)
-			throws IOException, ArtikelExistiertNichtException {
+			throws IOException, ArtikelExistiertNichtException, ParseException {
 		pm.openForReading(datei);
 		Verlauf einVerlauf;
 		einVerlauf = pm.ladeVerlauf(art, kd, mt);
@@ -54,10 +50,28 @@ public class VerlaufsVerwaltung {
 	 */
 	public void addVerlauf(Verlauf.AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, int aenderungsMenge) {
 		updateTime();
-		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
-		Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit, artikel.getBestand());
+		
+		Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, date, artikel.getBestand());
 		verlauf.setAenderungsMenge(aenderungsMenge);
 		verlaufListe.add(verlauf);
+	}
+	
+	
+	public List<Verlauf> getLetzeDreissigTageVerlauf (Artikel artikel) throws ArtikelExistiertNichtException{
+		
+		List<Verlauf> DreissigVerlaufListe = new Vector<>();
+		Date aktuellesDatum = new Date();
+		
+		for (Verlauf verlauf: verlaufListe) {
+			 long differenzInMillisekunden = aktuellesDatum.getTime() - verlauf.getDate().getTime();
+			 long differenzInTagen = differenzInMillisekunden / (24 * 60 * 60 * 1000);
+			if (verlauf.getArtikel()==artikel && differenzInTagen <= 30) {
+				DreissigVerlaufListe.add(verlauf);
+			}
+		}
+		
+		return DreissigVerlaufListe;
+		
 	}
 
 	/**
@@ -80,7 +94,7 @@ public class VerlaufsVerwaltung {
 	 * Akualisiert die aktuelleDatumZeit Variable
 	 */
 	public void updateTime() {
-		aktuelleDatumZeit = LocalDateTime.now();
+		date = new Date();
 	}
 
 }

@@ -8,6 +8,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import entities.Adresse;
 import entities.Artikel;
@@ -155,7 +159,7 @@ public class FilePersistenceManager implements PersistenceManager {
 	}
 
 	// Verlauf
-	public Verlauf ladeVerlauf(ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt) throws IOException, ArtikelExistiertNichtException {
+	public Verlauf ladeVerlauf(ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt) throws IOException, ArtikelExistiertNichtException, ParseException {
 		String aktionS = liesZeile();
 		if (aktionS == null) {
 			return null;
@@ -163,7 +167,9 @@ public class FilePersistenceManager implements PersistenceManager {
 			AKTIONSTYP aktion = AKTIONSTYP.valueOf(aktionS);
 			String nutzerName = liesZeile();
 			String artikelName = liesZeile();
-			String formattedDatumZeit = liesZeile();
+			DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+			Date date = format.parse(liesZeile());
+ 
 			Artikel artikel = art.sucheArtikel(artikelName);
 			int aenderungsMenge= Integer.parseInt(liesZeile());
 
@@ -175,7 +181,7 @@ public class FilePersistenceManager implements PersistenceManager {
 			else if (mt.sucheMitarbeiter(nutzerName) != null) {
 				nutzer = mt.sucheMitarbeiter(nutzerName);
 			}
-			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, formattedDatumZeit, aenderungsMenge);
+			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, date, aenderungsMenge);
 			return verlauf;
 		}
 	}
@@ -184,7 +190,8 @@ public class FilePersistenceManager implements PersistenceManager {
 		schreibeZeile(verlauf.getAktion().name());
 		schreibeZeile(verlauf.getNutzer().getNutzerName());
 		schreibeZeile(verlauf.getArtikel().getName());
-		schreibeZeile(verlauf.getFormattedDatumZeit());
+		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+		schreibeZeile(format.format(verlauf.getDate()));
 		schreibeZeile(verlauf.getAenderungsMenge()+"");
 
 		return true;

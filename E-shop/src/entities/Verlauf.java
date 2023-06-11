@@ -1,5 +1,9 @@
 package entities;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 
  * Die Klasse Verlauf reprï¿½sentiert einen Verlauf einer Aktion in Bezug auf
@@ -7,7 +11,10 @@ package entities;
  */
 public class Verlauf {
 
-	private String formattedDatumZeit;
+
+	private Date date = new Date();
+	DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+	String formatteddate = format.format(date);
 	private Nutzer nutzer;
 	private Artikel artikel;
 	private AKTIONSTYP aktion;
@@ -50,9 +57,9 @@ public class Verlauf {
 	 * @param artikel            der betroffene Artikel
 	 * @param formattedDatumZeit das formatierte Datum und die formatierte Uhrzeit
 	 */
-	public Verlauf(AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, String formattedDatumZeit,int aenderungsMenge ) {
+	public Verlauf(AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, Date date ,int aenderungsMenge ) {
 		this.aktion=aktion;
-		this.formattedDatumZeit = formattedDatumZeit;
+		this.date = date;
 		this.nutzer = nutzer;
 		this.artikel = artikel;
 		this.aenderungsMenge=aenderungsMenge;
@@ -82,15 +89,7 @@ public class Verlauf {
 		this.nutzer = nutzer;
 	}
 
-	/**
-	 * 
-	 * Gibt das formatierte Datum und die formatierte Uhrzeit zurï¿½ck.*
-	 * 
-	 * @return das formatierte Datum und die formatierte Uhrzeit
-	 */
-	public String getFormattedDatumZeit() {
-		return formattedDatumZeit;
-	}
+	
 
 	/**
 	 * 
@@ -123,6 +122,13 @@ public class Verlauf {
 	public void setAenderungsMenge(int aenderungsMenge) {
 		this.aenderungsMenge = aenderungsMenge;
 	}
+	
+	
+
+	public Date getDate() {
+		return date;
+	}
+
 
 
 	/**
@@ -144,8 +150,8 @@ public class Verlauf {
 		builder.append("' hat der Bestand folgende Artikel:  ");
 		builder.append("'"+ artikel.getName()+"'");
 		builder.append(" ,am ");
-		builder.append(formattedDatumZeit);
-		builder.append(", geÃ¤ndert. ");
+		builder.append(formatteddate);
+		builder.append(", geändert. ");
 		builder.append("Der Bestand des Artikels hat sich um  ");
 		builder.append(aenderungsMenge);
 		builder.append(" Stück geändert");

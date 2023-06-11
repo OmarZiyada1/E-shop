@@ -1,11 +1,18 @@
 package domain.exceptions;
 
-public class ArtikelExistiertNichtException extends Exception {
+import entities.Artikel;
 
-	public ArtikelExistiertNichtException() {
-		// TODO Auto-generated constructor stub
+public class ArtikelExistiertNichtException extends Exception {
+	private Artikel artikel;
+		public ArtikelExistiertNichtException(Artikel artikel , String zusatzMsg) {
+			super("Artikel mit Name '" + artikel.getName() + "'" + " existiert nicht" + zusatzMsg);
+			this.artikel = artikel;
+		}
+
 		
-		super("Diese Artikel Existiert Nicht");
+	
+	public Artikel getArtikel() {
+		return artikel;
 	}
 
 }
