@@ -42,9 +42,9 @@ public class VerlaufsVerwaltung {
 
 	/**
 	 * 
-	 * Fügt einen neuen Verlauf zur Verlaufsliste hinzu.
+	 * Fï¿½gt einen neuen Verlauf zur Verlaufsliste hinzu.
 	 * 
-	 * @param aktion  die durchgeführte Aktion
+	 * @param aktion  die durchgefï¿½hrte Aktion
 	 * @param nutzer  der betroffene Nutzer
 	 * @param artikel der betroffene Artikel
 	 */
@@ -76,9 +76,9 @@ public class VerlaufsVerwaltung {
 
 	/**
 	 * 
-	 * Gibt die Liste der Änderungen in eine Verlauflist zurück.
+	 * Gibt die Liste der ï¿½nderungen in eine Verlauflist zurï¿½ck.
 	 * 
-	 * @return Liste der Änderungen
+	 * @return Liste der ï¿½nderungen
 	 * @throws VerlaufLeerException wenn die Verlaufsliste leer ist
 	 */
 	public List<Verlauf> getVerlauflListe() throws VerlaufLeerException {

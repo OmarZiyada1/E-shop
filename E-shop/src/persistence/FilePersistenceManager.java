@@ -16,6 +16,7 @@ import java.util.Date;
 import entities.Adresse;
 import entities.Artikel;
 import entities.Kunde;
+import entities.Massengutartikel;
 import entities.Mitarbeiter;
 import entities.Nutzer;
 import entities.Verlauf;
@@ -30,7 +31,6 @@ public class FilePersistenceManager implements PersistenceManager {
 
 	private BufferedReader reader = null;
 	private PrintWriter writer = null;
-
 
 	public void openForReading(String datei) throws FileNotFoundException {
 		reader = new BufferedReader(new FileReader(datei));
@@ -58,6 +58,7 @@ public class FilePersistenceManager implements PersistenceManager {
 
 	public Artikel ladeArtikel() throws IOException {
 		String artikelId_Check = liesZeile();
+		Artikel artikel;
 		if (artikelId_Check == null) {
 			// keine Daten vorhanden
 			return null;
@@ -72,8 +73,16 @@ public class FilePersistenceManager implements PersistenceManager {
 		String verfuegbarCode = liesZeile();
 		// Codierung des Ausleihstatus in boolean umwandeln
 		boolean verfuegbar = verfuegbarCode.equals("t") ? true : false;
+		String istPackungCode = liesZeile();
+		boolean istPackung = istPackungCode.equals("t") ? true : false;
+		if (istPackung) {
+			int packungsGroesse = Integer.parseInt(liesZeile());
+			artikel = new Massengutartikel(artikelId, name, beschreibung, bestand, preis, verfuegbar, istPackung,
+					packungsGroesse);
+		} else {
+			artikel = new Artikel(artikelId, name, beschreibung, bestand, preis, verfuegbar, istPackung);
 
-		Artikel artikel = new Artikel(artikelId, name, beschreibung, bestand, preis, verfuegbar);
+		}
 		return artikel;
 
 	}
@@ -88,6 +97,11 @@ public class FilePersistenceManager implements PersistenceManager {
 			schreibeZeile("t");
 		else
 			schreibeZeile("f");
+		schreibeZeile((artikel.getIstPackung() ? "t" : "f") + "");
+		if (artikel.getIstPackung()) {
+			Massengutartikel artikel_1 = (Massengutartikel) artikel;
+			schreibeZeile(artikel_1.getPackungsGroesse() + "");
+		}
 
 		return true;
 	}
@@ -114,7 +128,7 @@ public class FilePersistenceManager implements PersistenceManager {
 		String land = liesZeile();
 		Adresse adresse = new Adresse(strassenName, hausNr, plz, ort, land);
 		Kunde kunde = new Kunde(kndNr, name, vorName, nutzerNr, password, adresse);
-		
+
 		return kunde;
 	}
 
@@ -129,7 +143,7 @@ public class FilePersistenceManager implements PersistenceManager {
 		schreibeZeile(kunde.getAdresse().getPlz());
 		schreibeZeile(kunde.getAdresse().getOrt());
 		schreibeZeile(kunde.getAdresse().getLand());
-		
+
 		return true;
 	}
 
@@ -159,7 +173,8 @@ public class FilePersistenceManager implements PersistenceManager {
 	}
 
 	// Verlauf
-	public Verlauf ladeVerlauf(ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt) throws IOException, ArtikelExistiertNichtException, ParseException {
+	public Verlauf ladeVerlauf(ArtikelVerwaltung art, KundeVerwaltung kd, MitarbeiterVerwaltung mt)
+			throws IOException, ArtikelExistiertNichtException, ParseException {
 		String aktionS = liesZeile();
 		if (aktionS == null) {
 			return null;
@@ -169,15 +184,14 @@ public class FilePersistenceManager implements PersistenceManager {
 			String artikelName = liesZeile();
 			DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 			Date date = format.parse(liesZeile());
- 
 			Artikel artikel = art.sucheArtikel(artikelName);
-			int aenderungsMenge= Integer.parseInt(liesZeile());
+			int aenderungsMenge = Integer.parseInt(liesZeile());
 
 			Nutzer nutzer = null;
 			if (kd.sucheKunde(nutzerName) != null) {
 				nutzer = kd.sucheKunde(nutzerName);
-			} 
-			
+			}
+
 			else if (mt.sucheMitarbeiter(nutzerName) != null) {
 				nutzer = mt.sucheMitarbeiter(nutzerName);
 			}
@@ -192,7 +206,7 @@ public class FilePersistenceManager implements PersistenceManager {
 		schreibeZeile(verlauf.getArtikel().getName());
 		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		schreibeZeile(format.format(verlauf.getDate()));
-		schreibeZeile(verlauf.getAenderungsMenge()+"");
+		schreibeZeile(verlauf.getAenderungsMenge() + "");
 
 		return true;
 	}

@@ -5,9 +5,16 @@ import entities.Artikel;
 public class NichtGenugArtikelVorhandenException extends Exception {
 
 	public NichtGenugArtikelVorhandenException(Artikel art) {
-		super("Die gewählte Menge von den " + art.getName()
-				+ " ist leider nicht vorhanden oder die Artikel ist Ausverkauft. Sie können max. " + art.getBestand()
-				+ " Stück wählen");
+		super("Die gewï¿½hlte Menge von den " + art.getName()
+				+ " ist leider nicht vorhanden oder die Artikel ist Ausverkauft. Sie kï¿½nnen max. " + art.getBestand()
+				+ " Stï¿½ck wï¿½hlen");
+
+	}
+	
+	public NichtGenugArtikelVorhandenException(int anzahl, Artikel art) {
+		super("Die gewï¿½hlte Menge von den " + art.getName()
+				+ " ist leider nicht vorhanden oder die Artikel ist Ausverkauft. Sie kï¿½nnen max. " + (art.getBestand()-anzahl)
+				+ " Stï¿½ck wï¿½hlen");
 
 	}
 

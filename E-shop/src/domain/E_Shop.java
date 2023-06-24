@@ -6,6 +6,7 @@ import java.util.List;
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
+import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import domain.exceptions.KundeUsernameIstbenutztException;
 import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
@@ -16,6 +17,7 @@ import entities.Adresse;
 import entities.Artikel;
 import entities.Bestellung;
 import entities.Kunde;
+import entities.Massengutartikel;
 import entities.Mitarbeiter;
 import entities.Nutzer;
 import entities.Rechnung;
@@ -34,7 +36,7 @@ public class E_Shop {
 	private VerlaufsVerwaltung verlaufVW;
 	private String datei = "";
 
-	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException, ParseException {
+	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException, ParseException, BestandPasstNichtMitPackungsGroesseException {
 
 		this.datei = datei;
 		artikelVW = new ArtikelVerwaltung();
@@ -59,21 +61,32 @@ public class E_Shop {
 		return artikelVW.sucheArtikel(name);
 	}
 
-	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis)
-			throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException {
+//	public Artikel fuegeArtikelEin(String name, String beschreibung, int bestand, double preis, boolean istPackung)
+//			throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException {
+//
+//		Artikel artikel = new Artikel(name, beschreibung, bestand, preis, istPackung);
+//		artikelVW.fugeArtikelEin(artikel);
+//		return artikel;
+//	}
+	
 
-		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
-		artikelVW.fugeArtikelEin(artikel);
-		return artikel;
-	}
-
-	public Artikel fuegeArtikelEin(Mitarbeiter mitarbeiter, String name, String beschreibung, int bestand, double preis)
-			throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException {
+	public Artikel fuegeArtikelEin(Mitarbeiter mitarbeiter, String name, String beschreibung, int bestand, double preis, boolean istPackung)
+			throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
 		
-		Artikel artikel = new Artikel(name, beschreibung, bestand, preis);
+		Artikel artikel = new Artikel(name, beschreibung, bestand, preis, istPackung);
 		artikelVW.fugeArtikelEin(artikel);
 		verlaufVW.addVerlauf(AKTIONSTYP.Neue, mitarbeiter, artikel, bestand);
 
+		return artikel;
+	}
+	
+	public Artikel fuegeMassenArtikelEin(Mitarbeiter mitarbeiter, String name, String beschreibung, int bestand, double preis, boolean istPackung, int packungsGroesse)
+			throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+
+		Massengutartikel artikel = new Massengutartikel(name, beschreibung, bestand, preis, istPackung,packungsGroesse );
+		verlaufVW.addVerlauf(AKTIONSTYP.Neue, mitarbeiter, artikel, bestand);
+		artikelVW.fugeArtikelEin(artikel);
+		
 		return artikel;
 	}
 
@@ -88,7 +101,7 @@ public class E_Shop {
 	}
 
 	public Artikel erhoeheArtikelBestand(Mitarbeiter mitarbeiter, String name, int anzahl)
-			throws ArtikelExistiertNichtException {
+			throws ArtikelExistiertNichtException, BestandPasstNichtMitPackungsGroesseException {
 		
 		Artikel artikel = artikelVW.bestandErhoehen(name, anzahl);
 		
@@ -97,7 +110,7 @@ public class E_Shop {
 	}
 
 	public Artikel senkenArtikelBestand(Mitarbeiter mitarbeiter, String name, int anzahl)
-			throws ArtikelExistiertNichtException {
+			throws ArtikelExistiertNichtException, BestandPasstNichtMitPackungsGroesseException {
 		
 		Artikel artikel = artikelVW.bestandSenken(name, anzahl);
 		verlaufVW.addVerlauf(AKTIONSTYP.SENKEN, mitarbeiter, artikel, anzahl);
@@ -112,6 +125,19 @@ public class E_Shop {
 				System.out.println(artikel);
 			}
 		}
+	}
+	
+	public boolean checkMassengutatikel(Artikel artikel) throws ArtikelExistiertNichtException {
+		if(ArtikelVerwaltung.checkMassengutartikel(artikel)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public Massengutartikel artikelZuMassengeutartikel(Artikel artikel) throws ArtikelExistiertNichtException{
+		return ArtikelVerwaltung.artikelZuMassengutartikel(artikel);
 	}
 
 	public void schreibeArtikel() throws IOException {
@@ -195,12 +221,12 @@ public class E_Shop {
 
 	// Warenkorb
 
-	public void fuegeArtikelInkorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException {
+	public void fuegeArtikelInkorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
 		warenKorbVW.fuegeArtikelInKorbEin(kunde, art, anzahl);
 	}
 
 	public void entferneArtikelVomWarenkorb(Kunde kunde, Artikel art, int anzahl)
-			throws AnzahlIsNichtDefiniertException {
+			throws AnzahlIsNichtDefiniertException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
 		warenKorbVW.entferneArtikelKorbListe(kunde, art, anzahl);
 	}
 

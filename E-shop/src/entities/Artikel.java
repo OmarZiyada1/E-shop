@@ -11,6 +11,9 @@ public class Artikel {
 	private int bestand;
 	private double preis;
 	private boolean verfuegbar;
+	private boolean istPackung = false;
+
+	
 
 	/**
 	 * Konstruktor1 f�r die Klasse Artikel. Erzeugt einen Artikel mit den
@@ -22,12 +25,13 @@ public class Artikel {
 	 * @param bestand      der Bestand des Artikels
 	 * @param preis        der Preis des Artikels
 	 */
-	public Artikel(String name, String beschreibung, int bestand, double preis) {
+	public Artikel(String name, String beschreibung, int bestand, double preis, boolean istPackung) {
 		this.name = name;
 		this.beschreibung = beschreibung;
 		this.bestand = bestand;
 		this.preis = preis;
 		this.verfuegbar = true;
+		this.istPackung = istPackung;
 	}
 
 	/**
@@ -40,21 +44,15 @@ public class Artikel {
 	 * @param preis        der Preis des Artikels
 	 * @param verfuegbar   die Verf�gbarkeit des Artikels
 	 */
-	public Artikel(String name, String beschreibung, int bestand, double preis, boolean verfuegbar) {
-		this.name = name;
-		this.beschreibung = beschreibung;
-		this.bestand = bestand;
-		this.preis = preis;
-		this.verfuegbar = verfuegbar;
-	}
 	
-	public Artikel(int id, String name, String beschreibung, int bestand, double preis, boolean verfuegbar) {
+	public Artikel(int id, String name, String beschreibung, int bestand, double preis, boolean verfuegbar, boolean istPackung) {
 		this.artikelId= id;
 		this.name = name;
 		this.beschreibung = beschreibung;
 		this.bestand = bestand;
 		this.preis = preis;
 		this.verfuegbar = verfuegbar;
+		this.istPackung = istPackung;
 	}
 
 	/**
@@ -165,6 +163,18 @@ public class Artikel {
 		return preis;
 	}
 
+	
+	
+	
+	public boolean getIstPackung() {
+		return istPackung;
+	}
+
+	public void setIstPackung(boolean istPackung) {
+		this.istPackung = istPackung;
+	}
+	
+	
 	/**
 	 * �berpr�ft, ob der Artikel mit einem anderen Artikelobjekt identisch ist.
 	 * 
@@ -192,14 +202,14 @@ public class Artikel {
 
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-
 		builder.append("(ArtikelId = " + artikelId);
 		builder.append(", Name = " + name);
 		builder.append(", Beschreibung = " + beschreibung);
 		builder.append(", Bestand = " + bestand);
 		builder.append(", Preis = " + preis);
 		builder.append(", Verfügbarkeit = " + verfuegbar);
-		builder.append(")");
+		builder.append(", Massengutartikel = " + istPackung );
+		builder.append((istPackung ? "" : ")"));
 		builder.append("\n");
 
 		return builder.toString();

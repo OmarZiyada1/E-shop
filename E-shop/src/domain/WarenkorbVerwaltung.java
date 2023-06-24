@@ -1,11 +1,13 @@
 package domain;
 
 import java.util.HashMap;
-
 import domain.exceptions.AnzahlIsNichtDefiniertException;
+import domain.exceptions.ArtikelExistiertNichtException;
+import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
 import entities.Artikel;
 import entities.Kunde;
+import entities.Massengutartikel;
 import entities.Warenkorb;
 
 /**
@@ -21,19 +23,36 @@ public class WarenkorbVerwaltung {
 	 * @param kunde   Der Kunde, dem der Artikel hinzugef�gt wird.
 	 * @param artikel Der Artikel, der hinzugef�gt wird.
 	 * @param anzahl  Die Anzahl des Artikels.
-	 * @throws NichtGenugArtikelVorhandenException Wenn nicht gen�gend Artikel
-	 *                                             vorhanden sind.
+	 * @throws NichtGenugArtikelVorhandenException          Wenn nicht gen�gend
+	 *                                                      Artikel vorhanden sind.
+	 * @throws BestandPasstNichtMitPackungsGroesseException
+	 * @throws ArtikelExistiertNichtException 
 	 */
-	public void fuegeArtikelInKorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException {
+	public void fuegeArtikelInKorbEin(Kunde kunde, Artikel art, int anzahl)
+			throws NichtGenugArtikelVorhandenException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
 		int aktuelleMengeInWarenKorb = 0;
+
 		if (kunde.getKundeWarenkorb().getKorbArtikelListe().containsKey(art)) {
 			aktuelleMengeInWarenKorb = kunde.getKundeWarenkorb().getKorbArtikelListe().get(art);
-
+		}
+		if (ArtikelVerwaltung.checkMassengutartikel(art)) {
+			Massengutartikel art_M = ArtikelVerwaltung.artikelZuMassengutartikel(art);
+			if (ArtikelVerwaltung.CheckModulo(anzahl, art_M.getPackungsGroesse())) {
+				addOrNewArtikel(kunde, art_M, anzahl, aktuelleMengeInWarenKorb);
+			} else {
+				throw new BestandPasstNichtMitPackungsGroesseException(anzahl, art_M, "");
+			}
+		} else {
+			addOrNewArtikel(kunde, art, anzahl, aktuelleMengeInWarenKorb);
 		}
 
+	}
+
+	public void addOrNewArtikel(Kunde kunde, Artikel art, int anzahl, int aktuelleMengeInWarenKorb)
+			throws NichtGenugArtikelVorhandenException {
 		if (art.getBestand() - aktuelleMengeInWarenKorb >= anzahl) {
 
-			if (kunde.getKundeWarenkorb().getKorbArtikelListe().get(art) == null) {
+			if (aktuelleMengeInWarenKorb == 0) {
 				kunde.setKundeWarenkorb(art, anzahl);
 				updadteGesamtprise(kunde.getKundeWarenkorb().getKorbArtikelListe(), kunde);
 			} else {
@@ -42,9 +61,8 @@ public class WarenkorbVerwaltung {
 			}
 
 		} else {
-			throw new NichtGenugArtikelVorhandenException(art);
+			throw new NichtGenugArtikelVorhandenException(aktuelleMengeInWarenKorb, art);
 		}
-
 	}
 
 	/**
@@ -55,9 +73,27 @@ public class WarenkorbVerwaltung {
 	 * @param kunde  Der Kunde, dem der Artikel entfernt wird.
 	 * @param art    Der Artikel, der entfernt wird.
 	 * @param anzahl Die Anzahl des Artikels, die entfernt wird.
-	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
+	 * @throws AnzahlIsNichtDefiniertException              Wenn die Anzahl nicht
+	 *                                                      definiert ist.
+	 * @throws BestandPasstNichtMitPackungsGroesseException
+	 * @throws ArtikelExistiertNichtException 
 	 */
-	public void entferneArtikelKorbListe(Kunde kunde, Artikel art, int anzahl) throws AnzahlIsNichtDefiniertException {
+	public void entferneArtikelKorbListe(Kunde kunde, Artikel art, int anzahl)
+			throws AnzahlIsNichtDefiniertException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+		if (ArtikelVerwaltung.checkMassengutartikel(art)) {
+			Massengutartikel art_M = ArtikelVerwaltung.artikelZuMassengutartikel(art);
+			if (ArtikelVerwaltung.CheckModulo(anzahl, art_M.getPackungsGroesse())) {
+				verringereArtikel_wk(kunde, art_M, anzahl);
+			} else {
+				throw new BestandPasstNichtMitPackungsGroesseException(anzahl, art_M, "");
+			}
+
+		} else {
+			verringereArtikel_wk(kunde, art, anzahl);
+		}
+	}
+
+	public void verringereArtikel_wk(Kunde kunde, Artikel art, int anzahl) throws AnzahlIsNichtDefiniertException {
 		if (anzahl < kunde.getKundeWarenkorb().getKorbArtikelListe().get(art)) {
 			kunde.setKundeWarenkorb(art, kunde.getKundeWarenkorb().getKorbArtikelListe().get(art) - anzahl);
 			updadteGesamtprise(kunde.getKundeWarenkorb().getKorbArtikelListe(), kunde);
@@ -69,7 +105,6 @@ public class WarenkorbVerwaltung {
 		else {
 			throw new AnzahlIsNichtDefiniertException();
 		}
-
 	}
 
 	/**

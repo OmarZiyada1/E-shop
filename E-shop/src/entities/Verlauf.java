@@ -14,7 +14,7 @@ public class Verlauf {
 
 	private Date date = new Date();
 	DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-	String formatteddate = format.format(date);
+	String formatteddate;
 	private Nutzer nutzer;
 	private Artikel artikel;
 	private AKTIONSTYP aktion;
@@ -63,7 +63,7 @@ public class Verlauf {
 		this.nutzer = nutzer;
 		this.artikel = artikel;
 		this.aenderungsMenge=aenderungsMenge;
-
+		 this.formatteddate = format.format(date);
 	}
 	
 	
@@ -141,7 +141,7 @@ public class Verlauf {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("\nÄnderung:  ");
+		builder.append("\nï¿½nderung:  ");
 		builder.append(aktion.value);
 		builder.append(" Name: '");
 		builder.append(nutzer.getName());
@@ -151,10 +151,10 @@ public class Verlauf {
 		builder.append("'"+ artikel.getName()+"'");
 		builder.append(" ,am ");
 		builder.append(formatteddate);
-		builder.append(", geändert. ");
+		builder.append(", geï¿½ndert. ");
 		builder.append("Der Bestand des Artikels hat sich um  ");
 		builder.append(aenderungsMenge);
-		builder.append(" Stück geändert");
+		builder.append(" Stï¿½ck geï¿½ndert");
 
 		return builder.toString();
 	}
