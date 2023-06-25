@@ -17,7 +17,7 @@ import entities.Massengutartikel;
 import entities.Mitarbeiter;
 
 /**
- * 
+ * to
  * Diese Klasse verwaltet Artikel und bietet Funktionen zur Artikelverwaltung.
  */
 public class ArtikelVerwaltung {
