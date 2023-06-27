@@ -54,13 +54,13 @@ public class E_shop_CUI {
 	}
 
 	private void gibMitarbeiterMenueAus() {
-		System.out.print("Befehle: \n  Artikel ausgeben:  'a'");
-		System.out.print("         \n  Artikel l�schen: 'd'");
-		System.out.print("         \n  Artikel einf�gen: 'e'");
+		System.out.print("Befehle: \n  Artikel anzeigen:  'a'");
+		System.out.print("         \n  Artikel loeschen: 'd'");
+		System.out.print("         \n  Artikel einfuegen: 'e'");
 		System.out.print("         \n  Artikel suchen:  'f'");
 		System.out.print("         \n  Mitarbeiter regestrieren:  'm'");
 		System.out.print("         \n  Mitarbeiterliste anzeigen:  'l'");
-		System.out.print("         \n  Artikelbestand erh�hen:  'h'");
+		System.out.print("         \n  Artikelbestand erhoehen:  'h'");
 		System.out.print("         \n  Artikelbestand senken:  'w'");
 		System.out.print("         \n  Zeige Verlauf:  'v'");
 		System.out.print("         \n  Zeige Verlauf eines Artikel in den letzten 30 Tage:  'y'");
@@ -72,10 +72,10 @@ public class E_shop_CUI {
 	}
 
 	private void gibKundeMenueAus() {
-		System.out.print("Befehle: \n  Artikel ausgeben:  'a'");
+		System.out.print("Befehle: \n  Artikel anzeigen:  'a'");
 		System.out.print("         \n  Artikel suchen:  'f'");
 		System.out.print("         \n  Artikel in Warenkorb anlegen: 'd'");
-		System.out.print("         \n  Artikel St�ckzahl �ndern: 'c'");
+		System.out.print("         \n  Artikel Stueckzahl aendern: 'c'");
 		System.out.print("         \n  Warenkorb anzeigen: 'w'");
 
 		System.out.print("         \n  Warenkorb leeren: 'r'");
