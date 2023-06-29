@@ -7,6 +7,7 @@ import java.awt.Insets;
 import javax.swing.JTextField;
 
 import domain.E_Shop;
+import domain.exceptions.ArtikelExistiertNichtException;
 import gui.Index_Gui;
 
 import javax.swing.JLabel;
@@ -52,16 +53,12 @@ public class Login_Panel extends JPanel {
 	private void initGUI() {
 		setBackground(Color.DARK_GRAY);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 0, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.VERTICAL;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 0;
 		panel.setBackground(Color.DARK_GRAY);
 		add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
@@ -75,8 +72,6 @@ public class Login_Panel extends JPanel {
 		GridBagConstraints gbc_panel_title = new GridBagConstraints();
 		gbc_panel_title.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_title.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_title.gridx = 0;
-		gbc_panel_title.gridy = 0;
 		panel.add(panel_title, gbc_panel_title);
 		lbl_mainLogintitle.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lbl_mainLogintitle.setForeground(Color.ORANGE);
@@ -87,21 +82,15 @@ public class Login_Panel extends JPanel {
 		gbc_panel_form.anchor = GridBagConstraints.SOUTH;
 		gbc_panel_form.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_form.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel_form.gridx = 0;
 		gbc_panel_form.gridy = 1;
 		panel_form.setBackground(Color.DARK_GRAY);
 		panel.add(panel_form, gbc_panel_form);
 		GridBagLayout gbl_panel_form = new GridBagLayout();
-		gbl_panel_form.columnWidths = new int[] { 0, 0, 0 };
-		gbl_panel_form.rowHeights = new int[] { 0, 0, 0, 0 };
 		gbl_panel_form.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
 		gbl_panel_form.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panel_form.setLayout(gbl_panel_form);
-
 		GridBagConstraints gbc_rdbtn_Kunde = new GridBagConstraints();
 		gbc_rdbtn_Kunde.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtn_Kunde.gridx = 0;
-		gbc_rdbtn_Kunde.gridy = 0;
 		buttonGroup.add(rdbtn_Kunde);
 		rdbtn_Kunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -115,7 +104,6 @@ public class Login_Panel extends JPanel {
 		GridBagConstraints gbc_rdbtnMitarbeiter = new GridBagConstraints();
 		gbc_rdbtnMitarbeiter.insets = new Insets(0, 0, 5, 0);
 		gbc_rdbtnMitarbeiter.gridx = 1;
-		gbc_rdbtnMitarbeiter.gridy = 0;
 		buttonGroup.add(rdbtnMitarbeiter);
 		rdbtnMitarbeiter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,7 +146,12 @@ public class Login_Panel extends JPanel {
 		panel_btns.add(btn_registrieren);
 		btn_login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				do_btn_login_actionPerformed(e);
+				try {
+					do_btn_login_actionPerformed(e);
+				} catch (ArtikelExistiertNichtException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -183,9 +176,9 @@ public class Login_Panel extends JPanel {
 
 	}
 
-	protected void do_btn_login_actionPerformed(ActionEvent e) {
+	protected void do_btn_login_actionPerformed(ActionEvent e) throws ArtikelExistiertNichtException {
 		if (rdbtnMitarbeiter.isSelected()) {
-
+			
 			switchSidePanel.removeAll();
 			GridBagConstraints gbc_mMenue_Panel = new GridBagConstraints();
 			gbc_mMenue_Panel.ipady = 10;
@@ -193,6 +186,14 @@ public class Login_Panel extends JPanel {
 			switchSidePanel.setLayout(new BoxLayout(switchSidePanel, BoxLayout.Y_AXIS));
 			switchSidePanel.add(new Mitarbeiter_Menue(switchSidePanel, shop), gbc_mMenue_Panel);
 			switchSidePanel.validate();
-		} 
+			
+			
+			switchMainPanel.removeAll();
+			GridBagConstraints gbc_login_Panel = new GridBagConstraints();
+			gbc_login_Panel.fill = GridBagConstraints.BOTH;
+			switchMainPanel.add(new ArtikelAnzeige(switchMainPanel, this.shop), gbc_login_Panel);
+			switchMainPanel.validate();
+			
+		}
 	}
 }

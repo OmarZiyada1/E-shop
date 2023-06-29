@@ -22,7 +22,7 @@ import entities.Mitarbeiter;
  */
 public class ArtikelVerwaltung {
 
-	private List<Artikel> artikelListe = new Vector<>(); // list mit alle eingef�gte Artikeln
+	private Vector<Artikel> artikelListe = new Vector<>(); // list mit alle eingef�gte Artikeln
 
 	private PersistenceManager pm = new FilePersistenceManager();
 
@@ -278,7 +278,7 @@ public class ArtikelVerwaltung {
 	 * 
 	 * @return Die Liste von unsere Artikeln.
 	 **/
-	public List<Artikel> getArtikelListe() {
+	public Vector<Artikel> getArtikelListe() {
 		return new Vector<>(artikelListe);
 	}
 }

@@ -20,6 +20,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.EmptyBorder;
 import java.awt.Dimension;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JButton;
 
 public class Mitarbeiter_Menue extends JPanel {
 	private final JPanel panel_mitarbeiterMenueContainer = new JPanel();
@@ -30,10 +31,20 @@ public class Mitarbeiter_Menue extends JPanel {
 	private final JScrollPane scrollPane = new JScrollPane();
 	private final JPanel panel_ma_child1 = new JPanel();
 	private final JPanel panel_design_row1 = new JPanel();
-	private final JLabel lbl_artikelnAnzeigen = new JLabel("Artikeln anzeigen");
+	private  JLabel lbl_artikelnAnzeigen ;
 	private final JLabel lbl_helloName = new JLabel("Hallo Joe");
 	private JPanel switcherPanel;
 	private E_Shop shop;
+	private final JButton btn_artilkelnAnzeigen = new JButton("Artikeln Anzeigen");
+	private final JButton btn_loeschen = new JButton("Artikel loeschen");
+	private final JButton btn_einfuegen = new JButton("Artikel einfuegen");
+	private final JButton btn_suchen = new JButton("Artikel suchen");
+	private final JButton btn_regestrieren = new JButton("Mitarbeiter regestrieren");
+	private final JButton btn_MitarbeiterlisteAnzeigen = new JButton("Mitarbeiterliste anzeigen");
+	private final JButton btn_ArtikelbestandErhoehen = new JButton("Artikelbestand erhoehen");
+	private final JButton btn_ArtikelbestandSenken = new JButton("Artikelbestand senken");
+	private final JButton btn_ZeigeVerlauf = new JButton("Zeige Verlauf");
+	private final JButton btn_30TageVerlauf = new JButton("30Tage Verlauf");
 
 	/**
 	 * Create the panel.
@@ -46,7 +57,6 @@ public class Mitarbeiter_Menue extends JPanel {
 	}
 
 	private void initGUI() {
-		setForeground(Color.DARK_GRAY);
 		setBackground(Color.DARK_GRAY);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 120, 0 };
@@ -89,54 +99,88 @@ public class Mitarbeiter_Menue extends JPanel {
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 0;
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_mitarbeiterMenue.add(scrollPane, gbc_scrollPane);
 		panel_menue.setForeground(Color.DARK_GRAY);
 		panel_menue.setBackground(Color.DARK_GRAY);
 		scrollPane.setViewportView(panel_menue);
 		GridBagLayout gbl_panel_menue = new GridBagLayout();
 		gbl_panel_menue.columnWidths = new int[] { 149, 0 };
-		gbl_panel_menue.rowHeights = new int[] { 20, 0 };
+		gbl_panel_menue.rowHeights = new int[] { 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_panel_menue.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel_menue.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
+		gbl_panel_menue.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panel_menue.setLayout(gbl_panel_menue);
+		
+		GridBagConstraints gbc_btn_artilkelnAnzeigen = new GridBagConstraints();
+		gbc_btn_artilkelnAnzeigen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btn_artilkelnAnzeigen.insets = new Insets(0, 0, 5, 0);
+		gbc_btn_artilkelnAnzeigen.gridx = 0;
+		gbc_btn_artilkelnAnzeigen.gridy = 0;
+		panel_menue.add(btn_artilkelnAnzeigen, gbc_btn_artilkelnAnzeigen);
+		
+		GridBagConstraints gbc_btn_loeschen = new GridBagConstraints();
+		gbc_btn_loeschen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btn_loeschen.insets = new Insets(0, 0, 5, 0);
+		gbc_btn_loeschen.gridx = 0;
+		gbc_btn_loeschen.gridy = 1;
+		panel_menue.add(btn_loeschen, gbc_btn_loeschen);
+		
+		GridBagConstraints gbc_btn_einfuegen = new GridBagConstraints();
+		gbc_btn_einfuegen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btn_einfuegen.insets = new Insets(0, 0, 5, 0);
+		gbc_btn_einfuegen.gridx = 0;
+		gbc_btn_einfuegen.gridy = 2;
+		panel_menue.add(btn_einfuegen, gbc_btn_einfuegen);
+		
+		GridBagConstraints gbc_btn_suchen = new GridBagConstraints();
+		gbc_btn_suchen.insets = new Insets(0, 0, 5, 0);
+		gbc_btn_suchen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btn_suchen.gridx = 0;
+		gbc_btn_suchen.gridy = 3;
+		panel_menue.add(btn_suchen, gbc_btn_suchen);
+		
+		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
+		gbc_btnNewButton_4.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton_4.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton_4.gridx = 0;
+		gbc_btnNewButton_4.gridy = 4;
+		panel_menue.add(btn_regestrieren, gbc_btnNewButton_4);
+		
+		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
+		gbc_btnNewButton_5.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton_5.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton_5.gridx = 0;
+		gbc_btnNewButton_5.gridy = 5;
+		panel_menue.add(btn_MitarbeiterlisteAnzeigen, gbc_btnNewButton_5);
+		
+		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
+		gbc_btnNewButton_6.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton_6.gridx = 0;
+		gbc_btnNewButton_6.gridy = 6;
+		panel_menue.add(btn_ArtikelbestandErhoehen, gbc_btnNewButton_6);
+		
+		GridBagConstraints gbc_btnNewButton_7 = new GridBagConstraints();
+		gbc_btnNewButton_7.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton_7.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton_7.gridx = 0;
+		gbc_btnNewButton_7.gridy = 7;
+		panel_menue.add(btn_ArtikelbestandSenken, gbc_btnNewButton_7);
+		
+		GridBagConstraints gbc_btnNewButton_8 = new GridBagConstraints();
+		gbc_btnNewButton_8.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton_8.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton_8.gridx = 0;
+		gbc_btnNewButton_8.gridy = 8;
+		panel_menue.add(btn_ZeigeVerlauf, gbc_btnNewButton_8);
+		
+		GridBagConstraints gbc_btn_ = new GridBagConstraints();
+		gbc_btn_.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btn_.gridx = 0;
+		gbc_btn_.gridy = 9;
+		panel_menue.add(btn_30TageVerlauf, gbc_btn_);
 		panel_ma_child1.setBackground(Color.DARK_GRAY);
 
-		// children
 
-		for (int i = 0; i < shop.mitarbeiterMenue().size(); i++) {
-			
-
-			GridBagConstraints gbc_panel_ma_child1 = new GridBagConstraints();
-			gbc_panel_ma_child1.fill = GridBagConstraints.BOTH;
-			panel_menue.add(panel_ma_child1, gbc_panel_ma_child1);
-			GridBagLayout gbl_panel_ma_child1 = new GridBagLayout();
-			gbl_panel_ma_child1.columnWidths = new int[] { 14, 45, 0 };
-			gbl_panel_ma_child1.rowHeights = new int[] { 13, 0 };
-			gbl_panel_ma_child1.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-			gbl_panel_ma_child1.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-			panel_ma_child1.setLayout(gbl_panel_ma_child1);
-		}
-
-		GridBagConstraints gbc_panel_design_row1 = new GridBagConstraints();
-		gbc_panel_design_row1.fill = GridBagConstraints.BOTH;
-		gbc_panel_design_row1.insets = new Insets(0, 0, 0, 5);
-		panel_design_row1.setForeground(Color.ORANGE);
-		panel_design_row1.setBorder(null);
-		panel_design_row1.setBackground(Color.ORANGE);
-		panel_ma_child1.add(panel_design_row1, gbc_panel_design_row1);
-		GridBagLayout gbl_panel_design_row1 = new GridBagLayout();
-		gbl_panel_design_row1.columnWidths = new int[] { 0 };
-		gbl_panel_design_row1.rowHeights = new int[] { 0 };
-		gbl_panel_design_row1.columnWeights = new double[] { Double.MIN_VALUE };
-		gbl_panel_design_row1.rowWeights = new double[] { Double.MIN_VALUE };
-		panel_design_row1.setLayout(gbl_panel_design_row1);
-
-		GridBagConstraints gbc_lbl_artikelnAnzeigen = new GridBagConstraints();
-		gbc_lbl_artikelnAnzeigen.fill = GridBagConstraints.BOTH;
-		lbl_artikelnAnzeigen.setForeground(Color.WHITE);
-		lbl_artikelnAnzeigen.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panel_ma_child1.add(lbl_artikelnAnzeigen, gbc_lbl_artikelnAnzeigen);
 	}
 
 }

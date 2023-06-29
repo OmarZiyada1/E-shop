@@ -133,9 +133,9 @@ public class Index_Gui extends JFrame {
 
 		contentPane.add(panel_sideNavbar, BorderLayout.WEST);
 		GridBagLayout gbl_panel_sideNavbar = new GridBagLayout();
-		gbl_panel_sideNavbar.columnWidths = new int[] { 122, 0 };
+		gbl_panel_sideNavbar.columnWidths = new int[] { 188, 0 };
 		gbl_panel_sideNavbar.rowHeights = new int[] { 93, 34, 0, 0 };
-		gbl_panel_sideNavbar.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gbl_panel_sideNavbar.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
 		gbl_panel_sideNavbar.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		panel_sideNavbar.setLayout(gbl_panel_sideNavbar);
 

@@ -3,6 +3,8 @@ package domain;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Vector;
+
 import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
@@ -53,7 +55,7 @@ public class E_Shop {
 	}
 
 	// Artikel Methoden
-	public List<Artikel> gibAlleArtikeln() {
+	public Vector<Artikel> gibAlleArtikeln() {
 		return artikelVW.getArtikelListe();
 	}
 
