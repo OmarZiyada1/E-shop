@@ -175,7 +175,9 @@ public class E_Shop {
 		kundeVW.schreibeDaten(datei+"_Kunde.txt");
 	}
 	// Mitarbeiter Methoden
-
+	public List<String> mitarbeiterMenue() {
+	return	mitarbeiterVW.mitarbeiterMenue();
+	}
 	public void mitarbeiterEinfuegen(String name, String vorName, String nutzerName, String passwort)
 			throws MitarbeiterUsernameIstBenutztException {
 

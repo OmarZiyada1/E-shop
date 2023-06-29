@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 
+import domain.E_Shop;
 import gui.Index_Gui;
 
 import javax.swing.JLabel;
@@ -17,6 +18,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 
 public class Login_Panel extends JPanel {
@@ -29,21 +31,23 @@ public class Login_Panel extends JPanel {
 	private final JPanel panel_form = new JPanel();
 	private final JTextField textField = new JTextField();
 	private final JTextField textField_1 = new JTextField();
-	private JPanel switchPanel;
+	private JPanel switchMainPanel;
+	private JPanel switchSidePanel;
 	private final JRadioButton rdbtn_Kunde = new JRadioButton("Kunde");
 	private final JRadioButton rdbtnMitarbeiter = new JRadioButton("Mitarbeiter");
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private E_Shop shop;
 
 	/**
 	 * Create the panel.
 	 */
-	public Login_Panel(JPanel sp) {
-		this.switchPanel = sp;
+	public Login_Panel(JPanel switchMainPanel, JPanel switchSidePanel, E_Shop shop) {
+		this.shop = shop;
+		this.switchMainPanel = switchMainPanel;
+		this.switchSidePanel = switchSidePanel;
 		initGUI();
 
 	}
-
-	
 
 	private void initGUI() {
 		setBackground(Color.DARK_GRAY);
@@ -93,7 +97,7 @@ public class Login_Panel extends JPanel {
 		gbl_panel_form.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
 		gbl_panel_form.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panel_form.setLayout(gbl_panel_form);
-		
+
 		GridBagConstraints gbc_rdbtn_Kunde = new GridBagConstraints();
 		gbc_rdbtn_Kunde.insets = new Insets(0, 0, 5, 5);
 		gbc_rdbtn_Kunde.gridx = 0;
@@ -107,7 +111,7 @@ public class Login_Panel extends JPanel {
 		rdbtn_Kunde.setForeground(Color.WHITE);
 		rdbtn_Kunde.setBackground(Color.DARK_GRAY);
 		panel_form.add(rdbtn_Kunde, gbc_rdbtn_Kunde);
-		
+
 		GridBagConstraints gbc_rdbtnMitarbeiter = new GridBagConstraints();
 		gbc_rdbtnMitarbeiter.insets = new Insets(0, 0, 5, 0);
 		gbc_rdbtnMitarbeiter.gridx = 1;
@@ -152,23 +156,43 @@ public class Login_Panel extends JPanel {
 		});
 
 		panel_btns.add(btn_registrieren);
+		btn_login.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				do_btn_login_actionPerformed(e);
+			}
+		});
 
 		panel_btns.add(btn_login);
 	}
 
 	protected void do_btn_registrieren_actionPerformed(ActionEvent e) {
-		switchPanel.removeAll();
+		switchMainPanel.removeAll();
 		GridBagConstraints gbc_login_Panel = new GridBagConstraints();
 		gbc_login_Panel.fill = GridBagConstraints.BOTH;
-		switchPanel.add(new Registrieren_Panel(switchPanel), gbc_login_Panel);
-		switchPanel.validate();
-		
+		switchMainPanel.add(new Registrieren_Panel(switchMainPanel, switchSidePanel, this.shop), gbc_login_Panel);
+		switchMainPanel.validate();
+
 	}
+
 	protected void do_rdbtnMitarbeiter_actionPerformed(ActionEvent e) {
 		btn_registrieren.setVisible(false);
 	}
+
 	protected void do_rdbtn_Kunde_actionPerformed(ActionEvent e) {
 		btn_registrieren.setVisible(true);
 
+	}
+
+	protected void do_btn_login_actionPerformed(ActionEvent e) {
+		if (rdbtnMitarbeiter.isSelected()) {
+
+			switchSidePanel.removeAll();
+			GridBagConstraints gbc_mMenue_Panel = new GridBagConstraints();
+			gbc_mMenue_Panel.ipady = 10;
+			gbc_mMenue_Panel.fill = GridBagConstraints.BOTH;
+			switchSidePanel.setLayout(new BoxLayout(switchSidePanel, BoxLayout.Y_AXIS));
+			switchSidePanel.add(new Mitarbeiter_Menue(switchSidePanel, shop), gbc_mMenue_Panel);
+			switchSidePanel.validate();
+		} 
 	}
 }

@@ -1,7 +1,7 @@
 package domain;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -9,7 +9,6 @@ import java.util.Vector;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
-import entities.Artikel;
 import entities.Mitarbeiter;
 import persistence.FilePersistenceManager;
 import persistence.PersistenceManager;
@@ -22,9 +21,24 @@ public class MitarbeiterVerwaltung {
 
 	public List<Mitarbeiter> list_Mitarbeiter = new Vector<Mitarbeiter>(); // list mit alle regestrierte Mitarbeiter
 	private PersistenceManager pm = new FilePersistenceManager();
+	private List<String> mitarbeiterMenue= new ArrayList<>();
+
+	public List<String> mitarbeiterMenue(){
+		mitarbeiterMenue.add("Artikel anzeigen");
+		mitarbeiterMenue.add("Artikel loeschen");
+		mitarbeiterMenue.add("Artikel einfuegen");
+		mitarbeiterMenue.add("Artikel suchen");
+		mitarbeiterMenue.add("Mitarbeiter regestrieren");
+		mitarbeiterMenue.add(" Mitarbeiterliste anzeigen");
+		mitarbeiterMenue.add("Artikelbestand erhoehen");
+		mitarbeiterMenue.add("Artikelbestand senken");
+		mitarbeiterMenue.add("Zeige Verlauf");
+		mitarbeiterMenue.add("30Tage Verlauf");
+		return this.mitarbeiterMenue;
+	}
 
 	/*
-	 * Gibt die Liste der Mitarbeiter zurück.*
+	 * Gibt die Liste der Mitarbeiter zurï¿½ck.*
 	 * 
 	 * @return Die Liste der Mitarbeiter.
 	 **/
@@ -54,9 +68,9 @@ public class MitarbeiterVerwaltung {
 	}
 
 	/**
-	 * Fügt einen neuen Mitarbeiter zur Liste hinzu.*
+	 * Fï¿½gt einen neuen Mitarbeiter zur Liste hinzu.*
 	 * 
-	 * @param mitarbeiter Der hinzuzufügende Mitarbeiter.
+	 * @param mitarbeiter Der hinzuzufï¿½gende Mitarbeiter.
 	 * @throws MitarbeiterUsernameIstBenutztException Wenn die Mitarbeiter bereits
 	 *                                                verwendet wird.
 	 */
@@ -77,9 +91,9 @@ public class MitarbeiterVerwaltung {
 
 	/**
 	 * 
-	 * Generiert eine Mitarbeiter-ID für den übergebenen Mitarbeiter.*
+	 * Generiert eine Mitarbeiter-ID fï¿½r den ï¿½bergebenen Mitarbeiter.*
 	 * 
-	 * @param mitarbeiter Der Mitarbeiter, für den eine ID generiert werden soll.
+	 * @param mitarbeiter Der Mitarbeiter, fï¿½r den eine ID generiert werden soll.
 	 */
 
 	private void generateMitarbeiterId(Mitarbeiter mitarbeiter) {
@@ -104,7 +118,7 @@ public class MitarbeiterVerwaltung {
 
 	public Mitarbeiter mitarbeiterEinloggen(String nutzerName, String passwort)
 			throws NutzernameOderPasswortFalschException {
-		// TODO: Implementiere die Methode "einloggen" für den Nutzer.
+		// TODO: Implementiere die Methode "einloggen" fï¿½r den Nutzer.
 		Iterator<Mitarbeiter> iter = list_Mitarbeiter.iterator();
 
 		Mitarbeiter mitarbeiter = null;

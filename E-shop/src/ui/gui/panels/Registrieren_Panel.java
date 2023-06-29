@@ -8,6 +8,9 @@ import java.awt.Insets;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+
+import domain.E_Shop;
+
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
@@ -41,22 +44,19 @@ public class Registrieren_Panel extends JPanel {
 	private final JLabel lbl_HausNr = new JLabel("HausNr.");
 	private final JLabel lbl_Ort = new JLabel("Ort");
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JPanel switchPanel;
+	private JPanel switchMainPanel;
+	private JPanel switchSidePanel;
+	
+	
+	//eshop
+	private E_Shop shop;
 
 	/**
 	 * Create the panel.
 	 */
-	public Registrieren_Panel(JPanel sp) {
-		this.switchPanel= sp;
-		textField_Password.setColumns(10);
-		textField_UserName.setColumns(10);
-		textField_Ort.setColumns(10);
-		textField_Plz.setColumns(10);
-		textField_HausNr.setColumns(10);
-		textField_Strasse.setColumns(10);
-		textField_Vorname.setColumns(10);
-		textField_Name.setToolTipText("");
-		textField_Name.setColumns(10);
+	public Registrieren_Panel(JPanel switchMainPanel, JPanel switchSidePanel, E_Shop shop) {
+		this.switchMainPanel= switchMainPanel;
+		this.shop=shop;
 
 		initGUI();
 	}
@@ -271,10 +271,10 @@ public class Registrieren_Panel extends JPanel {
 	}
 
 	protected void do_btn_login_actionPerformed(ActionEvent e) {
-		switchPanel.removeAll();
+		switchMainPanel.removeAll();
 		GridBagConstraints gbc_login_Panel = new GridBagConstraints();
 		gbc_login_Panel.fill = GridBagConstraints.BOTH;
-		switchPanel.add(new Login_Panel(switchPanel), gbc_login_Panel);
-		switchPanel.validate();
+		switchMainPanel.add(new Login_Panel(switchMainPanel, switchSidePanel, this.shop), gbc_login_Panel);
+		switchMainPanel.validate();
 	}
 }
