@@ -175,7 +175,7 @@ public class Index_Gui extends JFrame {
 		txtarea_begruessungNachricht.setBackground(Color.DARK_GRAY);
 		txtarea_begruessungNachricht.setEditable(false);
 		txtarea_begruessungNachricht.setWrapStyleWord(true);
-		txtarea_begruessungNachricht.setText("New label New label\r\nNew label New labelNew label\r\nNew label");
+		txtarea_begruessungNachricht.setText("Schön, dass Sie unseren E-Shop\r\nbesuchen! Tauchen Sie ein in eine Welt \r\nvoller spannender Produkte und \r\nprofitieren Sie von unseren \r\nattraktivenAngeboten. \r\nViel Spaß beim Stöbern!");
 
 		panel_begrüßungNachricht.add(txtarea_begruessungNachricht, gbc_txtarea_begruessungNachricht);
 		panel_main.setBackground(new Color(255, 128, 0));

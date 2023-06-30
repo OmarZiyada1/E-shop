@@ -6,6 +6,8 @@ import javax.swing.JTextField;
 import domain.E_Shop;
 import entities.Artikel;
 public class AddArtikel extends JPanel{
+	public AddArtikel() {
+	}
 	
 	
 	public interface AddArticleListener {

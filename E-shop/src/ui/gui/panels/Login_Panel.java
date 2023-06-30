@@ -184,7 +184,7 @@ public class Login_Panel extends JPanel {
 			gbc_mMenue_Panel.ipady = 10;
 			gbc_mMenue_Panel.fill = GridBagConstraints.BOTH;
 			switchSidePanel.setLayout(new BoxLayout(switchSidePanel, BoxLayout.Y_AXIS));
-			switchSidePanel.add(new Mitarbeiter_Menue(switchSidePanel, shop), gbc_mMenue_Panel);
+			switchSidePanel.add(new Mitarbeiter_SideNavebar_Panel(switchSidePanel, shop), gbc_mMenue_Panel);
 			switchSidePanel.validate();
 			
 			

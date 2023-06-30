@@ -22,7 +22,7 @@ import java.awt.Dimension;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
 
-public class Mitarbeiter_Menue extends JPanel {
+public class Mitarbeiter_SideNavebar_Panel extends JPanel {
 	private final JPanel panel_mitarbeiterMenueContainer = new JPanel();
 	private final JPanel panel_hallo = new JPanel();
 	private final JSeparator separator = new JSeparator();
@@ -49,7 +49,7 @@ public class Mitarbeiter_Menue extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Mitarbeiter_Menue(JPanel sPanel, E_Shop shop) {
+	public Mitarbeiter_SideNavebar_Panel(JPanel sPanel, E_Shop shop) {
 		this.shop = shop;
 		this.switcherPanel = sPanel;
 		initGUI();
