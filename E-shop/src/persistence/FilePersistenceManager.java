@@ -188,13 +188,15 @@ public class FilePersistenceManager implements PersistenceManager {
 			int aenderungsMenge = Integer.parseInt(liesZeile());
 
 			Nutzer nutzer = null;
-			if (kd.sucheKunde(nutzerName) != null) {
-				nutzer = kd.sucheKunde(nutzerName);
-			}
-
-			else if (mt.sucheMitarbeiter(nutzerName) != null) {
-				nutzer = mt.sucheMitarbeiter(nutzerName);
-			}
+//			if (kd.sucheKunde(nutzerName) != null) {
+//				nutzer = kd.sucheKunde(nutzerName);
+//			}
+//
+//			else if (mt.sucheMitarbeiter(nutzerName) != null) {
+//				nutzer = mt.sucheMitarbeiter(nutzerName);
+//			}
+			//!
+			nutzer= (kd.sucheKunde(nutzerName) != null ? kd.sucheKunde(nutzerName): mt.sucheMitarbeiter(nutzerName));
 			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, date, aenderungsMenge);
 			return verlauf;
 		}

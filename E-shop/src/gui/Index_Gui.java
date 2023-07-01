@@ -11,6 +11,7 @@ import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import domain.exceptions.MitarbeiterUsernameIstBenutztException;
+import ui.gui.panels.BegruessungPanel;
 import ui.gui.panels.Login_Panel;
 
 import javax.swing.JLabel;
@@ -28,28 +29,26 @@ import javax.swing.JSeparator;
 
 import javax.swing.JTextArea;
 import java.awt.Font;
+import net.miginfocom.swing.MigLayout;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class Index_Gui extends JFrame {
 
 	private JPanel contentPane;
-	private final JPanel panel_header = new JPanel();
-	private final JPanel panel_logoContainer = new JPanel();
-	private final JPanel panel_header_nav = new JPanel();
-	private final JLabel lbl_logoImg = new JLabel("img");
-	private final JLabel lblNewLabel_1 = new JLabel("SAZ Shop");
-	private final JPanel panel_sideNavbar = new JPanel();
-	private final JPanel panel_logoImgSidenavbar = new JPanel();
-	private final JSeparator separator = new JSeparator();
-	private final JPanel panel_begrüßungNachricht = new JPanel();
-	private final JLabel lblNewLabel = new JLabel("img");
-	private final JTextArea txtarea_begruessungNachricht = new JTextArea();
-	public final JPanel panel_main = new JPanel();
-
-	// panels
-	private Login_Panel login_Panel;
+	private JPanel panel_header = new JPanel();
+	private JPanel panel_logoContainer = new JPanel();
+	private JPanel panel_header_nav = new JPanel();
+	private JLabel lbl_logoImg = new JLabel("img");
+	private JLabel lblNewLabel_1 = new JLabel("SAZ Shop");
+	private JPanel panel_sideNavbar = new JPanel();
+	public JPanel panel_main = new JPanel();
 
 	// e-shop
-	public  E_Shop e_shop;
+	public E_Shop e_shop;
+	private JPanel panel_northMain = new JPanel();
+	private JPanel panel_centerMain = new JPanel();
+	private JPanel panel_southMain = new JPanel();
 
 	/**
 	 * Launch the application.
@@ -80,7 +79,7 @@ public class Index_Gui extends JFrame {
 	public Index_Gui(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException,
 			MitarbeiterUsernameIstBenutztException, ParseException, BestandPasstNichtMitPackungsGroesseException {
 		this.e_shop = new E_Shop(datei);
-		
+
 		initGUI();
 	}
 
@@ -138,61 +137,33 @@ public class Index_Gui extends JFrame {
 		gbl_panel_sideNavbar.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
 		gbl_panel_sideNavbar.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		panel_sideNavbar.setLayout(gbl_panel_sideNavbar);
-
-		GridBagConstraints gbc_panel_logoImgSidenavbar = new GridBagConstraints();
-		gbc_panel_logoImgSidenavbar.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_logoImgSidenavbar.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel_logoImgSidenavbar.gridx = 0;
-		gbc_panel_logoImgSidenavbar.gridy = 0;
-		panel_sideNavbar.add(panel_logoImgSidenavbar, gbc_panel_logoImgSidenavbar);
-
-		panel_logoImgSidenavbar.add(lblNewLabel);
-
-		GridBagConstraints gbc_separator = new GridBagConstraints();
-		gbc_separator.fill = GridBagConstraints.HORIZONTAL;
-		gbc_separator.insets = new Insets(0, 0, 5, 0);
-		gbc_separator.gridx = 0;
-		gbc_separator.gridy = 1;
-		panel_sideNavbar.add(separator, gbc_separator);
-
-		GridBagConstraints gbc_panel_begrüßungNachricht = new GridBagConstraints();
-		gbc_panel_begrüßungNachricht.fill = GridBagConstraints.BOTH;
-		gbc_panel_begrüßungNachricht.gridx = 0;
-		gbc_panel_begrüßungNachricht.gridy = 2;
-		panel_sideNavbar.add(panel_begrüßungNachricht, gbc_panel_begrüßungNachricht);
-		GridBagLayout gbl_panel_begrüßungNachricht = new GridBagLayout();
-		gbl_panel_begrüßungNachricht.columnWidths = new int[] { 0, 0 };
-		gbl_panel_begrüßungNachricht.rowHeights = new int[] { 0, 0 };
-		gbl_panel_begrüßungNachricht.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel_begrüßungNachricht.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-		panel_begrüßungNachricht.setLayout(gbl_panel_begrüßungNachricht);
-
-		GridBagConstraints gbc_txtarea_begruessungNachricht = new GridBagConstraints();
-		gbc_txtarea_begruessungNachricht.fill = GridBagConstraints.BOTH;
-		gbc_txtarea_begruessungNachricht.gridx = 0;
-		gbc_txtarea_begruessungNachricht.gridy = 0;
-		txtarea_begruessungNachricht.setForeground(Color.WHITE);
-		txtarea_begruessungNachricht.setBackground(Color.DARK_GRAY);
-		txtarea_begruessungNachricht.setEditable(false);
-		txtarea_begruessungNachricht.setWrapStyleWord(true);
-		txtarea_begruessungNachricht.setText("Schön, dass Sie unseren E-Shop\r\nbesuchen! Tauchen Sie ein in eine Welt \r\nvoller spannender Produkte und \r\nprofitieren Sie von unseren \r\nattraktivenAngeboten. \r\nViel Spaß beim Stöbern!");
-
-		panel_begrüßungNachricht.add(txtarea_begruessungNachricht, gbc_txtarea_begruessungNachricht);
 		panel_main.setBackground(new Color(255, 128, 0));
 
 		contentPane.add(panel_main, BorderLayout.CENTER);
-		panel_main.removeAll();
-		GridBagLayout gbl_panel_main = new GridBagLayout();
-		gbl_panel_main.columnWidths = new int[] { 159, 0 };
-		gbl_panel_main.rowHeights = new int[] { 122, 0 };
-		gbl_panel_main.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel_main.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-		panel_main.setLayout(gbl_panel_main);
-		login_Panel = new Login_Panel(panel_main, panel_sideNavbar, this.e_shop);
-		GridBagConstraints gbc_login_Panel = new GridBagConstraints();
-		gbc_login_Panel.fill = GridBagConstraints.BOTH;
-		panel_main.add(login_Panel, gbc_login_Panel);
-		panel_main.validate();
+		this.panel_main.setLayout(new BorderLayout(0, 0));
+		this.panel_northMain.setBackground(Color.DARK_GRAY);
 
+		this.panel_main.add(this.panel_northMain, BorderLayout.NORTH);
+		this.panel_centerMain.setBackground(Color.DARK_GRAY);
+
+		this.panel_main.add(this.panel_centerMain, BorderLayout.CENTER);
+		this.panel_southMain.setBackground(Color.DARK_GRAY);
+
+		this.panel_main.add(this.panel_southMain, BorderLayout.SOUTH);
+
+		Login_Panel login_Panel = new Login_Panel(this.panel_main, this.panel_sideNavbar, panel_header_nav, e_shop);
+		addLoginPanel(this.panel_centerMain, login_Panel);
+
+		panel_sideNavbar.removeAll();
+		panel_sideNavbar.add(new BegruessungPanel(this.panel_header, this.panel_main, this.panel_sideNavbar, e_shop));
+		panel_sideNavbar.validate();
+
+	}
+
+	private void addLoginPanel(JPanel panelCenterMain, JPanel loginPanel) {
+		panelCenterMain.removeAll();
+		this.panel_centerMain.setLayout(new MigLayout("", "[276px,grow,fill]", "[149px,grow,fill]"));
+		panelCenterMain.add(loginPanel, "cell 0 0,alignx center,aligny center");
+		panelCenterMain.validate();
 	}
 }

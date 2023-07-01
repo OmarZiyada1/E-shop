@@ -8,10 +8,13 @@ import java.awt.Insets;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.border.SoftBevelBorder;
 
 import domain.E_Shop;
+import domain.exceptions.ArtikelExistiertNichtException;
 import gui.Index_Gui;
 
 import javax.swing.border.BevelBorder;
@@ -21,6 +24,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Dimension;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Mitarbeiter_SideNavebar_Panel extends JPanel {
 	private final JPanel panel_mitarbeiterMenueContainer = new JPanel();
@@ -31,9 +36,10 @@ public class Mitarbeiter_SideNavebar_Panel extends JPanel {
 	private final JScrollPane scrollPane = new JScrollPane();
 	private final JPanel panel_ma_child1 = new JPanel();
 	private final JPanel panel_design_row1 = new JPanel();
-	private  JLabel lbl_artikelnAnzeigen ;
+	private JLabel lbl_artikelnAnzeigen;
 	private final JLabel lbl_helloName = new JLabel("Hallo Joe");
-	private JPanel switcherPanel;
+	private JPanel switchMainPanel;
+	private JPanel atrikelVWPanel;
 	private E_Shop shop;
 	private final JButton btn_artilkelnAnzeigen = new JButton("Artikeln Anzeigen");
 	private final JButton btn_loeschen = new JButton("Artikel loeschen");
@@ -46,12 +52,15 @@ public class Mitarbeiter_SideNavebar_Panel extends JPanel {
 	private final JButton btn_ZeigeVerlauf = new JButton("Zeige Verlauf");
 	private final JButton btn_30TageVerlauf = new JButton("30Tage Verlauf");
 
+	//
+
 	/**
 	 * Create the panel.
 	 */
-	public Mitarbeiter_SideNavebar_Panel(JPanel sPanel, E_Shop shop) {
+	public Mitarbeiter_SideNavebar_Panel(JPanel switchMainPanel,JPanel atrikelVWPanel,   E_Shop shop) {
 		this.shop = shop;
-		this.switcherPanel = sPanel;
+		this.atrikelVWPanel=atrikelVWPanel;
+		this.switchMainPanel = switchMainPanel;
 		initGUI();
 
 	}
@@ -107,72 +116,83 @@ public class Mitarbeiter_SideNavebar_Panel extends JPanel {
 		gbl_panel_menue.columnWidths = new int[] { 149, 0 };
 		gbl_panel_menue.rowHeights = new int[] { 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_panel_menue.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel_menue.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panel_menue.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		panel_menue.setLayout(gbl_panel_menue);
-		
+
 		GridBagConstraints gbc_btn_artilkelnAnzeigen = new GridBagConstraints();
 		gbc_btn_artilkelnAnzeigen.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn_artilkelnAnzeigen.insets = new Insets(0, 0, 5, 0);
 		gbc_btn_artilkelnAnzeigen.gridx = 0;
 		gbc_btn_artilkelnAnzeigen.gridy = 0;
+		this.btn_artilkelnAnzeigen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					do_btn_artilkelnAnzeigen_actionPerformed(e);
+				} catch (ArtikelExistiertNichtException e1) {
+					System.out.println(e1.getMessage());
+				}
+			}
+		});
+
 		panel_menue.add(btn_artilkelnAnzeigen, gbc_btn_artilkelnAnzeigen);
-		
+
 		GridBagConstraints gbc_btn_loeschen = new GridBagConstraints();
 		gbc_btn_loeschen.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn_loeschen.insets = new Insets(0, 0, 5, 0);
 		gbc_btn_loeschen.gridx = 0;
 		gbc_btn_loeschen.gridy = 1;
 		panel_menue.add(btn_loeschen, gbc_btn_loeschen);
-		
+
 		GridBagConstraints gbc_btn_einfuegen = new GridBagConstraints();
 		gbc_btn_einfuegen.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn_einfuegen.insets = new Insets(0, 0, 5, 0);
 		gbc_btn_einfuegen.gridx = 0;
 		gbc_btn_einfuegen.gridy = 2;
 		panel_menue.add(btn_einfuegen, gbc_btn_einfuegen);
-		
+
 		GridBagConstraints gbc_btn_suchen = new GridBagConstraints();
 		gbc_btn_suchen.insets = new Insets(0, 0, 5, 0);
 		gbc_btn_suchen.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn_suchen.gridx = 0;
 		gbc_btn_suchen.gridy = 3;
 		panel_menue.add(btn_suchen, gbc_btn_suchen);
-		
+
 		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
 		gbc_btnNewButton_4.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_4.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_4.gridx = 0;
 		gbc_btnNewButton_4.gridy = 4;
 		panel_menue.add(btn_regestrieren, gbc_btnNewButton_4);
-		
+
 		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
 		gbc_btnNewButton_5.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_5.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_5.gridx = 0;
 		gbc_btnNewButton_5.gridy = 5;
 		panel_menue.add(btn_MitarbeiterlisteAnzeigen, gbc_btnNewButton_5);
-		
+
 		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
 		gbc_btnNewButton_6.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_6.gridx = 0;
 		gbc_btnNewButton_6.gridy = 6;
 		panel_menue.add(btn_ArtikelbestandErhoehen, gbc_btnNewButton_6);
-		
+
 		GridBagConstraints gbc_btnNewButton_7 = new GridBagConstraints();
 		gbc_btnNewButton_7.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_7.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_7.gridx = 0;
 		gbc_btnNewButton_7.gridy = 7;
 		panel_menue.add(btn_ArtikelbestandSenken, gbc_btnNewButton_7);
-		
+
 		GridBagConstraints gbc_btnNewButton_8 = new GridBagConstraints();
 		gbc_btnNewButton_8.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_8.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_8.gridx = 0;
 		gbc_btnNewButton_8.gridy = 8;
 		panel_menue.add(btn_ZeigeVerlauf, gbc_btnNewButton_8);
-		
+
 		GridBagConstraints gbc_btn_ = new GridBagConstraints();
 		gbc_btn_.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn_.gridx = 0;
@@ -180,7 +200,13 @@ public class Mitarbeiter_SideNavebar_Panel extends JPanel {
 		panel_menue.add(btn_30TageVerlauf, gbc_btn_);
 		panel_ma_child1.setBackground(Color.DARK_GRAY);
 
-
 	}
 
+	protected void do_btn_artilkelnAnzeigen_actionPerformed(ActionEvent e) throws ArtikelExistiertNichtException {
+		switchMainPanel.removeAll();
+		switchMainPanel.add(new TablePanel(this.shop), BorderLayout.CENTER);
+		switchMainPanel.add(atrikelVWPanel, BorderLayout.SOUTH);
+		switchMainPanel.validate();
+
+	}
 }

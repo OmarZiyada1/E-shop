@@ -34,13 +34,12 @@ public class KundeVerwaltung {
 	 *                                          wird.
 	 */
 	public void kundeRegistieren(Kunde kunde) throws KundeUsernameIstbenutztException {
-
 		Iterator<Kunde> iter = list_Kunde.iterator();
 
 		while (iter.hasNext()) {
 			Kunde ku = iter.next();
 			if (ku.getNutzerName().equals(kunde.getNutzerName()) || ku.getKndNr() == kunde.getKndNr()) {
-				throw new KundeUsernameIstbenutztException(kunde, "in Mitarbeiter einfuegen()");
+				throw new KundeUsernameIstbenutztException(kunde, "");
 			}
 		}
 		generateKundenId(kunde);

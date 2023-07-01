@@ -147,6 +147,9 @@ public class E_Shop {
 	}
 
 	// Kunde Methoden
+	public Kunde sucheKunde(String nutzerName) {
+		return kundeVW.sucheKunde(nutzerName);
+	}
 	public void kundenRegistrieren(String name, String vorname, String nutzerNr, String passwort, String strasse,
 			String hNr, String plz, String ort, String land) throws KundeUsernameIstbenutztException {
 		Adresse adresse = new Adresse(strasse, hNr, plz, ort, land);
@@ -177,6 +180,10 @@ public class E_Shop {
 		kundeVW.schreibeDaten(datei+"_Kunde.txt");
 	}
 	// Mitarbeiter Methoden
+	
+	public Mitarbeiter sucheMitarbeiter(String nutzerName) {
+		return mitarbeiterVW.sucheMitarbeiter(nutzerName);
+	}
 	public List<String> mitarbeiterMenue() {
 	return	mitarbeiterVW.mitarbeiterMenue();
 	}
