@@ -1,6 +1,7 @@
-package ui.gui.panels;
+package ui.gui.panels.test;
 
 import javax.swing.JPanel;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -11,6 +12,7 @@ import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import entities.Nutzer;
 import gui.Index_Gui;
+
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,13 +28,15 @@ import javax.swing.JRadioButton;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JPasswordField;
+import ui.gui.panels.test.Registrieren_Panel;
+
 
 public class Login_Panel extends JPanel {
 	private JPanel panel_LoginContainer = new JPanel();
 	private JPanel panel_title = new JPanel();
 	private JLabel lbl_mainLogintitle = new JLabel("Login");
 	private JPanel panel_btns = new JPanel();
-	private JButton btn_registrieren = new JButton("Registrieren");
+
 	private JButton btn_login = new JButton("Login");
 	private JPanel panel_form = new JPanel();
 	private JRadioButton rdbtn_Kunde = new JRadioButton("Kunde");
@@ -40,27 +44,33 @@ public class Login_Panel extends JPanel {
 	private ButtonGroup buttonGroup = new ButtonGroup();
 	private JPasswordField passwordField = new JPasswordField();
 	private JTextField textField_userName = new JTextField();
-
+	private LoginSuccessListener loginSuccessListener;
+	private PanelChangeListener panelChangeListener;
+	private JPanel registrieren_Panel ;
 	//
-	private JPanel mainPanel;
-	private JPanel switchSidePanel;
-	private TablePanel tablePanel;
-	private JPanel artikelVWPanel;
-	private JPanel logoutPanel;
-	private JPanel RegistrierenPanel;
 
 	private E_Shop shop;
 	private Nutzer loggedNutzer;
-	private JPanel panel_header_nav;
-
+	private boolean loginStatus= false;
+	private final JButton btn_Registrieren = new JButton("Registrieren");
+	
+	public interface LoginSuccessListener {
+	    public void onLoginSuccess(Nutzer nutzer);
+	}
+	
+	public interface PanelChangeListener {
+	    void onPanelChange(JPanel newPanel);
+	}
 	/**
 	 * Create the panel.
 	 */
-	public Login_Panel(JPanel mainPanel, JPanel switchSidePanel, JPanel panel_header_nav, E_Shop shop) {
+	
+	
+	public Login_Panel(E_Shop shop, LoginSuccessListener loginSuccessListener, PanelChangeListener panelChangeListener) {
 		this.shop = shop;
-		this.mainPanel = mainPanel;
-		this.switchSidePanel = switchSidePanel;
-		this.panel_header_nav = panel_header_nav;
+		 this.loginSuccessListener = loginSuccessListener;
+		 this.panelChangeListener = panelChangeListener;
+
 		initGUI();
 
 	}
@@ -110,13 +120,14 @@ public class Login_Panel extends JPanel {
 		gbc_rdbtn_Kunde.gridy = 0;
 		gbc_rdbtn_Kunde.insets = new Insets(0, 0, 5, 5);
 		buttonGroup.add(rdbtn_Kunde);
-		
-		this.rdbtn_Kunde.setSelected(true);
-		rdbtn_Kunde.addActionListener(new ActionListener() {
+		this.rdbtn_Kunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				do_rdbtn_Kunde_actionPerformed(e);
 			}
 		});
+
+		this.rdbtn_Kunde.setSelected(true);
+
 		rdbtn_Kunde.setForeground(Color.WHITE);
 		rdbtn_Kunde.setBackground(Color.DARK_GRAY);
 		panel_form.add(rdbtn_Kunde, gbc_rdbtn_Kunde);
@@ -127,11 +138,12 @@ public class Login_Panel extends JPanel {
 		gbc_rdbtnMitarbeiter.insets = new Insets(0, 0, 5, 0);
 		gbc_rdbtnMitarbeiter.gridx = 1;
 		buttonGroup.add(rdbtnMitarbeiter);
-		rdbtnMitarbeiter.addActionListener(new ActionListener() {
+		this.rdbtnMitarbeiter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				do_rdbtnMitarbeiter_actionPerformed(e);
 			}
 		});
+
 		rdbtnMitarbeiter.setForeground(Color.WHITE);
 		rdbtnMitarbeiter.setBackground(Color.DARK_GRAY);
 		panel_form.add(rdbtnMitarbeiter, gbc_rdbtnMitarbeiter);
@@ -158,45 +170,33 @@ public class Login_Panel extends JPanel {
 		gbc_panel_btns.gridy = 2;
 		panel_btns.setBackground(Color.DARK_GRAY);
 		panel_LoginContainer.add(panel_btns, gbc_panel_btns);
-		btn_registrieren.addActionListener(new ActionListener() {
+		this.btn_Registrieren.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				do_btn_registrieren_actionPerformed(e);
+				do_btn_Registrieren_actionPerformed(e);
 			}
 		});
 
-		panel_btns.add(btn_registrieren);
-		btn_login.addActionListener(new ActionListener() {
+		this.panel_btns.add(this.btn_Registrieren);
+		this.btn_login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					do_btn_login_actionPerformed(e);
-				} catch (ArtikelExistiertNichtException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				do_btn_login_actionPerformed(e);
 			}
 		});
 
 		panel_btns.add(btn_login);
 	}
 
-	protected void do_btn_registrieren_actionPerformed(ActionEvent e) {
-		mainPanel.removeAll();
-		this.RegistrierenPanel = new Registrieren_Panel(mainPanel, switchSidePanel, panel_header_nav, this.shop);
-		mainPanel.add(RegistrierenPanel, BorderLayout.CENTER);
-		mainPanel.validate();
-
+	protected void do_rdbtn_Kunde_actionPerformed(ActionEvent e) {
+		if (rdbtn_Kunde.isSelected()) {
+			btn_Registrieren.setVisible(true);
+		}
 	}
 
 	protected void do_rdbtnMitarbeiter_actionPerformed(ActionEvent e) {
-		btn_registrieren.setVisible(false);
+		btn_Registrieren.setVisible(false);
 	}
 
-	protected void do_rdbtn_Kunde_actionPerformed(ActionEvent e) {
-		btn_registrieren.setVisible(true);
-
-	}
-
-	protected void do_btn_login_actionPerformed(ActionEvent e) throws ArtikelExistiertNichtException {
+	protected void do_btn_login_actionPerformed(ActionEvent e) {
 		String userName = textField_userName.getText().trim();
 		char[] passwordArr = passwordField.getPassword();
 		String password = new String(passwordArr).trim();
@@ -211,77 +211,28 @@ public class Login_Panel extends JPanel {
 					loggedNutzer = shop.mitarbeiterEinloggen(userName, password);
 					JOptionPane.showMessageDialog(null, "Du hast erfolgreich angemeldet!", "Info Message",
 							JOptionPane.INFORMATION_MESSAGE);
-
-					mainPanel.removeAll();
-					switchSidePanel.removeAll();
-					panel_header_nav.removeAll();
-					addSideNavBar();
-					addTablePanel();
-					addVerwaltungsPanel();
-					addLogoutPanel();
-					mainPanel.add(new Suchen_MainPanel(), BorderLayout.NORTH);
-					mainPanel.validate();
-
+					loginStatus = true;
+					loginSuccessListener.onLoginSuccess(loggedNutzer);
 				} catch (NutzernameOderPasswortFalschException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "Info Message", JOptionPane.ERROR_MESSAGE);
 				}
-
-			} else if (rdbtn_Kunde.isSelected()) {
-				try {
-					loggedNutzer = shop.kundenEinloggen(userName, password);
-
-					JOptionPane.showMessageDialog(null, "Du hast erfolgreich angemeldet!", "Info Message",
-							JOptionPane.INFORMATION_MESSAGE);
-					mainPanel.removeAll();
-					switchSidePanel.removeAll();
-					addTablePanel();
-					addLogoutPanel();
-
-				} catch (NutzernameOderPasswortFalschException e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(), "Info Message", JOptionPane.ERROR_MESSAGE);
-				}
-
 			}
 		}
-
 	}
 
-	/**
-	 * 
-	 */
-	private void addLogoutPanel() {
-		this.logoutPanel = new LogoutPanel(panel_header_nav, mainPanel, switchSidePanel, loggedNutzer, shop);
-		panel_header_nav.add(logoutPanel);
-		panel_header_nav.revalidate();
+	protected void do_btn_Registrieren_actionPerformed(ActionEvent e) {
+		this.registrieren_Panel = new Registrieren_Panel(shop, loginSuccessListener, panelChangeListener );
+		panelChangeListener.onPanelChange(registrieren_Panel);
+		
+		
+	}
+	
+	public Nutzer getLoggedNutzer() {
+		return loggedNutzer;
 	}
 
-	/**
-	 * 
-	 */
-	private void addVerwaltungsPanel() {
-		this.artikelVWPanel = new ArtikelVerwaltungsPanel(this.tablePanel);
-		mainPanel.add(artikelVWPanel, BorderLayout.SOUTH);
-		mainPanel.validate();
-	}
-
-	/**
-	 * @throws ArtikelExistiertNichtException
-	 */
-	private void addTablePanel() throws ArtikelExistiertNichtException {
-		this.tablePanel = new TablePanel(this.shop);
-		mainPanel.add(tablePanel, BorderLayout.CENTER);
-		mainPanel.validate();
-	}
-
-	private void addSideNavBar() {
-
-		GridBagConstraints gbc_mMenue_Panel = new GridBagConstraints();
-		gbc_mMenue_Panel.ipady = 10;
-		gbc_mMenue_Panel.fill = GridBagConstraints.BOTH;
-		switchSidePanel.setLayout(new BoxLayout(switchSidePanel, BoxLayout.Y_AXIS));
-		switchSidePanel.add(new Mitarbeiter_SideNavebar_Panel(mainPanel, new ArtikelVerwaltungsPanel(this.tablePanel), shop),
-				gbc_mMenue_Panel);
-		switchSidePanel.validate();
+	public boolean isLoginStatus() {
+		return loginStatus;
 	}
 
 }

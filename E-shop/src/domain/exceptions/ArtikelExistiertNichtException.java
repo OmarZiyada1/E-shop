@@ -9,7 +9,10 @@ public class ArtikelExistiertNichtException extends Exception {
 			this.artikel = artikel;
 		}
 
-		
+		public ArtikelExistiertNichtException( String gesucht) {
+			super("Artikel mit Name '" + gesucht + "'" + " existiert nicht");
+			
+		}
 	
 	public Artikel getArtikel() {
 		return artikel;

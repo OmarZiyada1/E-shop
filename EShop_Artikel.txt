@@ -50,3 +50,19 @@ ma
 t
 t
 3
+1336
+neueArtikel
+sehr Neu
+121
+100.0
+t
+t
+11
+1338
+wewe
+sdi
+121
+21.0
+t
+t
+11

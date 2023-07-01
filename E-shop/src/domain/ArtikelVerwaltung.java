@@ -223,12 +223,13 @@ public class ArtikelVerwaltung {
 		boolean artikelGefunden = false;
 
 		if (artikelListe.isEmpty()) {
-			throw new ArtikelExistiertNichtException(suchArtikel, ". Artikel Liste ist Leer");
+			throw new ArtikelExistiertNichtException(" Artikel Liste ist Leer");
 		} else {
 			Iterator<Artikel> iter = artikelListe.iterator();
 			while (iter.hasNext()) {
 				Artikel a = iter.next();
 				if (a.getName().equals(name)) {
+					
 					suchArtikel = a;
 					artikelGefunden = true;
 					break;
@@ -237,8 +238,7 @@ public class ArtikelVerwaltung {
 		}
 
 		if (!artikelGefunden) {
-			System.out.println(artikelGefunden+"amj");
-			throw new ArtikelExistiertNichtException(suchArtikel, "");
+			throw new ArtikelExistiertNichtException(name);
 		}
 
 		return suchArtikel;
