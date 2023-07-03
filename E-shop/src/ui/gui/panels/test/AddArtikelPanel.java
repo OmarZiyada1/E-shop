@@ -7,6 +7,8 @@ import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import entities.Artikel;
 import entities.Massengutartikel;
+import entities.Mitarbeiter;
+import entities.Nutzer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +29,6 @@ public class AddArtikelPanel extends JPanel {
 	// Buch reagiert, indem sie die Bücherliste aktualisiert.
 	public interface AddArtikelListener {
 		public void onBookAdded(Artikel Artikel);
-
 	}
 
 	private E_Shop shop = null;
@@ -43,9 +44,11 @@ public class AddArtikelPanel extends JPanel {
 	private JTextField packungsgroesseTextFeld = null;
 	private JLabel packungLabel = null;
 	boolean istMassengut = false;
+	private Nutzer loggedNutzer;
 
-	public AddArtikelPanel(E_Shop shop, AddArtikelListener addBookListener) {
+	public AddArtikelPanel(E_Shop shop, Nutzer loggedNutzer, AddArtikelListener addBookListener) {
 		this.shop = shop;
+		this.loggedNutzer = loggedNutzer;
 		this.addBookListener = addBookListener;
 
 		setupUI();
@@ -153,8 +156,8 @@ public class AddArtikelPanel extends JPanel {
 				int bestandInt = Integer.parseInt(bestand);
 
 				try {
-					artikel_1 = (Massengutartikel) shop.fuegeMassenArtikelEin(null, name, beschreibung, bestandInt,
-							preisD, isMassengut, packungsgroesseInt);
+					artikel_1 = (Massengutartikel) shop.fuegeMassenArtikelEin((Mitarbeiter) this.loggedNutzer, name,
+							beschreibung, bestandInt, preisD, isMassengut, packungsgroesseInt);
 					datenSischern();
 
 					textFeldeLeeren();
@@ -163,7 +166,7 @@ public class AddArtikelPanel extends JPanel {
 				} catch (AnzahlIsNichtDefiniertException | ArtikelExistiertBereitsException
 						| BestandPasstNichtMitPackungsGroesseException | ArtikelExistiertNichtException
 						| IOException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 
 				}
 
@@ -177,10 +180,9 @@ public class AddArtikelPanel extends JPanel {
 			int bestandInt = Integer.parseInt(bestand);
 			Artikel artikel;
 			try {
-				artikel = shop.fuegeArtikelEin(null, name, beschreibung, bestandInt, preisD, isMassengut);
+				artikel = shop.fuegeArtikelEin((Mitarbeiter) this.loggedNutzer, name, beschreibung, bestandInt, preisD,
+						isMassengut);
 				datenSischern();
-			
-
 				textFeldeLeeren();
 
 				// Am Ende Listener, d.h. unseren Frame benachrichtigen:
@@ -188,7 +190,7 @@ public class AddArtikelPanel extends JPanel {
 			} catch (AnzahlIsNichtDefiniertException | ArtikelExistiertBereitsException
 					| BestandPasstNichtMitPackungsGroesseException | ArtikelExistiertNichtException | IOException e) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Bitte alle Felder ausfüllen", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -213,8 +215,8 @@ public class AddArtikelPanel extends JPanel {
 	 */
 	private void datenSischern() throws IOException {
 		shop.schreibeArtikel();
-		// shop.schreibeVerlauf();
-		// TODO schreibeVerlauf()
+
+		shop.schreibeVerlauf();
 
 	}
 

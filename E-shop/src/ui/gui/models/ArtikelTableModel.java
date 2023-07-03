@@ -25,6 +25,8 @@ public class ArtikelTableModel extends AbstractTableModel {
 	public void setArtikeln(List<Artikel> aktuelleArtikeln) {
 		artikeln.clear();
 		artikeln.addAll(aktuelleArtikeln);
+		//Änderungen an den Daten des Modells mitzuteilen, 
+		//damit die JTable diese Änderungen reflektieren kann.
 		fireTableDataChanged();
 	}
 
@@ -52,6 +54,7 @@ public class ArtikelTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int row, int col) {
 		Artikel gewaehltesArtikel = artikeln.get(row);
+		
 		if (gewaehltesArtikel.getIstPackung()) {
 			Massengutartikel gewaehltesArtikel_1 = (Massengutartikel) gewaehltesArtikel;
 			switch (col) {

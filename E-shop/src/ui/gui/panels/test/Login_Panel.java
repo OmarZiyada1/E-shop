@@ -209,6 +209,17 @@ public class Login_Panel extends JPanel {
 			if (rdbtnMitarbeiter.isSelected()) {
 				try {
 					loggedNutzer = shop.mitarbeiterEinloggen(userName, password);
+				
+					JOptionPane.showMessageDialog(null, "Du hast erfolgreich angemeldet!", "Info Message",
+							JOptionPane.INFORMATION_MESSAGE);
+					loginStatus = true;
+					loginSuccessListener.onLoginSuccess(loggedNutzer);
+				} catch (NutzernameOderPasswortFalschException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Info Message", JOptionPane.ERROR_MESSAGE);
+				}
+			}else if(rdbtn_Kunde.isSelected()) {
+				try {
+					loggedNutzer = shop.kundenEinloggen(userName, password);
 					JOptionPane.showMessageDialog(null, "Du hast erfolgreich angemeldet!", "Info Message",
 							JOptionPane.INFORMATION_MESSAGE);
 					loginStatus = true;
