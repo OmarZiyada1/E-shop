@@ -184,7 +184,6 @@ public class FilePersistenceManager implements PersistenceManager {
 			String artikelName = liesZeile();
 			DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 			Date date = format.parse(liesZeile());
-			Artikel artikel = art.sucheArtikel(artikelName);
 			int aenderungsMenge = Integer.parseInt(liesZeile());
 
 			Nutzer nutzer = null;
@@ -197,7 +196,7 @@ public class FilePersistenceManager implements PersistenceManager {
 //			}
 			//!
 			nutzer= (kd.sucheKunde(nutzerName) != null ? kd.sucheKunde(nutzerName): mt.sucheMitarbeiter(nutzerName));
-			Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, date, aenderungsMenge);
+			Verlauf verlauf = new Verlauf(aktion, nutzer, artikelName, date, aenderungsMenge);
 			return verlauf;
 		}
 	}
@@ -205,7 +204,7 @@ public class FilePersistenceManager implements PersistenceManager {
 	public boolean speichereVerlauf(Verlauf verlauf) throws IOException {
 		schreibeZeile(verlauf.getAktion().name());
 		schreibeZeile(verlauf.getNutzer().getNutzerName());
-		schreibeZeile(verlauf.getArtikel().getName());
+		schreibeZeile(verlauf.getArtikelName());
 		DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		schreibeZeile(format.format(verlauf.getDate()));
 		schreibeZeile(verlauf.getAenderungsMenge() + "");

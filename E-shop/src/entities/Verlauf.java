@@ -16,7 +16,7 @@ public class Verlauf {
 	DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 	String formatteddate;
 	private Nutzer nutzer;
-	private Artikel artikel;
+	private String artikelName;
 	private AKTIONSTYP aktion;
 	public enum AKTIONSTYP{
 		Neue("Mitarbeiter: (Neue Artikel hinzugef�gt)"), 
@@ -57,11 +57,11 @@ public class Verlauf {
 	 * @param artikel            der betroffene Artikel
 	 * @param formattedDatumZeit das formatierte Datum und die formatierte Uhrzeit
 	 */
-	public Verlauf(AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, Date date ,int aenderungsMenge ) {
+	public Verlauf(AKTIONSTYP aktion, Nutzer nutzer, String artikelName, Date date ,int aenderungsMenge ) {
 		this.aktion=aktion;
 		this.date = date;
 		this.nutzer = nutzer;
-		this.artikel = artikel;
+		this.artikelName = artikelName;
 		this.aenderungsMenge=aenderungsMenge;
 		 this.formatteddate = format.format(date);
 	}
@@ -97,8 +97,8 @@ public class Verlauf {
 	 * 
 	 * @return der betroffene Artikel
 	 */
-	public Artikel getArtikel() {
-		return artikel;
+	public String getArtikelName() {
+		return artikelName;
 	}
 
 
@@ -148,7 +148,7 @@ public class Verlauf {
 		builder.append(" ");
 		builder.append(nutzer.getVorname());
 		builder.append("' hat der Bestand folgende Artikel:  ");
-		builder.append("'"+ artikel.getName()+"'");
+		builder.append("'"+ artikelName+"'");
 		builder.append(" ,am ");
 		builder.append(formatteddate);
 		builder.append(", ge�ndert. ");

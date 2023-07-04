@@ -187,8 +187,10 @@ public class ArtikelVerwaltung {
 	 */
 
 	public void bestandSenken(Artikel artikel, int anzahl) {
-		artikel.setBestand(artikel.getBestand() - anzahl);
-		updateVerfuegbarkeit(artikel);
+			artikel.setBestand(artikel.getBestand() - anzahl);
+			updateVerfuegbarkeit(artikel);
+		
+		
 
 	}
 

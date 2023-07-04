@@ -10,6 +10,7 @@ import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import entities.Artikel;
 import entities.Kunde;
 import entities.Nutzer;
+import ui.gui.models.ArtikelTableModel;
 import ui.gui.models.WarenkorbModel;
 import ui.gui.panels.test.AddArtikelPanel;
 import ui.gui.panels.test.ArtikelnTablePanel;
@@ -17,6 +18,7 @@ import ui.gui.panels.test.KundenMenuePanel;
 import ui.gui.panels.test.Login_Panel;
 
 import ui.gui.panels.test.LogoutPanel;
+import ui.gui.panels.test.MitarbeiterMenuePanel;
 import ui.gui.panels.test.SearchArtikelsPanel;
 
 import java.awt.*;
@@ -27,8 +29,8 @@ import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 
-public class BibGuiMitKomponenten extends JFrame
-		implements AddArtikelPanel.AddArtikelListener, SearchArtikelsPanel.SearchResultListener,
+public class BibGuiMitKomponenten extends JFrame implements AddArtikelPanel.AddArtikelListener,
+		SearchArtikelsPanel.SearchResultListener, MitarbeiterMenuePanel.TableDataListener,
 		Login_Panel.LoginSuccessListener, Login_Panel.PanelChangeListener, LogoutPanel.PanelChangeBeiLogout {
 
 	private E_Shop shop;
@@ -36,12 +38,15 @@ public class BibGuiMitKomponenten extends JFrame
 	private SearchArtikelsPanel searchPanel;
 	private AddArtikelPanel addArtikelPanel;
 	private KundenMenuePanel kundenMenuePanel;
+
 	private LogoutPanel logoutPanel;
 //	private BooksListPanel booksPanel;
-	private ArtikelnTablePanel ArtikelnTablePanel;
-	
+	private ArtikelnTablePanel artikelnTablePanel;
+
 	private JPanel loginPanel;
+	private MitarbeiterMenuePanel mitarbeiterMenuePanel;
 	private Nutzer loggedNutzer;
+	private java.util.List<Artikel> artikeln;
 
 	public static void main(String[] args) {
 		// Start der Anwendung (per anonymer Klasse)
@@ -78,13 +83,13 @@ public class BibGuiMitKomponenten extends JFrame
 	}
 
 	private void runProg() {
-		
+
 		getContentPane().removeAll();
 		loginPanel = new Login_Panel(this.shop, this, this);
 		getContentPane().add(loginPanel);
 		setSize(640, 480);
 		setVisible(true);
-		
+
 	}
 
 	private void initialize(Nutzer loggednutzer) {
@@ -100,13 +105,17 @@ public class BibGuiMitKomponenten extends JFrame
 //		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		// B) Mittels WindowAdapter (für Sicherheitsabfrage)
 
-		addArtikelPanel = new AddArtikelPanel(shop,this.loggedNutzer, this);
+		addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
 		kundenMenuePanel = new KundenMenuePanel();
 
 		if (shop.sucheMitarbeiter(loggednutzer.getNutzerName()) != null) {
 			k_m_design(addArtikelPanel);
+			// OST
+			mitarbeiterMenuePanel = new MitarbeiterMenuePanel(this, shop, loggedNutzer);
+			getContentPane().add(mitarbeiterMenuePanel, BorderLayout.EAST);
 		} else if (shop.sucheKunde(loggednutzer.getNutzerName()) != null) {
 			k_m_design(kundenMenuePanel);
+			
 		}
 
 		this.setSize(640, 480);
@@ -116,30 +125,32 @@ public class BibGuiMitKomponenten extends JFrame
 	/**
 	 * 
 	 */
-	private void k_m_design(JPanel switch_WestPanel ) {
+	private void k_m_design(JPanel switch_Panel) {
 		getContentPane().setLayout(new BorderLayout());
 		// North
 		searchPanel = new SearchArtikelsPanel(shop, this);
 		// West
 
-		getContentPane().add(switch_WestPanel, BorderLayout.WEST);
+		getContentPane().add(switch_Panel, BorderLayout.WEST);
 		// Center
-		java.util.List<Artikel> Artikeln = shop.gibAlleArtikeln();
+		artikeln = shop.gibAlleArtikeln();
 
-		ArtikelnTablePanel = new ArtikelnTablePanel(Artikeln);
-		JScrollPane scrollPane = new JScrollPane(ArtikelnTablePanel);
-		
-		
-		//ArtikelnTablePanel warenkorbModel = new ArtikelnTablePanel(shop.getKundenWarenkorb((Kunde)loggeNutzer).getKorbArtikelListe());
-		//JScrollPane scrollPane = new JScrollPane(warenkorbModel);
+		artikelnTablePanel = new ArtikelnTablePanel(artikeln);
+		JScrollPane scrollPane = new JScrollPane(artikelnTablePanel);
+
+		// ArtikelnTablePanel warenkorbModel = new
+		// ArtikelnTablePanel(shop.getKundenWarenkorb((Kunde)loggeNutzer).getKorbArtikelListe());
+		// JScrollPane scrollPane = new JScrollPane(warenkorbModel);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
 
 		getContentPane().add(searchPanel, BorderLayout.NORTH);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 		// south
-		logoutPanel = new LogoutPanel(shop, this.loggedNutzer,this);
+		logoutPanel = new LogoutPanel(shop, this.loggedNutzer, this);
 		getContentPane().add(logoutPanel, BorderLayout.SOUTH);
+
+		
 	}
 
 	/*
@@ -153,10 +164,10 @@ public class BibGuiMitKomponenten extends JFrame
 	 * entities.Buch)
 	 */
 	@Override
-	public void onBookAdded(Artikel artikel) {
+	public void onArikelAdded(Artikel artikel) {
 		// Ich lade hier einfach alle Bücher neu und lasse sie anzeigen
-		java.util.List<Artikel> artikeln = shop.gibAlleArtikeln();
-		ArtikelnTablePanel.updateArtikelnList(artikeln);
+		artikeln = shop.gibAlleArtikeln();
+		artikelnTablePanel.updateArtikelnList(artikeln);
 	}
 
 	/*
@@ -171,7 +182,7 @@ public class BibGuiMitKomponenten extends JFrame
 	 */
 	@Override
 	public void onSearchResult(java.util.List<Artikel> artikeln) {
-		ArtikelnTablePanel.updateArtikelnList(artikeln);
+		artikelnTablePanel.updateArtikelnList(artikeln);
 	}
 
 	private void setupMenu() {
@@ -212,8 +223,6 @@ public class BibGuiMitKomponenten extends JFrame
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Klick auf MenuItem " + e.getActionCommand());
-
 			switch (e.getActionCommand()) {
 			case "Save":
 				try {
@@ -264,9 +273,7 @@ public class BibGuiMitKomponenten extends JFrame
 
 	@Override
 	public void onPanelChangeBeiLogout() {
-		System.out.println("hello "+loggedNutzer.getNutzerName());
 		runProg();
-		
 	}
 
 	@Override
@@ -287,6 +294,26 @@ public class BibGuiMitKomponenten extends JFrame
 		getContentPane().add(loginPanel); // Wir fügen das neue Panel hinzu
 		validate(); // Wir aktualisieren das GUI
 		repaint();
+	}
+
+	public void updateTable() {
+		artikeln = shop.gibAlleArtikeln();
+		artikelnTablePanel.updateArtikelnList(artikeln);
+	}
+
+	@Override
+	public Artikel onSelctedRow() {
+		ArtikelTableModel artikeltabelModel = new ArtikelTableModel(artikeln);
+		// -1 bedeuted dass keines row selected
+		int selectedRow = -1;
+		Artikel arikel = null;
+		if (artikelnTablePanel.selectedrowIndex() != -1 && artikelnTablePanel.selectedrowIndex() == 1) {
+			selectedRow = artikelnTablePanel.selectedrowIndex();
+			arikel = artikeltabelModel.getSelecetedArtikel(selectedRow);
+		} 
+
+		return arikel;
+
 	}
 
 }

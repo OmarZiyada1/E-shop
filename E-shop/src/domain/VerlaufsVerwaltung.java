@@ -48,10 +48,10 @@ public class VerlaufsVerwaltung {
 	 * @param nutzer  der betroffene Nutzer
 	 * @param artikel der betroffene Artikel
 	 */
-	public void addVerlauf(Verlauf.AKTIONSTYP aktion, Nutzer nutzer, Artikel artikel, int aenderungsMenge) {
+	public void addVerlauf(Verlauf.AKTIONSTYP aktion, Nutzer nutzer, String artikelName, int aenderungsMenge) {
 		updateTime();
 		
-		Verlauf verlauf = new Verlauf(aktion, nutzer, artikel, date, artikel.getBestand());
+		Verlauf verlauf = new Verlauf(aktion, nutzer, artikelName, date, aenderungsMenge);
 		verlauf.setAenderungsMenge(aenderungsMenge);
 		verlaufListe.add(verlauf);
 	}
@@ -65,7 +65,7 @@ public class VerlaufsVerwaltung {
 		for (Verlauf verlauf: verlaufListe) {
 			 long differenzInMillisekunden = aktuellesDatum.getTime() - verlauf.getDate().getTime();
 			 long differenzInTagen = differenzInMillisekunden / (24 * 60 * 60 * 1000);
-			if (verlauf.getArtikel()==artikel && differenzInTagen <= 30) {
+			if (verlauf.getArtikelName().equals(artikel.getName())&& differenzInTagen <= 30) {
 				DreissigVerlaufListe.add(verlauf);
 			}
 		}

@@ -47,4 +47,11 @@ public class ArtikelnTablePanel extends JTable {
 		// ... Inhalt aktualisieren
 		tableModel.setArtikeln(artikel);
 	}
+	public int selectedrowIndex() {
+		
+		int selectedRow = this.getSelectedRow();
+		return selectedRow;
+
+	}
+	
 }

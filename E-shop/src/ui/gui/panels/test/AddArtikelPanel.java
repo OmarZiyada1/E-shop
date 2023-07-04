@@ -28,11 +28,11 @@ public class AddArtikelPanel extends JPanel {
 	// die dieses Interface implementiert und auf ein neue hinzugefügtes
 	// Buch reagiert, indem sie die Bücherliste aktualisiert.
 	public interface AddArtikelListener {
-		public void onBookAdded(Artikel Artikel);
+		public void onArikelAdded(Artikel Artikel);
 	}
 
 	private E_Shop shop = null;
-	private AddArtikelListener addBookListener = null;
+	private AddArtikelListener addArtikelListener = null;
 	private JButton hinzufuegenButton;
 	private JTextField artikelNameTextFeld;
 	private JTextField beschreibungTextFeld;
@@ -46,10 +46,10 @@ public class AddArtikelPanel extends JPanel {
 	boolean istMassengut = false;
 	private Nutzer loggedNutzer;
 
-	public AddArtikelPanel(E_Shop shop, Nutzer loggedNutzer, AddArtikelListener addBookListener) {
+	public AddArtikelPanel(E_Shop shop, Nutzer loggedNutzer, AddArtikelListener addArtikelListener) {
 		this.shop = shop;
 		this.loggedNutzer = loggedNutzer;
-		this.addBookListener = addBookListener;
+		this.addArtikelListener = addArtikelListener;
 
 		setupUI();
 
@@ -161,7 +161,7 @@ public class AddArtikelPanel extends JPanel {
 					datenSischern();
 
 					textFeldeLeeren();
-					addBookListener.onBookAdded(artikel_1);
+					addArtikelListener.onArikelAdded(artikel_1);
 
 				} catch (AnzahlIsNichtDefiniertException | ArtikelExistiertBereitsException
 						| BestandPasstNichtMitPackungsGroesseException | ArtikelExistiertNichtException
@@ -186,7 +186,7 @@ public class AddArtikelPanel extends JPanel {
 				textFeldeLeeren();
 
 				// Am Ende Listener, d.h. unseren Frame benachrichtigen:
-				addBookListener.onBookAdded(artikel);
+				addArtikelListener.onArikelAdded(artikel);
 			} catch (AnzahlIsNichtDefiniertException | ArtikelExistiertBereitsException
 					| BestandPasstNichtMitPackungsGroesseException | ArtikelExistiertNichtException | IOException e) {
 				// TODO Auto-generated catch block

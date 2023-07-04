@@ -3,15 +3,16 @@ package ui.gui.models;
 import entities.Artikel;
 import entities.Massengutartikel;
 
+import javax.swing.ListModel;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 import java.util.Vector;
 
-public class ArtikelTableModel extends AbstractTableModel {
+public class ArtikelTableModel extends AbstractTableModel  {
 
 	private List<Artikel> artikeln;
 	private String[] spaltenNamen = { "ID", "Name", "Beschreibung", "Preis", "Bestand", "MassengutArtikel",
-	"Packungsgroeße" };
+			"Packungsgroeße" };
 
 	public ArtikelTableModel(List<Artikel> aktuelleArtikeln) {
 		super();
@@ -25,8 +26,8 @@ public class ArtikelTableModel extends AbstractTableModel {
 	public void setArtikeln(List<Artikel> aktuelleArtikeln) {
 		artikeln.clear();
 		artikeln.addAll(aktuelleArtikeln);
-		//Änderungen an den Daten des Modells mitzuteilen, 
-		//damit die JTable diese Änderungen reflektieren kann.
+		// Änderungen an den Daten des Modells mitzuteilen,
+		// damit die JTable diese Änderungen reflektieren kann.
 		fireTableDataChanged();
 	}
 
@@ -50,11 +51,16 @@ public class ArtikelTableModel extends AbstractTableModel {
 	public String getColumnName(int col) {
 		return spaltenNamen[col];
 	}
+	
+	public Artikel getSelecetedArtikel(int row) {
+		Artikel artikel = artikeln.get(row);
+		return artikel;
+	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
 		Artikel gewaehltesArtikel = artikeln.get(row);
-		
+
 		if (gewaehltesArtikel.getIstPackung()) {
 			Massengutartikel gewaehltesArtikel_1 = (Massengutartikel) gewaehltesArtikel;
 			switch (col) {

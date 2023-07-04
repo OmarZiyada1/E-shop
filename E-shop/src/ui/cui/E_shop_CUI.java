@@ -283,16 +283,18 @@ public class E_shop_CUI {
 			System.out.println("Artikel name >");
 			artikelName = liesEingabe();
 			System.out.println("Um wiel viel senken?  >");
-			anzahl = Integer.parseInt(liesEingabe());
+			
 			try {
+				anzahl = Integer.parseInt(liesEingabe());
 				gesuchteArtikel = sh.senkenArtikelBestand(loggedMitarbeiter, artikelName, anzahl);
 				System.out.println("\nBestand gesenkt.\n");
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			} catch (BestandPasstNichtMitPackungsGroesseException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
+			}catch (NumberFormatException e) {
+				System.err.println("\n" + "Die Menge muss eine ganze Zahl sein." + "\n");
 			}
-
 			break;
 
 		case "v":

@@ -77,7 +77,7 @@ public class E_Shop {
 		
 		Artikel artikel = new Artikel(name, beschreibung, bestand, preis, istPackung);
 		artikelVW.fugeArtikelEin(artikel);
-		verlaufVW.addVerlauf(AKTIONSTYP.Neue, mitarbeiter, artikel, bestand);
+		verlaufVW.addVerlauf(AKTIONSTYP.Neue, mitarbeiter, name, bestand);
 
 		return artikel;
 	}
@@ -86,7 +86,7 @@ public class E_Shop {
 			throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
 
 		Massengutartikel artikel = new Massengutartikel(name, beschreibung, bestand, preis, istPackung,packungsGroesse );
-		verlaufVW.addVerlauf(AKTIONSTYP.Neue, mitarbeiter, artikel, bestand);
+		verlaufVW.addVerlauf(AKTIONSTYP.Neue, mitarbeiter, name, bestand);
 		artikelVW.fugeArtikelEin(artikel);
 		
 		return artikel;
@@ -96,7 +96,7 @@ public class E_Shop {
 		Artikel artikel = artikelVW.sucheArtikel(name);
 		int menge = artikel.getBestand();
 		artikelVW.artikelloeschen(artikel);
-		verlaufVW.addVerlauf(AKTIONSTYP.LOESCHEN, mitarbeiter, artikel,menge);
+		verlaufVW.addVerlauf(AKTIONSTYP.LOESCHEN, mitarbeiter, name,menge);
 
 		return artikel;
 
@@ -107,7 +107,7 @@ public class E_Shop {
 		
 		Artikel artikel = artikelVW.bestandErhoehen(name, anzahl);
 		
-		verlaufVW.addVerlauf(AKTIONSTYP.ERHOEHEN, mitarbeiter, artikel,anzahl );
+		verlaufVW.addVerlauf(AKTIONSTYP.ERHOEHEN, mitarbeiter, name,anzahl );
 		return artikel;
 	}
 
@@ -115,7 +115,7 @@ public class E_Shop {
 			throws ArtikelExistiertNichtException, BestandPasstNichtMitPackungsGroesseException {
 		
 		Artikel artikel = artikelVW.bestandSenken(name, anzahl);
-		verlaufVW.addVerlauf(AKTIONSTYP.SENKEN, mitarbeiter, artikel, anzahl);
+		verlaufVW.addVerlauf(AKTIONSTYP.SENKEN, mitarbeiter, name, anzahl);
 		return artikel;
 	}
 
@@ -258,7 +258,7 @@ public class E_Shop {
 		Bestellung best = bestellVW.bestellen(kunde);
 		
 		for (Artikel artikel : best.getBestellteArtikeln().keySet()) {
-			verlaufVW.addVerlauf(AKTIONSTYP.BESTELLEN, kunde, artikel,best.getBestellteArtikeln().get(artikel) );
+			verlaufVW.addVerlauf(AKTIONSTYP.BESTELLEN, kunde, artikel.getName(),best.getBestellteArtikeln().get(artikel) );
 		}
 		return best;
 	}
