@@ -37,7 +37,7 @@ public class BibGuiMitKomponenten extends JFrame
 		implements AddArtikelPanel.AddArtikelListener, SearchArtikelsPanel.SearchResultListener,
 		MitarbeiterMenuePanel.TableDataListener, Login_Panel.LoginSuccessListener, Login_Panel.PanelChangeListener,
 		LogoutPanel.PanelChangeBeiLogout, KundenMenuePanel.OnWarenkorpListener {
-	
+
 	private E_Shop shop;
 
 	private SearchArtikelsPanel searchPanel;
@@ -51,10 +51,9 @@ public class BibGuiMitKomponenten extends JFrame
 
 	private Nutzer loggedNutzer;
 	private List<Artikel> artikeln;
-	private WarenkorbModel warenKorbModel;
 	private ArtikelTableModel2Kunde artikelTableModel2Kunde;
 	JScrollPane scrollPane;
-	private HashMap <Artikel, Integer> warenkorb;
+	private HashMap<Artikel, Integer> warenkorb;
 
 	public static void main(String[] args) {
 		// Start der Anwendung (per anonymer Klasse)
@@ -101,8 +100,7 @@ public class BibGuiMitKomponenten extends JFrame
 
 	private void initialize(Nutzer loggednutzer) {
 		this.loggedNutzer = loggednutzer;
-		
-		
+
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowCloser());
 
@@ -118,11 +116,6 @@ public class BibGuiMitKomponenten extends JFrame
 
 		// Center
 		artikeln = shop.gibAlleArtikeln();
-		
-
-		
-
-		
 
 		// south
 		logoutPanel = new LogoutPanel(shop, this.loggedNutzer, this);
@@ -132,7 +125,7 @@ public class BibGuiMitKomponenten extends JFrame
 			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
 			// West
 			getContentPane().add(addArtikelPanel, BorderLayout.WEST);
-			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Mitarbeiter)loggednutzer  );
+			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Mitarbeiter) loggednutzer);
 			scrollPane = new JScrollPane(artikelnTablePanel);
 			getContentPane().add(scrollPane, BorderLayout.CENTER);
 			scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
@@ -141,12 +134,12 @@ public class BibGuiMitKomponenten extends JFrame
 			getContentPane().add(mitarbeiterMenuePanel, BorderLayout.EAST);
 
 		} else if (shop.sucheKunde(loggednutzer.getNutzerName()) != null) {
-			Kunde k=shop.sucheKunde(loggednutzer.getNutzerName());
-			 warenKorbModel=new WarenkorbModel(k.getKundeWarenkorb().getKorbArtikelListe());
-			 artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
-			kundenMenuePanel = new KundenMenuePanel(shop, (Kunde) loggednutzer, this, this);
+			Kunde k = shop.sucheKunde(loggednutzer.getNutzerName());
+			warenkorbModel = new WarenkorbModel(k.getKundeWarenkorb().getKorbArtikelListe());
+			artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
+			kundenMenuePanel = new KundenMenuePanel(shop, (Kunde) loggednutzer, this);
 			getContentPane().add(kundenMenuePanel, BorderLayout.WEST);
-			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Kunde)loggednutzer);
+			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Kunde) loggednutzer);
 			scrollPane = new JScrollPane(artikelnTablePanel);
 			getContentPane().add(scrollPane, BorderLayout.CENTER);
 			scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
@@ -309,7 +302,7 @@ public class BibGuiMitKomponenten extends JFrame
 		artikeln = shop.gibAlleArtikeln();
 		artikelnTablePanel.updateArtikelnList(artikeln);
 	}
-	
+
 	@Override
 	public void updateWarenKorb() {
 		Kunde k = (Kunde) loggedNutzer;
@@ -331,14 +324,12 @@ public class BibGuiMitKomponenten extends JFrame
 		return arikel;
 
 	}
-	
-	
 
 	@Override
 	public void updateToWarenkorb() {
-		artikelnTablePanel.setModel(warenKorbModel);
+		artikelnTablePanel.setModel(warenkorbModel);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("WarenKorb"));
-		
+
 	}
 
 	@Override
@@ -349,8 +340,8 @@ public class BibGuiMitKomponenten extends JFrame
 	}
 
 	@Override
-	public Artikel onSelectedRow() {
-		
+	public Artikel onSelectedRow_Kunde() {
+
 		// -1 bedeuted dass keines row selected
 		int selectedRow = artikelnTablePanel.selectedrowIndex();
 		Artikel arikel = null;
@@ -360,8 +351,18 @@ public class BibGuiMitKomponenten extends JFrame
 		}
 		return arikel;
 	}
+	
+	@Override
+	public Artikel onSelectedRow_Warenkorb() {
 
+		// -1 bedeuted dass keines row selected
+		int selectedRow = artikelnTablePanel.selectedrowIndex();
+		Artikel arikel = null;
 
-
+		if (selectedRow != -1 && artikelnTablePanel.getSelectedRowCount() == 1) {
+			arikel = warenkorbModel.getSelecetedArtikel(selectedRow);
+		}
+		return arikel;
+	}
 
 }

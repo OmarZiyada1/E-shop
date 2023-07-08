@@ -21,10 +21,16 @@ public class WarenkorbModel extends AbstractTableModel {
 	}
 
 	public void setWarenkorb(HashMap<Artikel, Integer> aktuelleWarenkorbMap) {
-		System.out.println("hier");
-		warenkorbMap.clear();
+
+		if (warenkorbMap == null) {
+
+			warenkorbMap = new HashMap<Artikel, Integer>();
+		} else {
+			warenkorbMap.clear();
+		}
 		warenkorbMap.putAll(aktuelleWarenkorbMap);
 		fireTableDataChanged();
+
 	}
 
 	@Override
@@ -44,9 +50,17 @@ public class WarenkorbModel extends AbstractTableModel {
 		return spaltenNamen[col];
 	}
 
+	public Artikel getSelecetedArtikel(int row) {
+		List<Artikel> keys = new ArrayList<Artikel>(warenkorbMap.keySet());
+		Artikel artikel = keys.get(row);
+		return artikel;
+	}
+	
+	
+
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		
+
 		List<Artikel> keys = new ArrayList<Artikel>(warenkorbMap.keySet());
 		Artikel artikel = keys.get(rowIndex);
 

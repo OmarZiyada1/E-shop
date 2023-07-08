@@ -27,9 +27,10 @@ public class WarenkorbVerwaltung {
 	 *                                                      Artikel vorhanden sind.
 	 * @throws BestandPasstNichtMitPackungsGroesseException
 	 * @throws ArtikelExistiertNichtException 
+	 * @throws AnzahlIsNichtDefiniertException 
 	 */
 	public void fuegeArtikelInKorbEin(Kunde kunde, Artikel art, int anzahl)
-			throws NichtGenugArtikelVorhandenException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+			throws NichtGenugArtikelVorhandenException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException {
 		int aktuelleMengeInWarenKorb = 0;
 
 		if (kunde.getKundeWarenkorb().getKorbArtikelListe().containsKey(art)) {
@@ -49,8 +50,14 @@ public class WarenkorbVerwaltung {
 	}
 
 	public void addOrNewArtikel(Kunde kunde, Artikel art, int anzahl, int aktuelleMengeInWarenKorb)
-			throws NichtGenugArtikelVorhandenException {
-		if (art.getBestand() - aktuelleMengeInWarenKorb >= anzahl) {
+			throws NichtGenugArtikelVorhandenException, AnzahlIsNichtDefiniertException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+		if (  anzahl <0 && aktuelleMengeInWarenKorb ==0){
+			loescheArtikeVomKorb(kunde, art);
+		}
+		else {
+			
+		
+		if (art.getBestand() - aktuelleMengeInWarenKorb >= anzahl ) {
 
 			if (aktuelleMengeInWarenKorb == 0) {
 				kunde.setKundeWarenkorb(art, anzahl);
@@ -62,7 +69,7 @@ public class WarenkorbVerwaltung {
 
 		} else {
 			throw new NichtGenugArtikelVorhandenException(aktuelleMengeInWarenKorb, art);
-		}
+		}}
 	}
 
 	/**
@@ -97,7 +104,7 @@ public class WarenkorbVerwaltung {
 		if (anzahl < kunde.getKundeWarenkorb().getKorbArtikelListe().get(art)) {
 			kunde.setKundeWarenkorb(art, kunde.getKundeWarenkorb().getKorbArtikelListe().get(art) - anzahl);
 			updadteGesamtprise(kunde.getKundeWarenkorb().getKorbArtikelListe(), kunde);
-		} else if (anzahl == kunde.getKundeWarenkorb().getKorbArtikelListe().get(art)) {
+		} else if (anzahl >= kunde.getKundeWarenkorb().getKorbArtikelListe().get(art)) {
 			loescheArtikeVomKorb(kunde, art);
 			updadteGesamtprise(kunde.getKundeWarenkorb().getKorbArtikelListe(), kunde);
 		}

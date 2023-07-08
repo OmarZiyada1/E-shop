@@ -133,10 +133,10 @@ public class AddArtikelPanel extends JPanel {
 //						buchEinfügen();
 //					}
 //				});
-		hinzufuegenButton.addActionListener(e -> artikelEinfügen());
+		hinzufuegenButton.addActionListener(e -> artikelEinfugen());
 	}
 
-	private void artikelEinfügen() {
+	private void artikelEinfugen() {
 		String name = artikelNameTextFeld.getText();
 		String beschreibung = beschreibungTextFeld.getText();
 		String preis = preisTextFeld.getText();

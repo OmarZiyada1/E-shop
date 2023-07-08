@@ -233,7 +233,7 @@ public class E_Shop {
 
 	// Warenkorb
 
-	public void fuegeArtikelInkorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+	public void fuegeArtikelInkorbEin(Kunde kunde, Artikel art, int anzahl) throws NichtGenugArtikelVorhandenException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException {
 		warenKorbVW.fuegeArtikelInKorbEin(kunde, art, anzahl);
 	}
 

@@ -385,6 +385,8 @@ public class E_shop_CUI {
 				System.err.println("\n" + e.getMessage() + "\n");
 			} catch (BestandPasstNichtMitPackungsGroesseException e) {
 				System.err.println(e.getMessage());
+			} catch (AnzahlIsNichtDefiniertException e) {
+				System.err.println("\n" + e.getMessage() + "\n");
 			}
 			break;
 		case "c":
@@ -411,6 +413,9 @@ public class E_shop_CUI {
 					System.err.println("\n" + e.getMessage() + "\n");
 				} catch (BestandPasstNichtMitPackungsGroesseException e) {
 					System.err.println("\n" + e.getMessage() + "\n");
+				} catch (AnzahlIsNichtDefiniertException e) {
+					// TODO Auto-generated catch block
+					System.err.println("\n" + e.getMessage() + "\n");
 				}
 
 				break;
@@ -418,7 +423,13 @@ public class E_shop_CUI {
 				System.out.print("St�ckzahl eingeben bitte  >");
 				anzahl = Integer.parseInt(liesEingabe().trim());
 				try {
-					sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
+					try {
+						sh.fuegeArtikelInkorbEin(loggedkunde, gesuchteArtikel, -anzahl);
+					} catch (BestandPasstNichtMitPackungsGroesseException | ArtikelExistiertNichtException
+							| AnzahlIsNichtDefiniertException e) {
+						// TODO Auto-generated catch block
+						System.err.println("\n" + e.getMessage() + "\n");
+					}
 					System.out.println("\nBestand des Artikel '" + gesuchteArtikel + "' wurde um '" + anzahl
 							+ "' St�ckzahl gesenkt\n");
 				} catch (NichtGenugArtikelVorhandenException e) {

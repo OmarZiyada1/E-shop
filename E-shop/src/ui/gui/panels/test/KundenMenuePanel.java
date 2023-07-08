@@ -1,9 +1,10 @@
 package ui.gui.panels.test;
 
 import javax.swing.JPanel;
-
+import javax.swing.Timer;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import java.awt.GridBagLayout;
@@ -13,44 +14,56 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
 import domain.E_Shop;
+import domain.exceptions.AnzahlIsNichtDefiniertException;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
+import domain.exceptions.SenkenUnterNullNichtMoeglichException;
+import domain.exceptions.WarenkorbLeerException;
 import entities.Artikel;
+import entities.Bestellung;
 import entities.Kunde;
-import ui.gui.models.WarenkorbModel;
+
 import ui.gui.panels.test.MitarbeiterMenuePanel.TableDataListener;
 
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class KundenMenuePanel extends JPanel {
 	private JButton btn_ArtikelAnzeigen;
 	private JButton btn_Warenkorb;
 	private E_Shop shop;
 	private Kunde kunde;
+	private Bestellung aktuelleBestellung;
 	private OnWarenkorpListener onWarenkorpListener;
-	private TableDataListener tableDataListener;
-	private JButton btnAddArtikel;
-	
-	
-	public interface OnWarenkorpListener{
+	private JButton btnFuegeArtikel;
+	private boolean istWarenKorb = false;
+	private JButton btnKaufen;
+	private JButton btnArtikelSenken;
+	private JButton btnArtikelErhoehen;
+
+	public interface OnWarenkorpListener {
 		void updateToWarenkorb();
+
 		void updateToArtikel();
-		Artikel onSelectedRow();
+
+		Artikel onSelectedRow_Kunde();
+
 		void updateWarenKorb();
+
+		Artikel onSelectedRow_Warenkorb();
 	}
 
 	/**
 	 * Create the panel.
 	 */
-	public KundenMenuePanel(E_Shop shop, Kunde kunde, TableDataListener tableDataListener , OnWarenkorpListener onWarenkorpListener) {
-		this.tableDataListener=tableDataListener;
+	public KundenMenuePanel(E_Shop shop, Kunde kunde, OnWarenkorpListener onWarenkorpListener) {
 		this.shop = shop;
 		this.onWarenkorpListener = onWarenkorpListener;
 		this.kunde = kunde;
-		this.onWarenkorpListener=onWarenkorpListener ;
+		this.onWarenkorpListener = onWarenkorpListener;
 		initGUI();
 	}
 
@@ -64,6 +77,15 @@ public class KundenMenuePanel extends JPanel {
 					do_btn_ArtikelAnzeigen_actionPerformed(e);
 				}
 			});
+			{
+				this.btnFuegeArtikel = new JButton("Zum WK. hinzuf\u00FCgen");
+				this.btnFuegeArtikel.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						do_btnAddArtikel_actionPerformed(e);
+					}
+				});
+				add(this.btnFuegeArtikel);
+			}
 			add(this.btn_ArtikelAnzeigen);
 		}
 		{
@@ -76,39 +98,155 @@ public class KundenMenuePanel extends JPanel {
 			add(this.btn_Warenkorb);
 		}
 		{
-			this.btnAddArtikel = new JButton("Add Artikel");
-			this.btnAddArtikel.addActionListener(new ActionListener() {
+			btnKaufen = new JButton("Kaufen");
+			btnKaufen.setVisible(false);
+			btnKaufen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					do_btnAddArtikel_actionPerformed(e);
+					do_btn_Kaufen_actionPerformed(e);
 				}
 			});
-			add(this.btnAddArtikel);
+			add(btnKaufen);
+		}
+		{
+			btnArtikelErhoehen = new JButton("+");
+			btnArtikelErhoehen.setVisible(false);
+			btnArtikelErhoehen.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					do_btn_ArtikelErhoehen_actionPerformed(e);
+				}
+			});
+			btnArtikelErhoehen.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			add(btnArtikelErhoehen);
+		}
+		{
+			btnArtikelSenken = new JButton("-");
+			btnArtikelSenken.setVisible(false);
+			btnArtikelSenken.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					do_btn_ArtikelSenken_actionPerformed(e);
+				}
+			});
+			btnArtikelSenken.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			add(btnArtikelSenken);
+		}
+	}
+
+	protected void do_btn_ArtikelSenken_actionPerformed(ActionEvent e) {
+		Artikel artikel = onWarenkorpListener.onSelectedRow_Warenkorb();
+		if (artikel == null) {
+			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswÃ¤hlen", "info",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
+
+			try {
+				onWarenkorpListener.updateWarenKorb();
+				shop.fuegeArtikelInkorbEin(kunde, artikel, -1);
+				onWarenkorpListener.updateWarenKorb();
+			} catch (NichtGenugArtikelVorhandenException | BestandPasstNichtMitPackungsGroesseException
+					| ArtikelExistiertNichtException | AnzahlIsNichtDefiniertException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error >", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	protected void do_btn_ArtikelErhoehen_actionPerformed(ActionEvent e) {
+		Artikel artikel = onWarenkorpListener.onSelectedRow_Warenkorb();
+		if (artikel == null) {
+			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswÃ¤hlen", "info",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			try {
+				shop.fuegeArtikelInkorbEin(kunde, artikel, 1);
+				onWarenkorpListener.updateWarenKorb();
+			} catch (NichtGenugArtikelVorhandenException | BestandPasstNichtMitPackungsGroesseException
+					| ArtikelExistiertNichtException | AnzahlIsNichtDefiniertException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error >", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	protected void do_btn_Kaufen_actionPerformed(ActionEvent e) {
+		try {
+			aktuelleBestellung = shop.bestellen(kunde);
+			shop.leereWarenkorb(kunde);
+			datenSischern();
+			onWarenkorpListener.updateWarenKorb();
+			JOptionPane.showMessageDialog(null, shop.erstelleRechnung(aktuelleBestellung), "info",
+					JOptionPane.INFORMATION_MESSAGE);
+
+		} catch (WarenkorbLeerException | NichtGenugArtikelVorhandenException | SenkenUnterNullNichtMoeglichException
+				| IOException e1) {
+			JOptionPane.showInputDialog(null, e1.getMessage(), "Error >", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	protected void do_btn_Warenkorb_actionPerformed(ActionEvent e) {
-	
+		changeWarenkorbBtnsVisible(true);
 		onWarenkorpListener.updateToWarenkorb();
 	}
+
 	protected void do_btn_ArtikelAnzeigen_actionPerformed(ActionEvent e) {
+		changeWarenkorbBtnsVisible(false);
 		onWarenkorpListener.updateToArtikel();
 	}
-	
+
 	protected void do_btnAddArtikel_actionPerformed(ActionEvent e) {
+
 		int menge = 0;
-		Artikel artikel= onWarenkorpListener.onSelectedRow();
-		String result = JOptionPane.showInputDialog(null, " Bitte zu hinzufuegen Menge eingeben:", "Eingabe >",
-				JOptionPane.PLAIN_MESSAGE);
-		menge = Integer.parseInt(result);
-		
-		try {
-			shop.fuegeArtikelInkorbEin(kunde, artikel, menge);
-			//System.out.println(kunde.getKundeWarenkorb());
-			onWarenkorpListener.updateWarenKorb();
-		} catch (NichtGenugArtikelVorhandenException | BestandPasstNichtMitPackungsGroesseException
-				| ArtikelExistiertNichtException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		Artikel artikel = onWarenkorpListener.onSelectedRow_Kunde();
+
+		if (artikel == null) {
+			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswÃ¤hlen", "info",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			changeWarenkorbBtnsVisible(false);
+			try {
+				String result = JOptionPane.showInputDialog(null, " Bitte zu hinzufuegen Menge eingeben:", "Eingabe >",
+						JOptionPane.PLAIN_MESSAGE);
+				menge = Integer.parseInt(result);
+				shop.fuegeArtikelInkorbEin(kunde, artikel, menge);
+				onWarenkorpListener.updateWarenKorb();
+				artikelHinzufuegenBestaetigt();
+			} catch (NichtGenugArtikelVorhandenException | BestandPasstNichtMitPackungsGroesseException
+					| ArtikelExistiertNichtException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (NumberFormatException e1) {
+				JOptionPane.showMessageDialog(null, "Die Menge muss eine ganze Zahl sein.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} catch (AnzahlIsNichtDefiniertException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		
+	}
+
+	public void artikelHinzufuegenBestaetigt() {
+		JOptionPane optionPane = new JOptionPane("Artikel hinzugefügt.", JOptionPane.INFORMATION_MESSAGE);
+		JDialog dialog = optionPane.createDialog("Bestätigung");
+
+		Timer timer = new Timer(650, e -> dialog.dispose());
+		timer.setRepeats(false);
+		timer.start();
+		dialog.setVisible(true);
+	}
+
+	public void changeWarenkorbBtnsVisible(boolean a) {
+		btnKaufen.setVisible(a);
+		btnArtikelErhoehen.setVisible(a);
+		btnArtikelSenken.setVisible(a);
+
+	}
+
+	private void textFeldeLeeren() {
+
+	}
+
+	/**
+	 * @throws IOException
+	 */
+	private void datenSischern() throws IOException {
+		shop.schreibeArtikel();
+		shop.schreibeVerlauf();
+
 	}
 }
