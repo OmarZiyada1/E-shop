@@ -6,7 +6,7 @@ public class AnzahlIsNichtDefiniertException extends Exception {
 		// TODO Auto-generated constructor stub
 		
 		
-		super("Menge Der Artikel ist nicht Falsch");
+		super("Menge Der Artikel ist  Falsch");
 		
 	}
 

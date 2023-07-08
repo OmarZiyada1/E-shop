@@ -9,12 +9,15 @@ import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import entities.Artikel;
 import entities.Kunde;
+import entities.Mitarbeiter;
 import entities.Nutzer;
 import ui.gui.models.ArtikelTableModel;
+import ui.gui.models.ArtikelTableModel2Kunde;
 import ui.gui.models.WarenkorbModel;
 import ui.gui.panels.test.AddArtikelPanel;
 import ui.gui.panels.test.ArtikelnTablePanel;
 import ui.gui.panels.test.KundenMenuePanel;
+import ui.gui.panels.test.KundenMenuePanel.OnWarenkorpListener;
 import ui.gui.panels.test.Login_Panel;
 
 import ui.gui.panels.test.LogoutPanel;
@@ -27,26 +30,31 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-public class BibGuiMitKomponenten extends JFrame implements AddArtikelPanel.AddArtikelListener,
-		SearchArtikelsPanel.SearchResultListener, MitarbeiterMenuePanel.TableDataListener,
-		Login_Panel.LoginSuccessListener, Login_Panel.PanelChangeListener, LogoutPanel.PanelChangeBeiLogout {
-
+public class BibGuiMitKomponenten extends JFrame
+		implements AddArtikelPanel.AddArtikelListener, SearchArtikelsPanel.SearchResultListener,
+		MitarbeiterMenuePanel.TableDataListener, Login_Panel.LoginSuccessListener, Login_Panel.PanelChangeListener,
+		LogoutPanel.PanelChangeBeiLogout, KundenMenuePanel.OnWarenkorpListener {
+	
 	private E_Shop shop;
 
 	private SearchArtikelsPanel searchPanel;
 	private AddArtikelPanel addArtikelPanel;
 	private KundenMenuePanel kundenMenuePanel;
-
 	private LogoutPanel logoutPanel;
-//	private BooksListPanel booksPanel;
 	private ArtikelnTablePanel artikelnTablePanel;
-
 	private JPanel loginPanel;
 	private MitarbeiterMenuePanel mitarbeiterMenuePanel;
+	private WarenkorbModel warenkorbModel;
+
 	private Nutzer loggedNutzer;
-	private java.util.List<Artikel> artikeln;
+	private List<Artikel> artikeln;
+	private WarenkorbModel warenKorbModel;
+	private ArtikelTableModel2Kunde artikelTableModel2Kunde;
+	JScrollPane scrollPane;
+	private HashMap <Artikel, Integer> warenkorb;
 
 	public static void main(String[] args) {
 		// Start der Anwendung (per anonymer Klasse)
@@ -58,7 +66,6 @@ public class BibGuiMitKomponenten extends JFrame implements AddArtikelPanel.AddA
 				} catch (ArtikelExistiertBereitsException | ArtikelExistiertNichtException
 						| MitarbeiterUsernameIstBenutztException | ParseException
 						| BestandPasstNichtMitPackungsGroesseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -94,63 +101,60 @@ public class BibGuiMitKomponenten extends JFrame implements AddArtikelPanel.AddA
 
 	private void initialize(Nutzer loggednutzer) {
 		this.loggedNutzer = loggednutzer;
+		
+		
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowCloser());
+
+		// layout
+		getContentPane().setLayout(new BorderLayout());
 
 		// Menü initialisieren
 		setupMenu();
 
-		// Klick auf Kreuz / roten Kreis (Fenster schließen) behandeln lassen:
-		// A) Mittels Default Close Operation
-//		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		// B) Mittels WindowAdapter (für Sicherheitsabfrage)
-
-		addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
-		kundenMenuePanel = new KundenMenuePanel();
-
-		if (shop.sucheMitarbeiter(loggednutzer.getNutzerName()) != null) {
-			k_m_design(addArtikelPanel);
-			// OST
-			mitarbeiterMenuePanel = new MitarbeiterMenuePanel(this, shop, loggedNutzer);
-			getContentPane().add(mitarbeiterMenuePanel, BorderLayout.EAST);
-		} else if (shop.sucheKunde(loggednutzer.getNutzerName()) != null) {
-			k_m_design(kundenMenuePanel);
-			
-		}
-
-		this.setSize(640, 480);
-		this.setVisible(true);
-	}
-
-	/**
-	 * 
-	 */
-	private void k_m_design(JPanel switch_Panel) {
-		getContentPane().setLayout(new BorderLayout());
 		// North
 		searchPanel = new SearchArtikelsPanel(shop, this);
-		// West
+		getContentPane().add(searchPanel, BorderLayout.NORTH);
 
-		getContentPane().add(switch_Panel, BorderLayout.WEST);
 		// Center
 		artikeln = shop.gibAlleArtikeln();
+		
 
-		artikelnTablePanel = new ArtikelnTablePanel(artikeln);
-		JScrollPane scrollPane = new JScrollPane(artikelnTablePanel);
+		
 
-		// ArtikelnTablePanel warenkorbModel = new
-		// ArtikelnTablePanel(shop.getKundenWarenkorb((Kunde)loggeNutzer).getKorbArtikelListe());
-		// JScrollPane scrollPane = new JScrollPane(warenkorbModel);
-		scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
-
-		getContentPane().add(searchPanel, BorderLayout.NORTH);
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
+		
 
 		// south
 		logoutPanel = new LogoutPanel(shop, this.loggedNutzer, this);
 		getContentPane().add(logoutPanel, BorderLayout.SOUTH);
 
-		
+		if (shop.sucheMitarbeiter(loggednutzer.getNutzerName()) != null) {
+			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
+			// West
+			getContentPane().add(addArtikelPanel, BorderLayout.WEST);
+			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Mitarbeiter)loggednutzer  );
+			scrollPane = new JScrollPane(artikelnTablePanel);
+			getContentPane().add(scrollPane, BorderLayout.CENTER);
+			scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
+
+			mitarbeiterMenuePanel = new MitarbeiterMenuePanel(this, shop, loggedNutzer);
+			getContentPane().add(mitarbeiterMenuePanel, BorderLayout.EAST);
+
+		} else if (shop.sucheKunde(loggednutzer.getNutzerName()) != null) {
+			Kunde k=shop.sucheKunde(loggednutzer.getNutzerName());
+			 warenKorbModel=new WarenkorbModel(k.getKundeWarenkorb().getKorbArtikelListe());
+			 artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
+			kundenMenuePanel = new KundenMenuePanel(shop, (Kunde) loggednutzer, this, this);
+			getContentPane().add(kundenMenuePanel, BorderLayout.WEST);
+			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Kunde)loggednutzer);
+			scrollPane = new JScrollPane(artikelnTablePanel);
+			getContentPane().add(scrollPane, BorderLayout.CENTER);
+			scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
+
+		}
+
+		this.setSize(640, 480);
+		this.setVisible(true);
 	}
 
 	/*
@@ -167,7 +171,9 @@ public class BibGuiMitKomponenten extends JFrame implements AddArtikelPanel.AddA
 	public void onArikelAdded(Artikel artikel) {
 		// Ich lade hier einfach alle Bücher neu und lasse sie anzeigen
 		artikeln = shop.gibAlleArtikeln();
+		artikelnTablePanel.sortTableMouseClick(artikeln);
 		artikelnTablePanel.updateArtikelnList(artikeln);
+
 	}
 
 	/*
@@ -289,31 +295,73 @@ public class BibGuiMitKomponenten extends JFrame implements AddArtikelPanel.AddA
 
 	@Override
 	public void onPanelChange(JPanel newPanel) {
+
 		getContentPane().remove(loginPanel); // Wir entfernen das alte Panel
 		loginPanel = newPanel; // Wir speichern das neue Panel
 		getContentPane().add(loginPanel); // Wir fügen das neue Panel hinzu
+
 		validate(); // Wir aktualisieren das GUI
 		repaint();
 	}
 
+	@Override
 	public void updateTable() {
 		artikeln = shop.gibAlleArtikeln();
 		artikelnTablePanel.updateArtikelnList(artikeln);
 	}
+	
+	@Override
+	public void updateWarenKorb() {
+		Kunde k = (Kunde) loggedNutzer;
+		warenkorb = k.getKundeWarenkorb().getKorbArtikelListe();
+		warenkorbModel.setWarenkorb(warenkorb);
+	}
 
 	@Override
 	public Artikel onSelctedRow() {
+
 		ArtikelTableModel artikeltabelModel = new ArtikelTableModel(artikeln);
 		// -1 bedeuted dass keines row selected
-		int selectedRow = -1;
+		int selectedRow = artikelnTablePanel.selectedrowIndex();
 		Artikel arikel = null;
-		if (artikelnTablePanel.selectedrowIndex() != -1 && artikelnTablePanel.selectedrowIndex() == 1) {
-			selectedRow = artikelnTablePanel.selectedrowIndex();
-			arikel = artikeltabelModel.getSelecetedArtikel(selectedRow);
-		} 
 
+		if (selectedRow != -1 && artikelnTablePanel.getSelectedRowCount() == 1) {
+			arikel = artikeltabelModel.getSelecetedArtikel(selectedRow);
+		}
 		return arikel;
 
 	}
+	
+	
+
+	@Override
+	public void updateToWarenkorb() {
+		artikelnTablePanel.setModel(warenKorbModel);
+		scrollPane.setBorder(BorderFactory.createTitledBorder("WarenKorb"));
+		
+	}
+
+	@Override
+	public void updateToArtikel() {
+		artikelnTablePanel.setModel(artikelTableModel2Kunde);
+		scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
+
+	}
+
+	@Override
+	public Artikel onSelectedRow() {
+		
+		// -1 bedeuted dass keines row selected
+		int selectedRow = artikelnTablePanel.selectedrowIndex();
+		Artikel arikel = null;
+
+		if (selectedRow != -1 && artikelnTablePanel.getSelectedRowCount() == 1) {
+			arikel = artikelTableModel2Kunde.getSelecetedArtikel(selectedRow);
+		}
+		return arikel;
+	}
+
+
+
 
 }

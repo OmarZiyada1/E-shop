@@ -1,28 +1,27 @@
 package ui.gui.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
-
 import javax.swing.table.AbstractTableModel;
-
 import entities.Artikel;
-import entities.Warenkorb;
 
 public class WarenkorbModel extends AbstractTableModel {
 
-	private Map<Artikel, Integer> warenkorbMap;
+	private HashMap<Artikel, Integer> warenkorbMap;
 	private String[] spaltenNamen = { "Artikel Name", "Menge" };
 
-	public WarenkorbModel(Map<Artikel, Integer> aktuelleWarenkorbMap) {
+	public WarenkorbModel(HashMap<Artikel, Integer> aktuelleArtikeln) {
 		super();
-		this.warenkorbMap = new HashMap<Artikel, Integer>();
-		warenkorbMap.putAll(aktuelleWarenkorbMap);
+
+		warenkorbMap = new HashMap<Artikel, Integer>();
+		warenkorbMap.putAll(aktuelleArtikeln);
 
 	}
 
-	public void setWarenkorb(Map<Artikel, Integer> aktuelleWarenkorbMap) {
+	public void setWarenkorb(HashMap<Artikel, Integer> aktuelleWarenkorbMap) {
+		System.out.println("hier");
 		warenkorbMap.clear();
 		warenkorbMap.putAll(aktuelleWarenkorbMap);
 		fireTableDataChanged();
@@ -39,7 +38,7 @@ public class WarenkorbModel extends AbstractTableModel {
 
 		return spaltenNamen.length;
 	}
-	
+
 	@Override
 	public String getColumnName(int col) {
 		return spaltenNamen[col];
@@ -48,8 +47,16 @@ public class WarenkorbModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		
+		List<Artikel> keys = new ArrayList<Artikel>(warenkorbMap.keySet());
+		Artikel artikel = keys.get(rowIndex);
 
-		return null;
+		switch (columnIndex) {
+		case 0:
+			return artikel.getName();
+		case 1:
+			return warenkorbMap.get(artikel);
+		default:
+			return null;
+		}
 	}
-
 }

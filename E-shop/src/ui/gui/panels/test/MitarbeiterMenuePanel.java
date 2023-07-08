@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import domain.E_Shop;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
+import domain.exceptions.SenkenUnterNullNichtMoeglichException;
 import entities.Artikel;
 import entities.Mitarbeiter;
 import entities.Nutzer;
@@ -36,7 +37,6 @@ public class MitarbeiterMenuePanel extends JPanel {
 
 	public interface TableDataListener {
 		public Artikel onSelctedRow();
-
 		public void updateTable();
 	}
 
@@ -114,10 +114,12 @@ public class MitarbeiterMenuePanel extends JPanel {
 
 	protected void do_btnLoeschen_actionPerformed(ActionEvent e) {
 		if (tableDataListener.onSelctedRow() == null) {
+			
 			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			try {
+				
 				shop.loescheArtikel(mitarbeiter, tableDataListener.onSelctedRow().getName());
 				shop.schreibeArtikel();
 				tableDataListener.updateTable();
@@ -147,6 +149,9 @@ public class MitarbeiterMenuePanel extends JPanel {
 			} catch (NumberFormatException e1) {
 				JOptionPane.showMessageDialog(null, "Die Menge muss eine ganze Zahl sein.", "Error",
 						JOptionPane.ERROR_MESSAGE);
+			} catch (SenkenUnterNullNichtMoeglichException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
 			}
 		}
 	}

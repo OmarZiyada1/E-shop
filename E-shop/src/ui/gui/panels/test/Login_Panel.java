@@ -120,6 +120,7 @@ public class Login_Panel extends JPanel {
 		gbc_rdbtn_Kunde.gridy = 0;
 		gbc_rdbtn_Kunde.insets = new Insets(0, 0, 5, 5);
 		buttonGroup.add(rdbtn_Kunde);
+		
 		this.rdbtn_Kunde.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				do_rdbtn_Kunde_actionPerformed(e);
@@ -190,6 +191,7 @@ public class Login_Panel extends JPanel {
 		if (rdbtn_Kunde.isSelected()) {
 			btn_Registrieren.setVisible(true);
 		}
+		
 	}
 
 	protected void do_rdbtnMitarbeiter_actionPerformed(ActionEvent e) {

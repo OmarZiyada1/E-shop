@@ -13,6 +13,7 @@ import domain.exceptions.KundeUsernameIstbenutztException;
 import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
+import domain.exceptions.SenkenUnterNullNichtMoeglichException;
 import domain.exceptions.VerlaufLeerException;
 import domain.exceptions.WarenkorbLeerException;
 import entities.Adresse;
@@ -112,7 +113,7 @@ public class E_Shop {
 	}
 
 	public Artikel senkenArtikelBestand(Mitarbeiter mitarbeiter, String name, int anzahl)
-			throws ArtikelExistiertNichtException, BestandPasstNichtMitPackungsGroesseException {
+			throws ArtikelExistiertNichtException, BestandPasstNichtMitPackungsGroesseException, SenkenUnterNullNichtMoeglichException {
 		
 		Artikel artikel = artikelVW.bestandSenken(name, anzahl);
 		verlaufVW.addVerlauf(AKTIONSTYP.SENKEN, mitarbeiter, name, anzahl);
@@ -254,7 +255,7 @@ public class E_Shop {
 	}
 
 	// Bestellung
-	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException, NichtGenugArtikelVorhandenException {
+	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException, NichtGenugArtikelVorhandenException, SenkenUnterNullNichtMoeglichException {
 		Bestellung best = bestellVW.bestellen(kunde);
 		
 		for (Artikel artikel : best.getBestellteArtikeln().keySet()) {

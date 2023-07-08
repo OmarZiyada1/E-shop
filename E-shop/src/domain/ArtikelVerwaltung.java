@@ -12,13 +12,14 @@ import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import domain.exceptions.MitarbeiterUsernameIstBenutztException;
+import domain.exceptions.SenkenUnterNullNichtMoeglichException;
 import entities.Artikel;
 import entities.Massengutartikel;
 import entities.Mitarbeiter;
 
 /**
- * to
- * Diese Klasse verwaltet Artikel und bietet Funktionen zur Artikelverwaltung.
+ * to Diese Klasse verwaltet Artikel und bietet Funktionen zur
+ * Artikelverwaltung.
  */
 public class ArtikelVerwaltung {
 
@@ -26,8 +27,8 @@ public class ArtikelVerwaltung {
 
 	private PersistenceManager pm = new FilePersistenceManager();
 
-	public void liesDaten(String datei)
-			throws IOException, ArtikelExistiertBereitsException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+	public void liesDaten(String datei) throws IOException, ArtikelExistiertBereitsException,
+			BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
 		pm.openForReading(datei);
 		Artikel einArtikel;
 		einArtikel = pm.ladeArtikel();
@@ -62,11 +63,11 @@ public class ArtikelVerwaltung {
 	 * addiert es sich mit dem Bestand
 	 * 
 	 * @param artikel Der hinzuzuf�gende Artikel.
-	 * @throws ArtikelExistiertNichtException 
+	 * @throws ArtikelExistiertNichtException
 	 * @throws AnzahlIsNichtDefiniertException Wenn die Anzahl nicht definiert ist.
 	 */
-	public void fugeArtikelEin(Artikel artikel)
-			throws ArtikelExistiertBereitsException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+	public void fugeArtikelEin(Artikel artikel) throws ArtikelExistiertBereitsException,
+			BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
 		Iterator<Artikel> iter = artikelListe.iterator();
 
 		while (iter.hasNext()) {
@@ -76,13 +77,13 @@ public class ArtikelVerwaltung {
 			}
 		}
 		if (checkMassengutartikel(artikel)) {
-			
-			if (CheckModulo(artikelZuMassengutartikel(artikel).getBestand(),artikelZuMassengutartikel(artikel).getPackungsGroesse())) {
+
+			if (CheckModulo(artikelZuMassengutartikel(artikel).getBestand(),
+					artikelZuMassengutartikel(artikel).getPackungsGroesse())) {
 				genertaeArtiekelNr(artikelZuMassengutartikel(artikel));
 				artikelListe.add(artikelZuMassengutartikel(artikel));
 				updateVerfuegbarkeit(artikelZuMassengutartikel(artikel));
-			}
-			else {
+			} else {
 				throw new BestandPasstNichtMitPackungsGroesseException(artikelZuMassengutartikel(artikel), "");
 			}
 
@@ -134,12 +135,12 @@ public class ArtikelVerwaltung {
 			throws ArtikelExistiertNichtException, BestandPasstNichtMitPackungsGroesseException {
 		Artikel artikel = sucheArtikel(name);
 		if (checkMassengutartikel(artikel)) {
-			
+
 			if (CheckModulo(anzahl, artikelZuMassengutartikel(artikel).getPackungsGroesse())) {
 				artikel.setBestand(artikel.getBestand() + anzahl);
 				updateVerfuegbarkeit(artikel);
 			} else {
-				throw new BestandPasstNichtMitPackungsGroesseException(anzahl,artikelZuMassengutartikel(artikel), "");
+				throw new BestandPasstNichtMitPackungsGroesseException(anzahl, artikelZuMassengutartikel(artikel), "");
 			}
 		} else {
 			artikel.setBestand(artikel.getBestand() + anzahl);
@@ -158,22 +159,30 @@ public class ArtikelVerwaltung {
 	 * @param name   Der Name des Artikels.
 	 * @param anzahl Die Anzahl, um die der Bestand verringert werden soll.
 	 * @throws ArtikelExistiertNichtException
-	 * @throws BestandPasstNichtMitPackungsGroesseException 
+	 * @throws BestandPasstNichtMitPackungsGroesseException
+	 * @throws SenkenUnterNullNichtMoeglichException
 	 */
-	public Artikel bestandSenken(String name, int anzahl) throws ArtikelExistiertNichtException, BestandPasstNichtMitPackungsGroesseException {
+	public Artikel bestandSenken(String name, int anzahl) throws ArtikelExistiertNichtException,
+			BestandPasstNichtMitPackungsGroesseException, SenkenUnterNullNichtMoeglichException {
 		Artikel artikel = sucheArtikel(name);
-		if (checkMassengutartikel(artikel)) {
-			if (CheckModulo(anzahl, artikelZuMassengutartikel(artikel).getPackungsGroesse())) {
+		int neueMenge = artikel.getBestand() - anzahl;
+		if (neueMenge < 0) {
+			throw new SenkenUnterNullNichtMoeglichException(artikel, anzahl);
+		} else {
+			if (checkMassengutartikel(artikel)) {
+				if (CheckModulo(anzahl, artikelZuMassengutartikel(artikel).getPackungsGroesse())) {
+					artikel.setBestand(artikel.getBestand() - anzahl);
+					updateVerfuegbarkeit(artikel);
+				} else {
+					throw new BestandPasstNichtMitPackungsGroesseException(anzahl, artikelZuMassengutartikel(artikel),
+							"");
+				}
+			} else {
 				artikel.setBestand(artikel.getBestand() - anzahl);
 				updateVerfuegbarkeit(artikel);
-			} else {
-				throw new BestandPasstNichtMitPackungsGroesseException(anzahl, artikelZuMassengutartikel(artikel), "");
 			}
-		} else {
-			artikel.setBestand(artikel.getBestand() - anzahl);
-			updateVerfuegbarkeit(artikel);
 		}
-		
+
 		return artikel;
 
 	}
@@ -184,13 +193,19 @@ public class ArtikelVerwaltung {
 	 * 
 	 * @param artikel Der Artikel, dessen Bestand verringert werden soll.
 	 * @param anzahl  Die Anzahl, um die der Bestand verringert werden soll.
+	 * @throws SenkenUnterNullNichtMoeglichException
 	 */
 
-	public void bestandSenken(Artikel artikel, int anzahl) {
-			artikel.setBestand(artikel.getBestand() - anzahl);
+	public void bestandSenken(Artikel artikel, int anzahl) throws SenkenUnterNullNichtMoeglichException {
+		int neueMenge = artikel.getBestand() - anzahl;
+		if (neueMenge < 0) {
+			throw new SenkenUnterNullNichtMoeglichException(artikel, anzahl);
+		}
+
+		else {
+			artikel.setBestand(neueMenge);
 			updateVerfuegbarkeit(artikel);
-		
-		
+		}
 
 	}
 
@@ -231,7 +246,7 @@ public class ArtikelVerwaltung {
 			while (iter.hasNext()) {
 				Artikel a = iter.next();
 				if (a.getName().equals(name)) {
-					
+
 					suchArtikel = a;
 					artikelGefunden = true;
 					break;
@@ -246,18 +261,17 @@ public class ArtikelVerwaltung {
 		return suchArtikel;
 	}
 
-	public static  boolean checkMassengutartikel(Artikel artikel)  {
-		
-			return artikel.getIstPackung();
-		
-		
+	public static boolean checkMassengutartikel(Artikel artikel) {
+
+		return artikel.getIstPackung();
+
 	}
-	
-	public static Massengutartikel artikelZuMassengutartikel(Artikel artikel)  {
-		
-			Massengutartikel artikel_1 = (Massengutartikel) artikel;
-			return artikel_1;
-		
+
+	public static Massengutartikel artikelZuMassengutartikel(Artikel artikel) {
+
+		Massengutartikel artikel_1 = (Massengutartikel) artikel;
+		return artikel_1;
+
 	}
 
 	/**
@@ -272,6 +286,7 @@ public class ArtikelVerwaltung {
 			artikel.setVerfuegbar(false);
 			return false;
 		} else {
+			artikel.setVerfuegbar(true);
 			return true;
 		}
 	}

@@ -24,9 +24,10 @@ public class SearchArtikelsPanel extends JPanel {
 	// Suchergebnis reagiert, indem sie die Bücherliste aktualisiert.
 	public interface SearchResultListener {
 		void onSearchResult(List<Artikel> artikel);
+
 	}
 
-	private E_Shop shop ;
+	private E_Shop shop;
 	private JTextField searchTextField;
 	private JButton searchButton = null;
 	private SearchResultListener searchResultListener;
@@ -41,12 +42,7 @@ public class SearchArtikelsPanel extends JPanel {
 	}
 
 	private void setupUI() {
-		// GridBagLayout
-		// (Hinweis: Das ist schon ein komplexerer LayoutManager, der mehr kann als hier
-		// gezeigt.
-		// Hervorzuheben ist hier die Idee, explizit Constraints (also Nebenbedindungen)
-		// für
-		// die Positionierung / Ausrichtung / Größe von GUI-Komponenten anzugeben.)
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		this.setLayout(gridBagLayout);
 		GridBagConstraints c = new GridBagConstraints();
@@ -88,21 +84,23 @@ public class SearchArtikelsPanel extends JPanel {
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(searchButton)) {
 				String suchbegriff = searchTextField.getText();
-				List<Artikel> suchErgebnis = new ArrayList<Artikel>() ;
+				List<Artikel> suchErgebnis = new ArrayList<Artikel>();
 				if (suchbegriff.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Gib Artikelname ein!","Info!", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Gib Artikelname ein!", "Info!",
+							JOptionPane.INFORMATION_MESSAGE);
 					suchErgebnis = shop.gibAlleArtikeln();
 				} else {
-					
-						try {
-							suchErgebnis.add(shop.sucheNachName(suchbegriff));
-						} catch (ArtikelExistiertNichtException e) {
-							// TODO Auto-generated catch block
-							JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
-							suchErgebnis = shop.gibAlleArtikeln();
-						}
-					
+
+					try {
+						suchErgebnis.add(shop.sucheNachName(suchbegriff));
+					} catch (ArtikelExistiertNichtException e) {
+
+						JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						suchErgebnis = shop.gibAlleArtikeln();
+					}
+
 				}
+				searchTextField.setText("");
 				searchResultListener.onSearchResult(suchErgebnis);
 			}
 		}

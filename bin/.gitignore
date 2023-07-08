@@ -1,4 +1,5 @@
-/ui/
 /domain/
 /entities/
+/gui/
 /persistence/
+/ui/

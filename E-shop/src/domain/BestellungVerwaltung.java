@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Vector;
 
 import domain.exceptions.NichtGenugArtikelVorhandenException;
+import domain.exceptions.SenkenUnterNullNichtMoeglichException;
 import domain.exceptions.WarenkorbLeerException;
 import entities.Artikel;
 import entities.Bestellung;
@@ -36,13 +37,14 @@ public class BestellungVerwaltung {
 
 	/**
 	 * 
-	 * Erstellt eine neue Bestellung für den angegebenen Kunden.
+	 * Erstellt eine neue Bestellung fï¿½r den angegebenen Kunden.
 	 * 
 	 * @param kunde Der Kunde, der die Bestellung aufgibt.
 	 * @return Die erstellte Bestellung.
 	 * @throws WarenkorbLeerException Wenn der Warenkorb des Kunden leer ist.
+	 * @throws SenkenUnterNullNichtMoeglichException 
 	 */
-	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException, NichtGenugArtikelVorhandenException {
+	public Bestellung bestellen(Kunde kunde) throws WarenkorbLeerException, NichtGenugArtikelVorhandenException, SenkenUnterNullNichtMoeglichException {
 		updateTime();
 		this.formattedDatumZeit = aktuelleDatumZeit.format(formatter);
 		HashMap<Artikel, Integer> artikelnInWarenkorbList = kunde.getKundeWarenkorb().getKorbArtikelListe();
@@ -76,7 +78,7 @@ public class BestellungVerwaltung {
 
 	/**
 	 * 
-	 * Generiert eine Bestellungsnummer für die aktuelle Bestellung.
+	 * Generiert eine Bestellungsnummer fï¿½r die aktuelle Bestellung.
 	 */
 	private void generateBestellungsNr() {
 		if (bestellungList.isEmpty()) {
@@ -89,7 +91,7 @@ public class BestellungVerwaltung {
 
 	/**
 	 * 
-	 * Gibt die Liste aller Bestellungen zurück.
+	 * Gibt die Liste aller Bestellungen zurï¿½ck.
 	 * 
 	 * @return Die Liste der Bestellungen.
 	 */

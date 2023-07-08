@@ -8,13 +8,13 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 import java.util.Vector;
 
-public class ArtikelTableModel extends AbstractTableModel  {
+public class ArtikelTableModel2Kunde extends AbstractTableModel  {
 
 	private List<Artikel> artikeln;
-	private String[] spaltenNamen = { "ID", "Name", "Beschreibung", "Preis","Verfügbarkeit", "Bestand", "MassengutArtikel",
+	private String[] spaltenNamen = { "ID", "Name", "Beschreibung", "Preis","Verfügbarkeit", "MassengutArtikel",
 			"Packungsgroeße" };
 
-	public ArtikelTableModel(List<Artikel> aktuelleArtikeln) {
+	public ArtikelTableModel2Kunde(List<Artikel> aktuelleArtikeln) {
 		super();
 		
 		artikeln = new Vector<Artikel>();
@@ -77,10 +77,8 @@ public class ArtikelTableModel extends AbstractTableModel  {
 			case 4:
 				return gewaehltesArtikel_1.isVerfuegbar();
 			case 5:
-				return gewaehltesArtikel_1.getBestand();
-			case 6:
 				return gewaehltesArtikel_1.getIstPackung();
-			case 7:
+			case 6:
 				return gewaehltesArtikel_1.getPackungsGroesse();
 			default:
 				return null;
@@ -99,8 +97,6 @@ public class ArtikelTableModel extends AbstractTableModel  {
 			case 4:
 				return gewaehltesArtikel.isVerfuegbar();
 			case 5:
-				return gewaehltesArtikel.getBestand();
-			case 6:
 				return gewaehltesArtikel.getIstPackung();
 			
 			default:

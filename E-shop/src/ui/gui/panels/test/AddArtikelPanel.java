@@ -50,9 +50,7 @@ public class AddArtikelPanel extends JPanel {
 		this.shop = shop;
 		this.loggedNutzer = loggedNutzer;
 		this.addArtikelListener = addArtikelListener;
-
 		setupUI();
-
 		setupEvents();
 	}
 
@@ -189,7 +187,7 @@ public class AddArtikelPanel extends JPanel {
 				addArtikelListener.onArikelAdded(artikel);
 			} catch (AnzahlIsNichtDefiniertException | ArtikelExistiertBereitsException
 					| BestandPasstNichtMitPackungsGroesseException | ArtikelExistiertNichtException | IOException e) {
-				// TODO Auto-generated catch block
+			
 				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
@@ -208,6 +206,8 @@ public class AddArtikelPanel extends JPanel {
 		beschreibungTextFeld.setText("");
 		massenArtikelNein_rbt.setSelected(true);
 		packungsgroesseTextFeld.setText("");
+		packungLabel.setVisible(false);
+		packungsgroesseTextFeld.setVisible(false);
 	}
 
 	/**
@@ -215,7 +215,6 @@ public class AddArtikelPanel extends JPanel {
 	 */
 	private void datenSischern() throws IOException {
 		shop.schreibeArtikel();
-
 		shop.schreibeVerlauf();
 
 	}

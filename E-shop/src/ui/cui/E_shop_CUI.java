@@ -16,6 +16,7 @@ import domain.exceptions.KundeUsernameIstbenutztException;
 import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import domain.exceptions.NichtGenugArtikelVorhandenException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
+import domain.exceptions.SenkenUnterNullNichtMoeglichException;
 import domain.exceptions.VerlaufLeerException;
 import domain.exceptions.WarenkorbLeerException;
 import entities.Artikel;
@@ -294,6 +295,8 @@ public class E_shop_CUI {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}catch (NumberFormatException e) {
 				System.err.println("\n" + "Die Menge muss eine ganze Zahl sein." + "\n");
+			} catch (SenkenUnterNullNichtMoeglichException e) {
+				System.err.println("\n" + e.getMessage() + "\n");
 			}
 			break;
 
@@ -446,6 +449,8 @@ public class E_shop_CUI {
 			} catch (WarenkorbLeerException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			} catch (NichtGenugArtikelVorhandenException e) {
+				System.err.println("\n" + e.getMessage() + "\n");
+			} catch (SenkenUnterNullNichtMoeglichException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
 
