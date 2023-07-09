@@ -17,6 +17,7 @@ import javax.swing.table.TableRowSorter;
 
 import domain.E_Shop;
 
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
@@ -52,6 +53,11 @@ public class ArtikelnTablePanel extends JTable {
 		// WarenKorbmodel erzeugen ...
 		sortTableMouseClick(shop.gibAlleArtikeln());
 		updateArtikelnList(shop.gibAlleArtikeln());
+		
+		
+		
+		
+		
 	}
 
 
@@ -117,6 +123,7 @@ public class ArtikelnTablePanel extends JTable {
 	public int selectedrowIndex() {
 
 		int selectedRow = this.getSelectedRow();
+		
 		return selectedRow;
 
 	}

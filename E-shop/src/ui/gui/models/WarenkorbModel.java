@@ -1,16 +1,22 @@
 package ui.gui.models;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JLabel;
 import javax.swing.table.AbstractTableModel;
 import entities.Artikel;
+import entities.Warenkorb;
 
 public class WarenkorbModel extends AbstractTableModel {
 
 	private HashMap<Artikel, Integer> warenkorbMap;
 	private String[] spaltenNamen = { "Artikel Name", "Menge" };
+	private Warenkorb warenkorb;
+	private double gesamtpreis;
 
 	public WarenkorbModel(HashMap<Artikel, Integer> aktuelleArtikeln) {
 		super();
@@ -20,7 +26,8 @@ public class WarenkorbModel extends AbstractTableModel {
 
 	}
 
-	public void setWarenkorb(HashMap<Artikel, Integer> aktuelleWarenkorbMap) {
+	public void setWarenkorb(HashMap<Artikel, Integer> aktuelleWarenkorbMap, Warenkorb warenkorb) {
+		this.warenkorb = warenkorb;
 
 		if (warenkorbMap == null) {
 
@@ -36,7 +43,7 @@ public class WarenkorbModel extends AbstractTableModel {
 	@Override
 	public int getRowCount() {
 
-		return warenkorbMap.size();
+		return warenkorbMap.size()+1;
 	}
 
 	@Override
@@ -55,11 +62,27 @@ public class WarenkorbModel extends AbstractTableModel {
 		Artikel artikel = keys.get(row);
 		return artikel;
 	}
-	
-	
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
+		// Wenn es die letzte Zeile ist, zeigen Sie den Gesamtpreis an
+		if (warenkorb == null) {
+			gesamtpreis= 0.0;
+		}
+		else {
+			gesamtpreis =warenkorb.getGesamtPrise();
+		}
+		if (rowIndex == warenkorbMap.size()) {
+			if (columnIndex == 0) {
+				return "Gesamtpreis";
+			} else if (columnIndex == 1) {
+				
+				return gesamtpreis; // Verwenden Sie die getGesamtPreis() Methode
+			} else {
+				
+				return null;
+			}
+		}
 
 		List<Artikel> keys = new ArrayList<Artikel>(warenkorbMap.keySet());
 		Artikel artikel = keys.get(rowIndex);
@@ -73,4 +96,21 @@ public class WarenkorbModel extends AbstractTableModel {
 			return null;
 		}
 	}
+
+//	@Override
+//	public Object getValueAt(int rowIndex, int columnIndex) {
+//
+//		List<Artikel> keys = new ArrayList<Artikel>(warenkorbMap.keySet());
+//		Artikel artikel = keys.get(rowIndex);
+//
+//		switch (columnIndex) {
+//		case 0:
+//			return artikel.getName();
+//		case 1:
+//			return warenkorbMap.get(artikel);
+//		default:
+//			return null;
+//		}
+//
+//	}
 }

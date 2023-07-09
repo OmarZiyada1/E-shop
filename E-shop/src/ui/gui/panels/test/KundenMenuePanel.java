@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.FlowLayout;
 
 public class KundenMenuePanel extends JPanel {
 	private JButton btn_ArtikelAnzeigen;
@@ -43,6 +44,8 @@ public class KundenMenuePanel extends JPanel {
 	private JButton btnKaufen;
 	private JButton btnArtikelSenken;
 	private JButton btnArtikelErhoehen;
+	private JButton btnEntfernen;
+	private JPanel panelMinusPlus;
 
 	public interface OnWarenkorpListener {
 		void updateToWarenkorb();
@@ -108,29 +111,54 @@ public class KundenMenuePanel extends JPanel {
 			add(btnKaufen);
 		}
 		{
-			btnArtikelErhoehen = new JButton("+");
-			btnArtikelErhoehen.setVisible(false);
-			btnArtikelErhoehen.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					do_btn_ArtikelErhoehen_actionPerformed(e);
+			{
+				panelMinusPlus = new JPanel();
+				panelMinusPlus.setAlignmentX(0.0f);
+				add(panelMinusPlus);
+				panelMinusPlus.setLayout(new BoxLayout(panelMinusPlus, BoxLayout.X_AXIS));
+				btnArtikelErhoehen = new JButton("+");
+				panelMinusPlus.add(btnArtikelErhoehen);
+				btnArtikelErhoehen.setVisible(false);
+				btnArtikelErhoehen.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						do_btn_ArtikelErhoehen_actionPerformed(e);
+					}
+				});
+				btnArtikelErhoehen.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				{
+					btnArtikelSenken = new JButton("-");
+					panelMinusPlus.add(btnArtikelSenken);
+					btnArtikelSenken.setVisible(false);
+					btnArtikelSenken.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							do_btn_ArtikelSenken_actionPerformed(e);
+						}
+					});
+					btnArtikelSenken.setFont(new Font("Tahoma", Font.PLAIN, 14));
 				}
-			});
-			btnArtikelErhoehen.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			add(btnArtikelErhoehen);
+			}
 		}
 		{
-			btnArtikelSenken = new JButton("-");
-			btnArtikelSenken.setVisible(false);
-			btnArtikelSenken.addActionListener(new ActionListener() {
+			btnEntfernen = new JButton("Entfernen");
+			btnEntfernen.setVisible(false);
+			btnEntfernen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					do_btn_ArtikelSenken_actionPerformed(e);
+					do_btn_btnEntfernen_actionPerformed(e);
 				}
 			});
-			btnArtikelSenken.setFont(new Font("Tahoma", Font.PLAIN, 16));
-			add(btnArtikelSenken);
+			add(btnEntfernen);
 		}
 	}
-
+	protected void do_btn_btnEntfernen_actionPerformed(ActionEvent e) {
+		Artikel artikel = onWarenkorpListener.onSelectedRow_Warenkorb();
+		if (artikel == null) {
+			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
+					JOptionPane.INFORMATION_MESSAGE);
+		}else {
+				shop.loescheArtikelVomWarenkorb(kunde, artikel);
+				onWarenkorpListener.updateWarenKorb();
+		}
+	}
 	protected void do_btn_ArtikelSenken_actionPerformed(ActionEvent e) {
 		Artikel artikel = onWarenkorpListener.onSelectedRow_Warenkorb();
 		if (artikel == null) {
@@ -139,7 +167,6 @@ public class KundenMenuePanel extends JPanel {
 		} else {
 
 			try {
-				onWarenkorpListener.updateWarenKorb();
 				shop.fuegeArtikelInkorbEin(kunde, artikel, -1);
 				onWarenkorpListener.updateWarenKorb();
 			} catch (NichtGenugArtikelVorhandenException | BestandPasstNichtMitPackungsGroesseException
@@ -231,9 +258,11 @@ public class KundenMenuePanel extends JPanel {
 	}
 
 	public void changeWarenkorbBtnsVisible(boolean a) {
+		btnFuegeArtikel.setVisible(!a);
 		btnKaufen.setVisible(a);
 		btnArtikelErhoehen.setVisible(a);
 		btnArtikelSenken.setVisible(a);
+		btnEntfernen.setVisible(a);
 
 	}
 

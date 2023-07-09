@@ -18,7 +18,8 @@ public class WarenkorbVerwaltung {
 
 	/**
 	 * 
-	 * F�gt einen Artikel mit der angegebenen Anzahl zum Warenkorb des Kunden hinzu.
+	 * F�gt einen Artikel mit der angegebenen Anzahl zum Warenkorb des Kunden
+	 * hinzu.
 	 * 
 	 * @param kunde   Der Kunde, dem der Artikel hinzugef�gt wird.
 	 * @param artikel Der Artikel, der hinzugef�gt wird.
@@ -26,11 +27,12 @@ public class WarenkorbVerwaltung {
 	 * @throws NichtGenugArtikelVorhandenException          Wenn nicht gen�gend
 	 *                                                      Artikel vorhanden sind.
 	 * @throws BestandPasstNichtMitPackungsGroesseException
-	 * @throws ArtikelExistiertNichtException 
-	 * @throws AnzahlIsNichtDefiniertException 
+	 * @throws ArtikelExistiertNichtException
+	 * @throws AnzahlIsNichtDefiniertException
 	 */
 	public void fuegeArtikelInKorbEin(Kunde kunde, Artikel art, int anzahl)
-			throws NichtGenugArtikelVorhandenException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException {
+			throws NichtGenugArtikelVorhandenException, BestandPasstNichtMitPackungsGroesseException,
+			ArtikelExistiertNichtException, AnzahlIsNichtDefiniertException {
 		int aktuelleMengeInWarenKorb = 0;
 
 		if (kunde.getKundeWarenkorb().getKorbArtikelListe().containsKey(art)) {
@@ -50,26 +52,26 @@ public class WarenkorbVerwaltung {
 	}
 
 	public void addOrNewArtikel(Kunde kunde, Artikel art, int anzahl, int aktuelleMengeInWarenKorb)
-			throws NichtGenugArtikelVorhandenException, AnzahlIsNichtDefiniertException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
-		if (  anzahl <0 && aktuelleMengeInWarenKorb ==0){
+			throws NichtGenugArtikelVorhandenException, AnzahlIsNichtDefiniertException,
+			BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+		if (anzahl < 0 && aktuelleMengeInWarenKorb == 0) {
 			loescheArtikeVomKorb(kunde, art);
-		}
-		else {
-			
-		
-		if (art.getBestand() - aktuelleMengeInWarenKorb >= anzahl ) {
-
-			if (aktuelleMengeInWarenKorb == 0) {
-				kunde.setKundeWarenkorb(art, anzahl);
-				updadteGesamtprise(kunde.getKundeWarenkorb().getKorbArtikelListe(), kunde);
-			} else {
-				kunde.setKundeWarenkorb(art, kunde.getKundeWarenkorb().getKorbArtikelListe().get(art) + anzahl);
-				updadteGesamtprise(kunde.getKundeWarenkorb().getKorbArtikelListe(), kunde);
-			}
-
 		} else {
-			throw new NichtGenugArtikelVorhandenException(aktuelleMengeInWarenKorb, art);
-		}}
+
+			if (art.getBestand() - aktuelleMengeInWarenKorb >= anzahl) {
+
+				if (aktuelleMengeInWarenKorb == 0) {
+					kunde.setKundeWarenkorb(art, anzahl);
+					updadteGesamtprise(kunde.getKundeWarenkorb().getKorbArtikelListe(), kunde);
+				} else {
+					kunde.setKundeWarenkorb(art, kunde.getKundeWarenkorb().getKorbArtikelListe().get(art) + anzahl);
+					updadteGesamtprise(kunde.getKundeWarenkorb().getKorbArtikelListe(), kunde);
+				}
+
+			} else {
+				throw new NichtGenugArtikelVorhandenException(aktuelleMengeInWarenKorb, art);
+			}
+		}
 	}
 
 	/**
@@ -83,10 +85,10 @@ public class WarenkorbVerwaltung {
 	 * @throws AnzahlIsNichtDefiniertException              Wenn die Anzahl nicht
 	 *                                                      definiert ist.
 	 * @throws BestandPasstNichtMitPackungsGroesseException
-	 * @throws ArtikelExistiertNichtException 
+	 * @throws ArtikelExistiertNichtException
 	 */
-	public void entferneArtikelKorbListe(Kunde kunde, Artikel art, int anzahl)
-			throws AnzahlIsNichtDefiniertException, BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
+	public void entferneArtikelKorbListe(Kunde kunde, Artikel art, int anzahl) throws AnzahlIsNichtDefiniertException,
+			BestandPasstNichtMitPackungsGroesseException, ArtikelExistiertNichtException {
 		if (ArtikelVerwaltung.checkMassengutartikel(art)) {
 			Massengutartikel art_M = ArtikelVerwaltung.artikelZuMassengutartikel(art);
 			if (ArtikelVerwaltung.CheckModulo(anzahl, art_M.getPackungsGroesse())) {
@@ -147,14 +149,19 @@ public class WarenkorbVerwaltung {
 	 * @return Der neue Gesamtpreis des Warenkorbs.
 	 */
 	public double updadteGesamtprise(HashMap<Artikel, Integer> liste, Kunde kunde) {
-		double gesamtPreis = 0;
-		for (Artikel artikel : liste.keySet()) {
-			int anzahlArtikelWK = liste.get(artikel);
-			double preis = artikel.getPreis();
-			gesamtPreis += anzahlArtikelWK * preis;
+		double gesamtPreis = 0.0;
+		if (liste.isEmpty()) {
 			kunde.getKundeWarenkorb().setGesamtPrise(gesamtPreis);
+		} else {
+			for (Artikel artikel : liste.keySet()) {
+				int anzahlArtikelWK = liste.get(artikel);
+				double preis = artikel.getPreis();
+				gesamtPreis += anzahlArtikelWK * preis;
+				kunde.getKundeWarenkorb().setGesamtPrise(gesamtPreis);
 
+			}
 		}
+
 		return gesamtPreis;
 	}
 

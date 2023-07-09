@@ -307,7 +307,7 @@ public class BibGuiMitKomponenten extends JFrame
 	public void updateWarenKorb() {
 		Kunde k = (Kunde) loggedNutzer;
 		warenkorb = k.getKundeWarenkorb().getKorbArtikelListe();
-		warenkorbModel.setWarenkorb(warenkorb);
+		warenkorbModel.setWarenkorb(warenkorb, k.getKundeWarenkorb());
 	}
 
 	@Override
@@ -359,10 +359,12 @@ public class BibGuiMitKomponenten extends JFrame
 		int selectedRow = artikelnTablePanel.selectedrowIndex();
 		Artikel arikel = null;
 
-		if (selectedRow != -1 && artikelnTablePanel.getSelectedRowCount() == 1) {
+		if (selectedRow != -1 && artikelnTablePanel.getSelectedRowCount() == 1 && selectedRow != warenkorbModel.getRowCount()-1 ) {
 			arikel = warenkorbModel.getSelecetedArtikel(selectedRow);
 		}
 		return arikel;
 	}
+
+
 
 }
