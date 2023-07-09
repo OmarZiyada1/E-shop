@@ -213,6 +213,7 @@ public class KundenMenuePanel extends JPanel {
 	protected void do_btn_Kaufen_actionPerformed(ActionEvent e) {
 		try {
 			aktuelleBestellung = shop.bestellen(kunde);
+			shop.schreibeVerlauf();
 			shop.leereWarenkorb(kunde);
 			datenSischern();
 			onWarenkorpListener.updateWarenKorb();

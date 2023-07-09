@@ -2,17 +2,21 @@ package ui.gui.test;
 
 import javax.swing.*;
 
+
 import domain.E_Shop;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import domain.exceptions.MitarbeiterUsernameIstBenutztException;
+import domain.exceptions.VerlaufLeerException;
 import entities.Artikel;
 import entities.Kunde;
 import entities.Mitarbeiter;
 import entities.Nutzer;
+import entities.Verlauf;
 import ui.gui.models.ArtikelTableModel;
 import ui.gui.models.ArtikelTableModel2Kunde;
+import ui.gui.models.VerlaufTableModel;
 import ui.gui.models.WarenkorbModel;
 import ui.gui.panels.test.AddArtikelPanel;
 import ui.gui.panels.test.ArtikelnTablePanel;
@@ -23,6 +27,7 @@ import ui.gui.panels.test.Login_Panel;
 import ui.gui.panels.test.LogoutPanel;
 import ui.gui.panels.test.MitarbeiterMenuePanel;
 import ui.gui.panels.test.SearchArtikelsPanel;
+import ui.gui.panels.test.VerlaufPanel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -52,8 +57,12 @@ public class BibGuiMitKomponenten extends JFrame
 	private Nutzer loggedNutzer;
 	private List<Artikel> artikeln;
 	private ArtikelTableModel2Kunde artikelTableModel2Kunde;
+	public ArtikelTableModel artikelTableModel;
 	JScrollPane scrollPane;
 	private HashMap<Artikel, Integer> warenkorb;
+	private List<Verlauf> verlaufListe;
+	private VerlaufPanel verlaufPanel;
+	private VerlaufTableModel verTableModel;
 
 	public static void main(String[] args) {
 		// Start der Anwendung (per anonymer Klasse)
@@ -123,6 +132,14 @@ public class BibGuiMitKomponenten extends JFrame
 
 		if (shop.sucheMitarbeiter(loggednutzer.getNutzerName()) != null) {
 			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
+			artikelTableModel = new ArtikelTableModel (artikeln);
+			try {
+				verlaufListe =shop.gibVerlauflistaus();
+				verTableModel = new VerlaufTableModel (verlaufListe);
+			} catch (VerlaufLeerException e) {
+				System.out.println(e.getMessage());
+			}
+			
 			// West
 			getContentPane().add(addArtikelPanel, BorderLayout.WEST);
 			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Mitarbeiter) loggednutzer);
@@ -181,6 +198,7 @@ public class BibGuiMitKomponenten extends JFrame
 	 */
 	@Override
 	public void onSearchResult(java.util.List<Artikel> artikeln) {
+		artikelnTablePanel.setModel(artikelTableModel);
 		artikelnTablePanel.updateArtikelnList(artikeln);
 	}
 
@@ -309,6 +327,16 @@ public class BibGuiMitKomponenten extends JFrame
 		warenkorb = k.getKundeWarenkorb().getKorbArtikelListe();
 		warenkorbModel.setWarenkorb(warenkorb, k.getKundeWarenkorb());
 	}
+	
+	@Override
+	public void updateVerlauf() {
+		try {
+			verlaufListe = shop.gibVerlauflistaus();
+		} catch (VerlaufLeerException e) {
+			System.out.println(e.getMessage());
+		}
+		verTableModel.setVerlaeufe(verlaufListe);
+	}
 
 	@Override
 	public Artikel onSelctedRow() {
@@ -363,6 +391,12 @@ public class BibGuiMitKomponenten extends JFrame
 			arikel = warenkorbModel.getSelecetedArtikel(selectedRow);
 		}
 		return arikel;
+	}
+
+	@Override
+	public void updateToVerlauf() {
+		artikelnTablePanel.setModel(verTableModel);
+		scrollPane.setBorder(BorderFactory.createTitledBorder("Verlauf"));
 	}
 
 

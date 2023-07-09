@@ -38,6 +38,8 @@ public class MitarbeiterMenuePanel extends JPanel {
 	public interface TableDataListener {
 		public Artikel onSelctedRow();
 		public void updateTable();
+		public void updateVerlauf();
+		public void updateToVerlauf();
 	}
 
 	/**
@@ -56,9 +58,9 @@ public class MitarbeiterMenuePanel extends JPanel {
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 107, 0 };
-		gridBagLayout.rowHeights = new int[] { 21, 21, 21, 21, 0 };
+		gridBagLayout.rowHeights = new int[] { 21, 21, 21, 21, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 		{
 			this.btnLoeschen = new JButton("Artikel Löschen");
@@ -104,7 +106,13 @@ public class MitarbeiterMenuePanel extends JPanel {
 		}
 		{
 			this.btnZeigeverlauf = new JButton("Zeigeverlauf");
+			this.btnZeigeverlauf.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					do_btnZeigeverlauf_actionPerformed(e);
+				}
+			});
 			GridBagConstraints gbc_btnZeigeverlauf = new GridBagConstraints();
+			gbc_btnZeigeverlauf.insets = new Insets(0, 0, 5, 0);
 			gbc_btnZeigeverlauf.fill = GridBagConstraints.BOTH;
 			gbc_btnZeigeverlauf.gridx = 0;
 			gbc_btnZeigeverlauf.gridy = 3;
@@ -122,6 +130,8 @@ public class MitarbeiterMenuePanel extends JPanel {
 				
 				shop.loescheArtikel(mitarbeiter, tableDataListener.onSelctedRow().getName());
 				shop.schreibeArtikel();
+				shop.schreibeVerlauf();
+				tableDataListener.updateVerlauf();
 				tableDataListener.updateTable();
 			} catch (ArtikelExistiertNichtException | IOException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -142,6 +152,8 @@ public class MitarbeiterMenuePanel extends JPanel {
 				menge = Integer.parseInt(result);
 				shop.senkenArtikelBestand(mitarbeiter, tableDataListener.onSelctedRow().getName(), menge);
 				shop.schreibeArtikel();
+				shop.schreibeVerlauf();
+				tableDataListener.updateVerlauf();
 				tableDataListener.updateTable();
 			} catch (ArtikelExistiertNichtException | BestandPasstNichtMitPackungsGroesseException | IOException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -167,6 +179,8 @@ public class MitarbeiterMenuePanel extends JPanel {
 				menge = Integer.parseInt(result);
 				shop.erhoeheArtikelBestand(mitarbeiter, tableDataListener.onSelctedRow().getName(), menge);
 				shop.schreibeArtikel();
+				shop.schreibeVerlauf();
+				tableDataListener.updateVerlauf();
 				tableDataListener.updateTable();
 			} catch (ArtikelExistiertNichtException | BestandPasstNichtMitPackungsGroesseException | IOException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -176,5 +190,9 @@ public class MitarbeiterMenuePanel extends JPanel {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+	protected void do_btnZeigeverlauf_actionPerformed(ActionEvent e) {
+		tableDataListener.updateVerlauf();
+		tableDataListener.updateToVerlauf();
 	}
 }
