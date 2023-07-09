@@ -38,6 +38,14 @@ public class VerlaufTableModel extends AbstractTableModel {
     public String getColumnName(int col) {
         return spaltenNamen[col];
     }
+    
+    public Verlauf getSelectedVerlauf(int row) {
+        if (row >= 0 && row < verlaeufe.size()) {
+            return verlaeufe.get(row);
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public Object getValueAt(int row, int col) {

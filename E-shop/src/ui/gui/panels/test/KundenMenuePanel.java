@@ -51,7 +51,7 @@ public class KundenMenuePanel extends JPanel {
 	public interface OnWarenkorpListener {
 		void updateToWarenkorb();
 
-		void updateToArtikel();
+		void updateToArtikel_Kunde();
 
 		Artikel onSelectedRow_Kunde();
 
@@ -233,7 +233,7 @@ public class KundenMenuePanel extends JPanel {
 
 	protected void do_btn_ArtikelAnzeigen_actionPerformed(ActionEvent e) {
 		changeWarenkorbBtnsVisible(false);
-		onWarenkorpListener.updateToArtikel();
+		onWarenkorpListener.updateToArtikel_Kunde();
 	}
 
 	protected void do_btnAddArtikel_actionPerformed(ActionEvent e) {
