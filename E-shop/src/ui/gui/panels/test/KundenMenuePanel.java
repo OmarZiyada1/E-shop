@@ -221,7 +221,7 @@ public class KundenMenuePanel extends JPanel {
 
 		} catch (WarenkorbLeerException | NichtGenugArtikelVorhandenException | SenkenUnterNullNichtMoeglichException
 				| IOException e1) {
-			JOptionPane.showInputDialog(null, e1.getMessage(), "Error >", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error >", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
