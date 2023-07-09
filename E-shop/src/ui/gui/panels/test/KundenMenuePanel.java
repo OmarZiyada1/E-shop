@@ -46,6 +46,7 @@ public class KundenMenuePanel extends JPanel {
 	private JButton btnArtikelErhoehen;
 	private JButton btnEntfernen;
 	private JPanel panelMinusPlus;
+	private JButton btnLeeren;
 
 	public interface OnWarenkorpListener {
 		void updateToWarenkorb();
@@ -148,17 +149,34 @@ public class KundenMenuePanel extends JPanel {
 			});
 			add(btnEntfernen);
 		}
+		{
+			btnLeeren = new JButton("Leeren");
+			btnLeeren.setVisible(false);
+			btnLeeren.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					do_btn_btnLeeren_actionPerformed(e);
+				}
+			});
+			add(btnLeeren);
+		}
 	}
+
+	protected void do_btn_btnLeeren_actionPerformed(ActionEvent e) {
+		shop.leereWarenkorb(kunde);
+		onWarenkorpListener.updateWarenKorb();
+	}
+
 	protected void do_btn_btnEntfernen_actionPerformed(ActionEvent e) {
 		Artikel artikel = onWarenkorpListener.onSelectedRow_Warenkorb();
 		if (artikel == null) {
 			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
 					JOptionPane.INFORMATION_MESSAGE);
-		}else {
-				shop.loescheArtikelVomWarenkorb(kunde, artikel);
-				onWarenkorpListener.updateWarenKorb();
+		} else {
+			shop.loescheArtikelVomWarenkorb(kunde, artikel);
+			onWarenkorpListener.updateWarenKorb();
 		}
 	}
+
 	protected void do_btn_ArtikelSenken_actionPerformed(ActionEvent e) {
 		Artikel artikel = onWarenkorpListener.onSelectedRow_Warenkorb();
 		if (artikel == null) {
@@ -259,6 +277,7 @@ public class KundenMenuePanel extends JPanel {
 
 	public void changeWarenkorbBtnsVisible(boolean a) {
 		btnFuegeArtikel.setVisible(!a);
+		btnLeeren.setVisible(a);
 		btnKaufen.setVisible(a);
 		btnArtikelErhoehen.setVisible(a);
 		btnArtikelSenken.setVisible(a);

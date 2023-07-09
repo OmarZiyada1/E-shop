@@ -63,14 +63,14 @@ public class SearchArtikelsPanel extends JPanel {
 		gridBagLayout.setConstraints(searchTextField, c);
 		this.add(searchTextField);
 
-		searchButton = new JButton("Such!");
+		searchButton = new JButton("Suchen");
 		c.gridx = 2; // Spalte 2
 		c.weightx = 0.2; // 20% der gesamten Breite
 		gridBagLayout.setConstraints(searchButton, c);
 		this.add(searchButton);
 
 		// Rahmen definieren
-		setBorder(BorderFactory.createTitledBorder("Suche"));
+		setBorder(BorderFactory.createTitledBorder("Suchen"));
 	}
 
 	private void setupEvents() {
