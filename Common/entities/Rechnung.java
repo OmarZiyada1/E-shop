@@ -104,6 +104,7 @@ public class Rechnung {
 		for (Artikel best : bestellung.getBestellteArtikeln().keySet()) {
 			int anzahlArtikel = bestellung.getBestellteArtikeln().get(best);
 			Artikel bestellungArtikel = best;
+			
 			builder.append(
 					"\t\t" + i + ". artikel: " + bestellungArtikel.getName() + ", menge: " + anzahlArtikel + "\n");
 			i++;

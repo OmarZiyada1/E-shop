@@ -200,6 +200,7 @@ public class Artikel {
 	 * @return Die Artikelformationen des Artikel
 	 */
 
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("(ArtikelId = " + artikelId);

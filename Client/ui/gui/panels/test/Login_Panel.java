@@ -2,6 +2,7 @@ package ui.gui.panels.test;
 
 import javax.swing.JPanel;
 
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -11,7 +12,6 @@ import domain.E_Shop;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.NutzernameOderPasswortFalschException;
 import entities.Nutzer;
-import gui.Index_Gui;
 
 
 import javax.swing.JLabel;

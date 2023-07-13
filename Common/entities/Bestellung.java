@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class Bestellung {
 	/**
-	 * Die Klasse "Bestellung" repräsentiert eine Kundenbestellung. Sie enthält
+	 * Die Klasse "Bestellung" reprï¿½sentiert eine Kundenbestellung. Sie enthï¿½lt
 	 * Informationen wie Bestellungsnummer, Kundendaten, bestellte Artikel und den
 	 * Gesamtpreis etc.
 	 */
@@ -38,7 +38,7 @@ public class Bestellung {
 	}
 
 	/**
-	 * Gibt die Liste der bestellten Artikel zurück.
+	 * Gibt die Liste der bestellten Artikel zurï¿½ck.
 	 * 
 	 * @return die Liste der bestellten Artikel
 	 */
@@ -56,7 +56,7 @@ public class Bestellung {
 	}
 
 	/**
-	 * Gibt den Kunden der Bestellung zurück.
+	 * Gibt den Kunden der Bestellung zurï¿½ck.
 	 * 
 	 * @return der Kunde der Bestellung
 	 */
@@ -74,7 +74,7 @@ public class Bestellung {
 	}
 
 	/**
-	 * Gibt das formatierte Datum und die Uhrzeit der Bestellung zurück.
+	 * Gibt das formatierte Datum und die Uhrzeit der Bestellung zurï¿½ck.
 	 * 
 	 * @return das formatierte Datum und die Uhrzeit der Bestellung
 	 */
@@ -83,7 +83,7 @@ public class Bestellung {
 	}
 
 	/**
-	 * Gibt den Gesamtpreis der Bestellung zurück.
+	 * Gibt den Gesamtpreis der Bestellung zurï¿½ck.
 	 * 
 	 * @return der Gesamtpreis der Bestellung
 	 */
@@ -101,7 +101,7 @@ public class Bestellung {
 	}
 
 	/**
-	 * Gibt die Bestellungsnummer zurück.
+	 * Gibt die Bestellungsnummer zurï¿½ck.
 	 * 
 	 * @return die Bestellungsnummer
 	 */
@@ -119,7 +119,7 @@ public class Bestellung {
 	}
 
 	/**
-	 * Gibt die Rechnung der Bestellung zurück.
+	 * Gibt die Rechnung der Bestellung zurï¿½ck.
 	 * 
 	 * @return die Rechnung der Bestellung
 	 */

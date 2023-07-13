@@ -23,7 +23,7 @@ import domain.exceptions.WarenkorbLeerException;
 import entities.Artikel;
 import entities.Bestellung;
 import entities.Kunde;
-
+import entities.Rechnung;
 import ui.gui.panels.test.MitarbeiterMenuePanel.TableDataListener;
 
 import java.awt.event.ActionListener;
@@ -213,13 +213,13 @@ public class KundenMenuePanel extends JPanel {
 	protected void do_btn_Kaufen_actionPerformed(ActionEvent e) {
 		try {
 			aktuelleBestellung = shop.bestellen(kunde);
+			Rechnung rechnung = shop.erstelleRechnung(aktuelleBestellung);
 			shop.schreibeVerlauf();
-			shop.leereWarenkorb(kunde);
 			datenSischern();
-			onWarenkorpListener.updateWarenKorb();
-			JOptionPane.showMessageDialog(null, shop.erstelleRechnung(aktuelleBestellung), "info",
+			JOptionPane.showMessageDialog(null, rechnung, "info",
 					JOptionPane.INFORMATION_MESSAGE);
-
+			shop.leereWarenkorb(kunde);
+			onWarenkorpListener.updateWarenKorb();
 		} catch (WarenkorbLeerException | NichtGenugArtikelVorhandenException | SenkenUnterNullNichtMoeglichException
 				| IOException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(), "Error >", JOptionPane.ERROR_MESSAGE);
@@ -267,8 +267,8 @@ public class KundenMenuePanel extends JPanel {
 	}
 
 	public void artikelHinzufuegenBestaetigt() {
-		JOptionPane optionPane = new JOptionPane("Artikel hinzugefügt.", JOptionPane.INFORMATION_MESSAGE);
-		JDialog dialog = optionPane.createDialog("Bestätigung");
+		JOptionPane optionPane = new JOptionPane("Artikel hinzugefï¿½gt.", JOptionPane.INFORMATION_MESSAGE);
+		JDialog dialog = optionPane.createDialog("Bestï¿½tigung");
 
 		Timer timer = new Timer(650, e -> dialog.dispose());
 		timer.setRepeats(false);
