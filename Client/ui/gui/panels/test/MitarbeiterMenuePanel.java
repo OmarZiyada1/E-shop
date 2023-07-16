@@ -65,7 +65,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 107, 0 };
-		gridBagLayout.rowHeights = new int[] { 21, 21, 21, 21, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 21, 21, 21, 21, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
@@ -76,11 +76,39 @@ public class MitarbeiterMenuePanel extends JPanel {
 					do_btnLoeschen_actionPerformed(e);
 				}
 			});
+			{
+				this.btn_zeigeArtikeln = new JButton("Zeige Artikeln");
+				this.btn_zeigeArtikeln.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						do_btn_zeigeArtikeln_actionPerformed(e);
+					}
+				});
+				GridBagConstraints gbc_btn_zeigeArtikeln = new GridBagConstraints();
+				gbc_btn_zeigeArtikeln.insets = new Insets(0, 0, 5, 0);
+				gbc_btn_zeigeArtikeln.fill = GridBagConstraints.BOTH;
+				gbc_btn_zeigeArtikeln.gridx = 0;
+				gbc_btn_zeigeArtikeln.gridy = 0;
+				add(this.btn_zeigeArtikeln, gbc_btn_zeigeArtikeln);
+			}
+			{
+				this.btnZeigeverlauf = new JButton("Zeigeverlauf");
+				this.btnZeigeverlauf.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						do_btnZeigeverlauf_actionPerformed(e);
+					}
+				});
+				GridBagConstraints gbc_btnZeigeverlauf = new GridBagConstraints();
+				gbc_btnZeigeverlauf.insets = new Insets(0, 0, 5, 0);
+				gbc_btnZeigeverlauf.fill = GridBagConstraints.BOTH;
+				gbc_btnZeigeverlauf.gridx = 0;
+				gbc_btnZeigeverlauf.gridy = 1;
+				add(this.btnZeigeverlauf, gbc_btnZeigeverlauf);
+			}
 			GridBagConstraints gbc_btnLoeschen = new GridBagConstraints();
 			gbc_btnLoeschen.fill = GridBagConstraints.BOTH;
 			gbc_btnLoeschen.insets = new Insets(0, 0, 5, 0);
 			gbc_btnLoeschen.gridx = 0;
-			gbc_btnLoeschen.gridy = 0;
+			gbc_btnLoeschen.gridy = 2;
 			add(this.btnLoeschen, gbc_btnLoeschen);
 		}
 		{
@@ -94,7 +122,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			gbc_btnBestand_Senken.fill = GridBagConstraints.BOTH;
 			gbc_btnBestand_Senken.insets = new Insets(0, 0, 5, 0);
 			gbc_btnBestand_Senken.gridx = 0;
-			gbc_btnBestand_Senken.gridy = 1;
+			gbc_btnBestand_Senken.gridy = 3;
 			add(this.btnBestand_Senken, gbc_btnBestand_Senken);
 		}
 		{
@@ -106,37 +134,9 @@ public class MitarbeiterMenuePanel extends JPanel {
 			});
 			GridBagConstraints gbc_btnArtikel_Erhoehen = new GridBagConstraints();
 			gbc_btnArtikel_Erhoehen.fill = GridBagConstraints.BOTH;
-			gbc_btnArtikel_Erhoehen.insets = new Insets(0, 0, 5, 0);
 			gbc_btnArtikel_Erhoehen.gridx = 0;
-			gbc_btnArtikel_Erhoehen.gridy = 2;
+			gbc_btnArtikel_Erhoehen.gridy = 4;
 			add(this.btnArtikel_Erhoehen, gbc_btnArtikel_Erhoehen);
-		}
-		{
-			this.btnZeigeverlauf = new JButton("Zeigeverlauf");
-			this.btnZeigeverlauf.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					do_btnZeigeverlauf_actionPerformed(e);
-				}
-			});
-			GridBagConstraints gbc_btnZeigeverlauf = new GridBagConstraints();
-			gbc_btnZeigeverlauf.insets = new Insets(0, 0, 5, 0);
-			gbc_btnZeigeverlauf.fill = GridBagConstraints.BOTH;
-			gbc_btnZeigeverlauf.gridx = 0;
-			gbc_btnZeigeverlauf.gridy = 3;
-			add(this.btnZeigeverlauf, gbc_btnZeigeverlauf);
-		}
-		{
-			this.btn_zeigeArtikeln = new JButton("Zeige Artikeln");
-			this.btn_zeigeArtikeln.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					do_btn_zeigeArtikeln_actionPerformed(e);
-				}
-			});
-			GridBagConstraints gbc_btn_zeigeArtikeln = new GridBagConstraints();
-			gbc_btn_zeigeArtikeln.fill = GridBagConstraints.BOTH;
-			gbc_btn_zeigeArtikeln.gridx = 0;
-			gbc_btn_zeigeArtikeln.gridy = 4;
-			add(this.btn_zeigeArtikeln, gbc_btn_zeigeArtikeln);
 		}
 	}
 
@@ -224,8 +224,16 @@ public class MitarbeiterMenuePanel extends JPanel {
 		
 		tableDataListener.updateToVerlauf(verlaufListe);
 		tableDataListener.updateVerlauf();
+		btnLoeschen.setVisible(false);
+		btnArtikel_Erhoehen.setVisible(false);
+		btnBestand_Senken.setVisible(false);
+
+		
 	}
 	protected void do_btn_zeigeArtikeln_actionPerformed(ActionEvent e) {
+		btnLoeschen.setVisible(true);
+		btnArtikel_Erhoehen.setVisible(true);
+		btnBestand_Senken.setVisible(true);
 		tableDataListener.updateToArtikeln();
 	}
 }
