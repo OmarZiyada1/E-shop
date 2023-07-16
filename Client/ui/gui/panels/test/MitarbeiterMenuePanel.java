@@ -69,8 +69,8 @@ public class MitarbeiterMenuePanel extends JPanel {
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 107, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 21, 30, 21, 21, 21, 0, 0 };
-		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowHeights = new int[] { 0, 21, 30, 0, 21, 21, 21, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 		{
@@ -117,11 +117,25 @@ public class MitarbeiterMenuePanel extends JPanel {
 				gbc_separator.gridy = 2;
 				add(this.separator, gbc_separator);
 			}
+			{
+				this.btn_30erVerlauf = new JButton("30er Verlauf");
+				this.btn_30erVerlauf.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						do_btn_30erVerlauf_actionPerformed(e);
+					}
+				});
+				GridBagConstraints gbc_btn_30erVerlauf = new GridBagConstraints();
+				gbc_btn_30erVerlauf.insets = new Insets(0, 0, 5, 0);
+				gbc_btn_30erVerlauf.fill = GridBagConstraints.HORIZONTAL;
+				gbc_btn_30erVerlauf.gridx = 0;
+				gbc_btn_30erVerlauf.gridy = 3;
+				add(this.btn_30erVerlauf, gbc_btn_30erVerlauf);
+			}
 			GridBagConstraints gbc_btnLoeschen = new GridBagConstraints();
 			gbc_btnLoeschen.fill = GridBagConstraints.BOTH;
 			gbc_btnLoeschen.insets = new Insets(0, 0, 5, 0);
 			gbc_btnLoeschen.gridx = 0;
-			gbc_btnLoeschen.gridy = 3;
+			gbc_btnLoeschen.gridy = 4;
 			add(this.btnLoeschen, gbc_btnLoeschen);
 		}
 		{
@@ -135,7 +149,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			gbc_btnBestand_Senken.fill = GridBagConstraints.BOTH;
 			gbc_btnBestand_Senken.insets = new Insets(0, 0, 5, 0);
 			gbc_btnBestand_Senken.gridx = 0;
-			gbc_btnBestand_Senken.gridy = 4;
+			gbc_btnBestand_Senken.gridy = 5;
 			add(this.btnBestand_Senken, gbc_btnBestand_Senken);
 		}
 		{
@@ -146,24 +160,10 @@ public class MitarbeiterMenuePanel extends JPanel {
 				}
 			});
 			GridBagConstraints gbc_btnArtikel_Erhoehen = new GridBagConstraints();
-			gbc_btnArtikel_Erhoehen.insets = new Insets(0, 0, 5, 0);
 			gbc_btnArtikel_Erhoehen.fill = GridBagConstraints.BOTH;
 			gbc_btnArtikel_Erhoehen.gridx = 0;
-			gbc_btnArtikel_Erhoehen.gridy = 5;
+			gbc_btnArtikel_Erhoehen.gridy = 6;
 			add(this.btnArtikel_Erhoehen, gbc_btnArtikel_Erhoehen);
-		}
-		{
-			this.btn_30erVerlauf = new JButton("30er Verlauf");
-			this.btn_30erVerlauf.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					do_btn_30erVerlauf_actionPerformed(e);
-				}
-			});
-			GridBagConstraints gbc_btn_30erVerlauf = new GridBagConstraints();
-			gbc_btn_30erVerlauf.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btn_30erVerlauf.gridx = 0;
-			gbc_btn_30erVerlauf.gridy = 6;
-			add(this.btn_30erVerlauf, gbc_btn_30erVerlauf);
 		}
 	}
 
@@ -257,6 +257,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
+			showBtns_verlaufVerwalten();
 			try {
 				String artikelName = tableDataListener.onSelctedRow().getName();
 				List<Verlauf> verlaufListe = shop.zeigeVerlaufArtikelDreissigTage(artikelName);
