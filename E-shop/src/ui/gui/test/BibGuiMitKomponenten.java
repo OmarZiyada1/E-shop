@@ -428,7 +428,7 @@ public class BibGuiMitKomponenten extends JFrame
 
 	@Override
 	public void updateVerlauf30(Artikel artikel) {
-		
+		//System.out.println();
 		try {
 			verlaufListe = shop.zeigeVerlaufArtikelDreissigTage(artikel.getName());
 			
