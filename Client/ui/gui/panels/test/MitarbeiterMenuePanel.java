@@ -15,15 +15,19 @@ import domain.E_Shop;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
 import domain.exceptions.SenkenUnterNullNichtMoeglichException;
+import domain.exceptions.VerlaufLeerException;
 import entities.Artikel;
 import entities.Mitarbeiter;
 import entities.Nutzer;
+import entities.Verlauf;
+import ui.gui.models.VerlaufTableModel;
 import ui.gui.panels.test.AddArtikelPanel.AddArtikelListener;
 
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class MitarbeiterMenuePanel extends JPanel {
@@ -34,12 +38,15 @@ public class MitarbeiterMenuePanel extends JPanel {
 	private TableDataListener tableDataListener;
 	private E_Shop shop;
 	private Mitarbeiter mitarbeiter;
+	private JButton btn_zeigeArtikeln;
+	private List<Verlauf> verlaufListe;
 
 	public interface TableDataListener {
 		public Artikel onSelctedRow();
 		public void updateTable();
 		public void updateVerlauf();
-		public void updateToVerlauf();
+		public void updateToVerlauf(List<Verlauf> verlaufListe);
+		public void updateToArtikeln();
 	}
 
 	/**
@@ -118,8 +125,22 @@ public class MitarbeiterMenuePanel extends JPanel {
 			gbc_btnZeigeverlauf.gridy = 3;
 			add(this.btnZeigeverlauf, gbc_btnZeigeverlauf);
 		}
+		{
+			this.btn_zeigeArtikeln = new JButton("Zeige Artikeln");
+			this.btn_zeigeArtikeln.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					do_btn_zeigeArtikeln_actionPerformed(e);
+				}
+			});
+			GridBagConstraints gbc_btn_zeigeArtikeln = new GridBagConstraints();
+			gbc_btn_zeigeArtikeln.fill = GridBagConstraints.BOTH;
+			gbc_btn_zeigeArtikeln.gridx = 0;
+			gbc_btn_zeigeArtikeln.gridy = 4;
+			add(this.btn_zeigeArtikeln, gbc_btn_zeigeArtikeln);
+		}
 	}
 
+	//button loeschen
 	protected void do_btnLoeschen_actionPerformed(ActionEvent e) {
 		if (tableDataListener.onSelctedRow() == null) {
 			
@@ -140,6 +161,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 
 	}
 
+	//button senken
 	protected void do_btnBestand_Senken_actionPerformed(ActionEvent e) {
 		if (tableDataListener.onSelctedRow() == null) {
 			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
@@ -167,6 +189,8 @@ public class MitarbeiterMenuePanel extends JPanel {
 			}
 		}
 	}
+	
+	//button erhoehen
 	protected void do_btnArtikel_Erhoehen_actionPerformed(ActionEvent e) {
 		if (tableDataListener.onSelctedRow() == null) {
 			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
@@ -192,7 +216,16 @@ public class MitarbeiterMenuePanel extends JPanel {
 		}
 	}
 	protected void do_btnZeigeverlauf_actionPerformed(ActionEvent e) {
+		try {
+			verlaufListe =shop.gibVerlauflistaus();
+		} catch (VerlaufLeerException e1) {
+			System.out.println(e1.getMessage());
+		}
+		
+		tableDataListener.updateToVerlauf(verlaufListe);
 		tableDataListener.updateVerlauf();
-		tableDataListener.updateToVerlauf();
+	}
+	protected void do_btn_zeigeArtikeln_actionPerformed(ActionEvent e) {
+		tableDataListener.updateToArtikeln();
 	}
 }

@@ -131,22 +131,20 @@ public class BibGuiMitKomponenten extends JFrame
 		getContentPane().add(logoutPanel, BorderLayout.SOUTH);
 
 		if (shop.sucheMitarbeiter(loggednutzer.getNutzerName()) != null) {
-			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
-			artikelTableModel = new ArtikelTableModel (artikeln);
-			try {
-				verlaufListe =shop.gibVerlauflistaus();
-				verTableModel = new VerlaufTableModel (verlaufListe);
-			} catch (VerlaufLeerException e) {
-				System.out.println(e.getMessage());
-			}
-			
 			// West
+			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
 			getContentPane().add(addArtikelPanel, BorderLayout.WEST);
+			
+			
+	
+			
 			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Mitarbeiter) loggednutzer);
+			
+			//center
 			scrollPane = new JScrollPane(artikelnTablePanel);
 			getContentPane().add(scrollPane, BorderLayout.CENTER);
 			scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
-
+			//East
 			mitarbeiterMenuePanel = new MitarbeiterMenuePanel(this, shop, loggedNutzer);
 			getContentPane().add(mitarbeiterMenuePanel, BorderLayout.EAST);
 
@@ -330,11 +328,14 @@ public class BibGuiMitKomponenten extends JFrame
 	
 	@Override
 	public void updateVerlauf() {
+	
+
 		try {
 			verlaufListe = shop.gibVerlauflistaus();
 		} catch (VerlaufLeerException e) {
 			System.out.println(e.getMessage());
 		}
+		
 		verTableModel.setVerlaeufe(verlaufListe);
 	}
 
@@ -394,9 +395,18 @@ public class BibGuiMitKomponenten extends JFrame
 	}
 
 	@Override
-	public void updateToVerlauf() {
+	public void updateToVerlauf(List<Verlauf> verlaufListe) {
+		verTableModel = new VerlaufTableModel (verlaufListe);
 		artikelnTablePanel.setModel(verTableModel);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Verlauf"));
+	}
+	@Override
+	public void updateToArtikeln() {
+		artikeln = shop.gibAlleArtikeln();
+		artikelTableModel = new ArtikelTableModel (artikeln);
+		artikelnTablePanel.setModel(artikelTableModel);
+		scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
+	
 	}
 
 
