@@ -50,7 +50,6 @@ public class KundenMenuePanel extends JPanel {
 	private JButton btnLeeren;
 
 	public interface OnWarenkorpListener {
-		void updateToWarenkorb();
 
 		void updateToArtikel(List<Artikel> artikeln);
 
@@ -229,7 +228,7 @@ public class KundenMenuePanel extends JPanel {
 
 	protected void do_btn_Warenkorb_actionPerformed(ActionEvent e) {
 		changeWarenkorbBtnsVisible(true);
-		onWarenkorpListener.updateToWarenkorb();
+		onWarenkorpListener.updateWarenKorb();
 	}
 
 	protected void do_btn_ArtikelAnzeigen_actionPerformed(ActionEvent e) {

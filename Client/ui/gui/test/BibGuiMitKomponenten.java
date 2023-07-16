@@ -326,9 +326,15 @@ public class BibGuiMitKomponenten extends JFrame
 	@Override
 	public void updateWarenKorb() {
 		Kunde k = (Kunde) loggedNutzer;
+
 		warenkorb = k.getKundeWarenkorb().getKorbArtikelListe();
 		warenkorbModel.setWarenkorb(warenkorb, k.getKundeWarenkorb());
+		artikelnTablePanel.setModel(warenkorbModel);
+
+		scrollPane.setBorder(BorderFactory.createTitledBorder("WarenKorb"));
+
 	}
+	
 
 	@Override
 	public Artikel onSelctedRow() {
@@ -345,12 +351,7 @@ public class BibGuiMitKomponenten extends JFrame
 
 	}
 
-	@Override
-	public void updateToWarenkorb() {
-		artikelnTablePanel.setModel(warenkorbModel);
-		scrollPane.setBorder(BorderFactory.createTitledBorder("WarenKorb"));
 
-	}
 
 	//für kunden
 	@Override
