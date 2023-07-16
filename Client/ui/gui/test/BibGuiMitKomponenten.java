@@ -326,18 +326,7 @@ public class BibGuiMitKomponenten extends JFrame
 		warenkorbModel.setWarenkorb(warenkorb, k.getKundeWarenkorb());
 	}
 	
-	@Override
-	public void updateVerlauf() {
-	
 
-		try {
-			verlaufListe = shop.gibVerlauflistaus();
-		} catch (VerlaufLeerException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		verTableModel.setVerlaeufe(verlaufListe);
-	}
 
 	@Override
 	public Artikel onSelctedRow() {

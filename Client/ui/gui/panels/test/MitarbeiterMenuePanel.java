@@ -44,7 +44,6 @@ public class MitarbeiterMenuePanel extends JPanel {
 	public interface TableDataListener {
 		public Artikel onSelctedRow();
 		public void updateTable();
-		public void updateVerlauf();
 		public void updateToVerlauf(List<Verlauf> verlaufListe);
 		public void updateToArtikeln();
 	}
@@ -152,7 +151,6 @@ public class MitarbeiterMenuePanel extends JPanel {
 				shop.loescheArtikel(mitarbeiter, tableDataListener.onSelctedRow().getName());
 				shop.schreibeArtikel();
 				shop.schreibeVerlauf();
-				tableDataListener.updateVerlauf();
 				tableDataListener.updateTable();
 			} catch (ArtikelExistiertNichtException | IOException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -175,7 +173,6 @@ public class MitarbeiterMenuePanel extends JPanel {
 				shop.senkenArtikelBestand(mitarbeiter, tableDataListener.onSelctedRow().getName(), menge);
 				shop.schreibeArtikel();
 				shop.schreibeVerlauf();
-				tableDataListener.updateVerlauf();
 				tableDataListener.updateTable();
 			} catch (ArtikelExistiertNichtException | BestandPasstNichtMitPackungsGroesseException | IOException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -204,7 +201,6 @@ public class MitarbeiterMenuePanel extends JPanel {
 				shop.erhoeheArtikelBestand(mitarbeiter, tableDataListener.onSelctedRow().getName(), menge);
 				shop.schreibeArtikel();
 				shop.schreibeVerlauf();
-				tableDataListener.updateVerlauf();
 				tableDataListener.updateTable();
 			} catch (ArtikelExistiertNichtException | BestandPasstNichtMitPackungsGroesseException | IOException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -223,7 +219,6 @@ public class MitarbeiterMenuePanel extends JPanel {
 		}
 		
 		tableDataListener.updateToVerlauf(verlaufListe);
-		tableDataListener.updateVerlauf();
 		btnLoeschen.setVisible(false);
 		btnArtikel_Erhoehen.setVisible(false);
 		btnBestand_Senken.setVisible(false);
