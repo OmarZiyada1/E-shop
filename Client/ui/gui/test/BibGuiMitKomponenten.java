@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BibGuiMitKomponenten extends JFrame
-		implements AddArtikelPanel.AddArtikelListener, SearchArtikelsPanel.SearchResultListener,
+		implements  SearchArtikelsPanel.SearchResultListener,
 		MitarbeiterMenuePanel.TableDataListener, Login_Panel.LoginSuccessListener, Login_Panel.PanelChangeListener,
 		LogoutPanel.PanelChangeBeiLogout, KundenMenuePanel.OnWarenkorpListener {
 
@@ -131,7 +131,7 @@ public class BibGuiMitKomponenten extends JFrame
 
 		if (shop.sucheMitarbeiter(loggednutzer.getNutzerName()) != null) {
 			// West
-			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
+			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer,this);
 			getContentPane().add(addArtikelPanel, BorderLayout.WEST);
 
 			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Mitarbeiter) loggednutzer);
@@ -167,24 +167,7 @@ public class BibGuiMitKomponenten extends JFrame
 		this.setVisible(true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * Listener, der Benachrichtungen erhält, wenn im AddBookPanel ein Buch
-	 * eingefügt wurde. (Als Reaktion soll die Bücherliste aktualisiert werden.)
-	 * 
-	 * @see
-	 * bib.local.ui.gui.panels.AddBookPanel.AddBookListener#onBookAdded(bib.local.
-	 * entities.Buch)
-	 */
-	@Override
-	public void onArikelAdded(Artikel artikel) {
-		// Ich lade hier einfach alle Bücher neu und lasse sie anzeigen
-		artikeln = shop.gibAlleArtikeln();
-		artikelnTablePanel.sortTableMouseClick(artikeln);
-		artikelnTablePanel.updateArtikelnList(artikeln);
 
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -295,13 +278,15 @@ public class BibGuiMitKomponenten extends JFrame
 	}
 
 	@Override
-	public void onLoginSuccess(Nutzer nutzer) {
+	public void onLoginSuccess(Nutzer loggednutzer) {
+		this.loggedNutzer = loggednutzer;
+
 		getContentPane().removeAll();
 
-		if (shop.sucheMitarbeiter(nutzer.getNutzerName()) != null) {
-			initialize(nutzer);
-		} else if (shop.sucheKunde(nutzer.getNutzerName()) != null) {
-			initialize(nutzer);
+		if (shop.sucheMitarbeiter(loggednutzer.getNutzerName()) != null) {
+			initialize(loggednutzer);
+		} else if (shop.sucheKunde(loggednutzer.getNutzerName()) != null) {
+			initialize(loggednutzer);
 		}
 	}
 
@@ -334,7 +319,6 @@ public class BibGuiMitKomponenten extends JFrame
 		scrollPane.setBorder(BorderFactory.createTitledBorder("WarenKorb"));
 
 	}
-	
 
 	@Override
 	public Artikel onSelctedRow() {
@@ -351,9 +335,7 @@ public class BibGuiMitKomponenten extends JFrame
 
 	}
 
-
-
-	//für kunden
+	// für kunden
 	@Override
 	public void updateToArtikel(List<Artikel> artikeln) {
 		artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
@@ -368,7 +350,6 @@ public class BibGuiMitKomponenten extends JFrame
 		artikelnTablePanel.setModel(verTableModel);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Verlauf"));
 	}
-	
 
 	@Override
 	public Artikel onSelectedRow_Kunde() {

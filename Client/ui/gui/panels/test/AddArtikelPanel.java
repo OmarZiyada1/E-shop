@@ -9,6 +9,7 @@ import entities.Artikel;
 import entities.Massengutartikel;
 import entities.Mitarbeiter;
 import entities.Nutzer;
+import ui.gui.panels.test.MitarbeiterMenuePanel.TableDataListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,12 +28,9 @@ public class AddArtikelPanel extends JPanel {
 	// In unserem Fall ist der Empfänger die BibGuiMitKomponenten,
 	// die dieses Interface implementiert und auf ein neue hinzugefügtes
 	// Buch reagiert, indem sie die Bücherliste aktualisiert.
-	public interface AddArtikelListener {
-		public void onArikelAdded(Artikel Artikel);
-	}
+
 
 	private E_Shop shop = null;
-	private AddArtikelListener addArtikelListener = null;
 	private JButton hinzufuegenButton;
 	private JTextField artikelNameTextFeld;
 	private JTextField beschreibungTextFeld;
@@ -45,11 +43,13 @@ public class AddArtikelPanel extends JPanel {
 	private JLabel packungLabel = null;
 	boolean istMassengut = false;
 	private Nutzer loggedNutzer;
+	private TableDataListener tableDataListener;
+	
 
-	public AddArtikelPanel(E_Shop shop, Nutzer loggedNutzer, AddArtikelListener addArtikelListener) {
+	public AddArtikelPanel(E_Shop shop, Nutzer loggedNutzer, TableDataListener tableDataListener) {
 		this.shop = shop;
 		this.loggedNutzer = loggedNutzer;
-		this.addArtikelListener = addArtikelListener;
+		this.tableDataListener=tableDataListener;
 		setupUI();
 		setupEvents();
 	}
@@ -125,14 +125,7 @@ public class AddArtikelPanel extends JPanel {
 	}
 
 	private void setupEvents() {
-//		hinzufuegenButton.addActionListener(
-//				new ActionListener() {
-//					@Override
-//					public void actionPerformed(ActionEvent ae) {
-//						System.out.println("Event: " + ae.getActionCommand());
-//						buchEinfügen();
-//					}
-//				});
+
 		hinzufuegenButton.addActionListener(e -> artikelEinfugen());
 	}
 
@@ -158,8 +151,8 @@ public class AddArtikelPanel extends JPanel {
 							beschreibung, bestandInt, preisD, isMassengut, packungsgroesseInt);
 					datenSischern();
 
-					textFeldeLeeren();
-					addArtikelListener.onArikelAdded(artikel_1);
+					textFeldeLeeren();				
+					this.tableDataListener.updateTable();
 
 				} catch (AnzahlIsNichtDefiniertException | ArtikelExistiertBereitsException
 						| BestandPasstNichtMitPackungsGroesseException | ArtikelExistiertNichtException
@@ -184,7 +177,8 @@ public class AddArtikelPanel extends JPanel {
 				textFeldeLeeren();
 
 				// Am Ende Listener, d.h. unseren Frame benachrichtigen:
-				addArtikelListener.onArikelAdded(artikel);
+				this.tableDataListener.updateTable();
+
 			} catch (AnzahlIsNichtDefiniertException | ArtikelExistiertBereitsException
 					| BestandPasstNichtMitPackungsGroesseException | ArtikelExistiertNichtException | IOException e) {
 			

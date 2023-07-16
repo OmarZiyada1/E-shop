@@ -27,6 +27,7 @@ public class WarenkorbModel extends AbstractTableModel {
 	}
 
 	public void setWarenkorb(HashMap<Artikel, Integer> aktuelleWarenkorbMap, Warenkorb warenkorb) {
+		
 		this.warenkorb = warenkorb;
 
 		if (warenkorbMap == null) {
