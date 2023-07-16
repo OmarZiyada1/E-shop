@@ -294,6 +294,7 @@ public class KundenMenuePanel extends JPanel {
 	 * @throws IOException
 	 */
 	private void datenSischern() throws IOException {
+		
 		shop.schreibeArtikel();
 		shop.schreibeVerlauf();
 

@@ -390,8 +390,7 @@ public class BibGuiMitKomponenten extends JFrame
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Verlauf"));
 	}
 	@Override
-	public void updateToArtikeln() {
-		artikeln = shop.gibAlleArtikeln();
+	public void updateToArtikeln( List<Artikel> artikeln) {
 		artikelTableModel = new ArtikelTableModel (artikeln);
 		artikelnTablePanel.setModel(artikelTableModel);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));

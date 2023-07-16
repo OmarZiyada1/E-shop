@@ -31,21 +31,24 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class MitarbeiterMenuePanel extends JPanel {
+	private JButton btn_zeigeArtikeln;
 	private JButton btnLoeschen;
 	private JButton btnBestand_Senken;
 	private JButton btnArtikel_Erhoehen;
 	private JButton btnZeigeverlauf;
+	private JButton btn_30erVerlauf;
 	private TableDataListener tableDataListener;
 	private E_Shop shop;
 	private Mitarbeiter mitarbeiter;
-	private JButton btn_zeigeArtikeln;
-	private List<Verlauf> verlaufListe;
 
 	public interface TableDataListener {
 		public Artikel onSelctedRow();
+
 		public void updateTable();
+
 		public void updateToVerlauf(List<Verlauf> verlaufListe);
-		public void updateToArtikeln();
+
+		public void updateToArtikeln(List<Artikel> artikeln);
 	}
 
 	/**
@@ -64,9 +67,9 @@ public class MitarbeiterMenuePanel extends JPanel {
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 107, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 21, 21, 21, 21, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 21, 21, 21, 21, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 		{
 			this.btnLoeschen = new JButton("Artikel Löschen");
@@ -132,22 +135,36 @@ public class MitarbeiterMenuePanel extends JPanel {
 				}
 			});
 			GridBagConstraints gbc_btnArtikel_Erhoehen = new GridBagConstraints();
+			gbc_btnArtikel_Erhoehen.insets = new Insets(0, 0, 5, 0);
 			gbc_btnArtikel_Erhoehen.fill = GridBagConstraints.BOTH;
 			gbc_btnArtikel_Erhoehen.gridx = 0;
 			gbc_btnArtikel_Erhoehen.gridy = 4;
 			add(this.btnArtikel_Erhoehen, gbc_btnArtikel_Erhoehen);
 		}
+		{
+			this.btn_30erVerlauf = new JButton("30er Verlauf");
+			this.btn_30erVerlauf.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					do_btn_30erVerlauf_actionPerformed(e);
+				}
+			});
+			GridBagConstraints gbc_btn_30erVerlauf = new GridBagConstraints();
+			gbc_btn_30erVerlauf.fill = GridBagConstraints.HORIZONTAL;
+			gbc_btn_30erVerlauf.gridx = 0;
+			gbc_btn_30erVerlauf.gridy = 5;
+			add(this.btn_30erVerlauf, gbc_btn_30erVerlauf);
+		}
 	}
 
-	//button loeschen
+	// button loeschen
 	protected void do_btnLoeschen_actionPerformed(ActionEvent e) {
 		if (tableDataListener.onSelctedRow() == null) {
-			
+
 			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			try {
-				
+
 				shop.loescheArtikel(mitarbeiter, tableDataListener.onSelctedRow().getName());
 				shop.schreibeArtikel();
 				shop.schreibeVerlauf();
@@ -159,7 +176,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 
 	}
 
-	//button senken
+	// button senken
 	protected void do_btnBestand_Senken_actionPerformed(ActionEvent e) {
 		if (tableDataListener.onSelctedRow() == null) {
 			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
@@ -186,8 +203,8 @@ public class MitarbeiterMenuePanel extends JPanel {
 			}
 		}
 	}
-	
-	//button erhoehen
+
+	// button erhoehen
 	protected void do_btnArtikel_Erhoehen_actionPerformed(ActionEvent e) {
 		if (tableDataListener.onSelctedRow() == null) {
 			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
@@ -211,24 +228,56 @@ public class MitarbeiterMenuePanel extends JPanel {
 			}
 		}
 	}
+
 	protected void do_btnZeigeverlauf_actionPerformed(ActionEvent e) {
+
 		try {
-			verlaufListe =shop.gibVerlauflistaus();
+			List<Verlauf> verlaufListe = shop.gibVerlauflistaus();
+			tableDataListener.updateToVerlauf(verlaufListe);
 		} catch (VerlaufLeerException e1) {
 			System.out.println(e1.getMessage());
 		}
-		
-		tableDataListener.updateToVerlauf(verlaufListe);
-		btnLoeschen.setVisible(false);
-		btnArtikel_Erhoehen.setVisible(false);
-		btnBestand_Senken.setVisible(false);
+		showBtns_verlaufVerwalten();
 
-		
 	}
+
+	protected void do_btn_30erVerlauf_actionPerformed(ActionEvent e) {
+		if (tableDataListener.onSelctedRow() == null) {
+			JOptionPane.showMessageDialog(null, "Bitte nur einen Artikel auswählen", "info",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			try {
+				String artikelName = tableDataListener.onSelctedRow().getName();
+				List<Verlauf> verlaufListe = shop.zeigeVerlaufArtikelDreissigTage(artikelName);
+				tableDataListener.updateToVerlauf(verlaufListe);
+			} catch (ArtikelExistiertNichtException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+
+	}
+
 	protected void do_btn_zeigeArtikeln_actionPerformed(ActionEvent e) {
+		List<Artikel> artikeln = shop.gibAlleArtikeln();
+		tableDataListener.updateToArtikeln(artikeln);
+
+		showBtns_ArtikelVerwalten();
+	}
+
+	private void showBtns_ArtikelVerwalten() {
 		btnLoeschen.setVisible(true);
 		btnArtikel_Erhoehen.setVisible(true);
 		btnBestand_Senken.setVisible(true);
-		tableDataListener.updateToArtikeln();
+		btn_30erVerlauf.setVisible(true);
+
 	}
+
+	private void showBtns_verlaufVerwalten() {
+		btnLoeschen.setVisible(false);
+		btnArtikel_Erhoehen.setVisible(false);
+		btnBestand_Senken.setVisible(false);
+		btn_30erVerlauf.setVisible(false);
+
+	}
+
 }

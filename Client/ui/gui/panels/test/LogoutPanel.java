@@ -12,6 +12,8 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 public class LogoutPanel extends JPanel {
 	private JButton btn_Logout;
@@ -38,9 +40,9 @@ public class LogoutPanel extends JPanel {
 	}
 
 	private void initGUI() {
-		setBackground(Color.DARK_GRAY);
+		setBackground(UIManager.getColor("InternalFrame.resizeIconHighlight"));
 		FlowLayout flowLayout = (FlowLayout) getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
+		flowLayout.setAlignment(FlowLayout.RIGHT);
 		{
 			this.btn_Logout = new JButton("Logout");
 			this.btn_Logout.addActionListener(new ActionListener() {
