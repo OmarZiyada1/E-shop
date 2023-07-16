@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
+import java.awt.Cursor;
 
 public class MitarbeiterMenuePanel extends JPanel {
 	private JButton btn_zeigeArtikeln;
@@ -50,7 +51,6 @@ public class MitarbeiterMenuePanel extends JPanel {
 
 		public void updateToVerlauf(List<Verlauf> verlaufListe);
 
-		public void updateToArtikeln(List<Artikel> artikeln);
 	}
 
 	/**
@@ -75,6 +75,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 		setLayout(gridBagLayout);
 		{
 			this.btnLoeschen = new JButton("Artikel Löschen");
+			this.btnLoeschen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			this.btnLoeschen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					do_btnLoeschen_actionPerformed(e);
@@ -82,6 +83,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			});
 			{
 				this.btn_zeigeArtikeln = new JButton("Zeige Artikeln");
+				this.btn_zeigeArtikeln.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				this.btn_zeigeArtikeln.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						do_btn_zeigeArtikeln_actionPerformed(e);
@@ -96,6 +98,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			}
 			{
 				this.btnZeigeverlauf = new JButton("Zeige Verlauf");
+				this.btnZeigeverlauf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				this.btnZeigeverlauf.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						do_btnZeigeverlauf_actionPerformed(e);
@@ -119,6 +122,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			}
 			{
 				this.btn_30erVerlauf = new JButton("30er Verlauf");
+				this.btn_30erVerlauf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				this.btn_30erVerlauf.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						do_btn_30erVerlauf_actionPerformed(e);
@@ -140,6 +144,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 		}
 		{
 			this.btnBestand_Senken = new JButton("Bestand Senken");
+			this.btnBestand_Senken.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			this.btnBestand_Senken.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					do_btnBestand_Senken_actionPerformed(e);
@@ -154,6 +159,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 		}
 		{
 			this.btnArtikel_Erhoehen = new JButton("Artikel Erhoehen");
+			this.btnArtikel_Erhoehen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			this.btnArtikel_Erhoehen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					do_btnArtikel_Erhoehen_actionPerformed(e);
@@ -271,8 +277,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 
 	protected void do_btn_zeigeArtikeln_actionPerformed(ActionEvent e) {
 		List<Artikel> artikeln = shop.gibAlleArtikeln();
-		tableDataListener.updateToArtikeln(artikeln);
-
+		tableDataListener.updateTable();
 		showBtns_ArtikelVerwalten();
 	}
 

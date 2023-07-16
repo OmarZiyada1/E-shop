@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import javax.swing.UIManager;
+import java.awt.Cursor;
 
 public class LogoutPanel extends JPanel {
 	private JButton btn_Logout;
@@ -45,6 +46,7 @@ public class LogoutPanel extends JPanel {
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		{
 			this.btn_Logout = new JButton("Logout");
+			this.btn_Logout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			this.btn_Logout.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					do_btn_Logout_actionPerformed(e);

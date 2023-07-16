@@ -28,6 +28,7 @@ import ui.gui.panels.test.MitarbeiterMenuePanel.TableDataListener;
 
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.FlowLayout;
@@ -51,7 +52,7 @@ public class KundenMenuePanel extends JPanel {
 	public interface OnWarenkorpListener {
 		void updateToWarenkorb();
 
-		void updateToArtikel();
+		void updateToArtikel(List<Artikel> artikeln);
 
 		Artikel onSelectedRow_Kunde();
 
@@ -233,7 +234,8 @@ public class KundenMenuePanel extends JPanel {
 
 	protected void do_btn_ArtikelAnzeigen_actionPerformed(ActionEvent e) {
 		changeWarenkorbBtnsVisible(false);
-		onWarenkorpListener.updateToArtikel();
+		List<Artikel> artikeln = shop.gibAlleArtikeln();
+		onWarenkorpListener.updateToArtikel(artikeln);
 	}
 
 	protected void do_btnAddArtikel_actionPerformed(ActionEvent e) {

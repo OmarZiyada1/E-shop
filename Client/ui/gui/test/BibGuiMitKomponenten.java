@@ -150,7 +150,7 @@ public class BibGuiMitKomponenten extends JFrame
 			kundenMenuePanel = new KundenMenuePanel(shop, (Kunde) loggednutzer, this);
 			getContentPane().add(kundenMenuePanel, BorderLayout.WEST);
 			// center
-			
+
 			// TODO the next row have to remove, because the ArtikelTableModel2Kunde is
 			// already intialisiert in constructor von artikelnTablePanel -->
 			// --> artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
@@ -198,6 +198,7 @@ public class BibGuiMitKomponenten extends JFrame
 	 */
 	@Override
 	public void onSearchResult(java.util.List<Artikel> artikeln) {
+
 		artikelnTablePanel.setModel(artikelTableModel);
 		artikelnTablePanel.updateArtikelnList(artikeln);
 	}
@@ -318,7 +319,8 @@ public class BibGuiMitKomponenten extends JFrame
 	@Override
 	public void updateTable() {
 		artikeln = shop.gibAlleArtikeln();
-		artikelnTablePanel.updateArtikelnList(artikeln);
+		artikelTableModel = new ArtikelTableModel(artikeln);
+		artikelnTablePanel.setModel(artikelTableModel);
 	}
 
 	@Override
@@ -350,12 +352,22 @@ public class BibGuiMitKomponenten extends JFrame
 
 	}
 
+	//für kunden
 	@Override
-	public void updateToArtikel() {
+	public void updateToArtikel(List<Artikel> artikeln) {
+		artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
 		artikelnTablePanel.setModel(artikelTableModel2Kunde);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
-
 	}
+
+	@Override
+	public void updateToVerlauf(List<Verlauf> verlaufListe) {
+
+		verTableModel = new VerlaufTableModel(verlaufListe);
+		artikelnTablePanel.setModel(verTableModel);
+		scrollPane.setBorder(BorderFactory.createTitledBorder("Verlauf"));
+	}
+	
 
 	@Override
 	public Artikel onSelectedRow_Kunde() {
@@ -382,22 +394,6 @@ public class BibGuiMitKomponenten extends JFrame
 			arikel = warenkorbModel.getSelecetedArtikel(selectedRow);
 		}
 		return arikel;
-	}
-
-	@Override
-	public void updateToVerlauf(List<Verlauf> verlaufListe) {
-
-		verTableModel = new VerlaufTableModel(verlaufListe);
-		artikelnTablePanel.setModel(verTableModel);
-		scrollPane.setBorder(BorderFactory.createTitledBorder("Verlauf"));
-	}
-
-	@Override
-	public void updateToArtikeln(List<Artikel> artikeln) {
-		artikelTableModel = new ArtikelTableModel(artikeln);
-		artikelnTablePanel.setModel(artikelTableModel);
-		scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
-
 	}
 
 }
