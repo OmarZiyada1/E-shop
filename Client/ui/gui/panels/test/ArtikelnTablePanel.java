@@ -52,12 +52,7 @@ public class ArtikelnTablePanel extends JTable {
 		this.setModel(tableModelKunde);
 		// WarenKorbmodel erzeugen ...
 		sortTableMouseClick(shop.gibAlleArtikeln());
-		updateArtikelnList(shop.gibAlleArtikeln());
-		
-		
-		
-		
-		
+		updateArtikelnList(shop.gibAlleArtikeln());	
 	}
 
 
@@ -115,10 +110,7 @@ public class ArtikelnTablePanel extends JTable {
 			// ... Inhalt aktualisieren
 			tableModelKunde.setArtikeln(artikel);
 		}
-
 	}
-
-
 
 	public int selectedrowIndex() {
 

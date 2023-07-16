@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import javax.swing.JSeparator;
 
 public class MitarbeiterMenuePanel extends JPanel {
 	private JButton btn_zeigeArtikeln;
@@ -40,6 +41,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 	private TableDataListener tableDataListener;
 	private E_Shop shop;
 	private Mitarbeiter mitarbeiter;
+	private JSeparator separator;
 
 	public interface TableDataListener {
 		public Artikel onSelctedRow();
@@ -67,9 +69,9 @@ public class MitarbeiterMenuePanel extends JPanel {
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 107, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 21, 21, 21, 21, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 21, 30, 21, 21, 21, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 		{
 			this.btnLoeschen = new JButton("Artikel Löschen");
@@ -93,7 +95,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 				add(this.btn_zeigeArtikeln, gbc_btn_zeigeArtikeln);
 			}
 			{
-				this.btnZeigeverlauf = new JButton("Zeigeverlauf");
+				this.btnZeigeverlauf = new JButton("Zeige Verlauf");
 				this.btnZeigeverlauf.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						do_btnZeigeverlauf_actionPerformed(e);
@@ -106,11 +108,20 @@ public class MitarbeiterMenuePanel extends JPanel {
 				gbc_btnZeigeverlauf.gridy = 1;
 				add(this.btnZeigeverlauf, gbc_btnZeigeverlauf);
 			}
+			{
+				this.separator = new JSeparator();
+				GridBagConstraints gbc_separator = new GridBagConstraints();
+				gbc_separator.fill = GridBagConstraints.HORIZONTAL;
+				gbc_separator.insets = new Insets(0, 0, 5, 0);
+				gbc_separator.gridx = 0;
+				gbc_separator.gridy = 2;
+				add(this.separator, gbc_separator);
+			}
 			GridBagConstraints gbc_btnLoeschen = new GridBagConstraints();
 			gbc_btnLoeschen.fill = GridBagConstraints.BOTH;
 			gbc_btnLoeschen.insets = new Insets(0, 0, 5, 0);
 			gbc_btnLoeschen.gridx = 0;
-			gbc_btnLoeschen.gridy = 2;
+			gbc_btnLoeschen.gridy = 3;
 			add(this.btnLoeschen, gbc_btnLoeschen);
 		}
 		{
@@ -124,7 +135,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			gbc_btnBestand_Senken.fill = GridBagConstraints.BOTH;
 			gbc_btnBestand_Senken.insets = new Insets(0, 0, 5, 0);
 			gbc_btnBestand_Senken.gridx = 0;
-			gbc_btnBestand_Senken.gridy = 3;
+			gbc_btnBestand_Senken.gridy = 4;
 			add(this.btnBestand_Senken, gbc_btnBestand_Senken);
 		}
 		{
@@ -138,7 +149,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			gbc_btnArtikel_Erhoehen.insets = new Insets(0, 0, 5, 0);
 			gbc_btnArtikel_Erhoehen.fill = GridBagConstraints.BOTH;
 			gbc_btnArtikel_Erhoehen.gridx = 0;
-			gbc_btnArtikel_Erhoehen.gridy = 4;
+			gbc_btnArtikel_Erhoehen.gridy = 5;
 			add(this.btnArtikel_Erhoehen, gbc_btnArtikel_Erhoehen);
 		}
 		{
@@ -151,7 +162,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 			GridBagConstraints gbc_btn_30erVerlauf = new GridBagConstraints();
 			gbc_btn_30erVerlauf.fill = GridBagConstraints.HORIZONTAL;
 			gbc_btn_30erVerlauf.gridx = 0;
-			gbc_btn_30erVerlauf.gridy = 5;
+			gbc_btn_30erVerlauf.gridy = 6;
 			add(this.btn_30erVerlauf, gbc_btn_30erVerlauf);
 		}
 	}

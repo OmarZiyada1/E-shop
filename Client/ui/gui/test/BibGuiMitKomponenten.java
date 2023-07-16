@@ -2,7 +2,6 @@ package ui.gui.test;
 
 import javax.swing.*;
 
-
 import domain.E_Shop;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
@@ -134,26 +133,29 @@ public class BibGuiMitKomponenten extends JFrame
 			// West
 			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
 			getContentPane().add(addArtikelPanel, BorderLayout.WEST);
-			
-			
-	
-			
+
 			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Mitarbeiter) loggednutzer);
-			
-			//center
+
+			// center
 			scrollPane = new JScrollPane(artikelnTablePanel);
 			getContentPane().add(scrollPane, BorderLayout.CENTER);
 			scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
-			//East
+			// East
 			mitarbeiterMenuePanel = new MitarbeiterMenuePanel(this, shop, loggedNutzer);
 			getContentPane().add(mitarbeiterMenuePanel, BorderLayout.EAST);
 
 		} else if (shop.sucheKunde(loggednutzer.getNutzerName()) != null) {
 			Kunde k = shop.sucheKunde(loggednutzer.getNutzerName());
 			warenkorbModel = new WarenkorbModel(k.getKundeWarenkorb().getKorbArtikelListe());
-			artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
 			kundenMenuePanel = new KundenMenuePanel(shop, (Kunde) loggednutzer, this);
 			getContentPane().add(kundenMenuePanel, BorderLayout.WEST);
+			// center
+			
+			// TODO the next row have to remove, because the ArtikelTableModel2Kunde is
+			// already intialisiert in constructor von artikelnTablePanel -->
+			// --> artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
+
+			artikelTableModel2Kunde = new ArtikelTableModel2Kunde(artikeln);
 			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Kunde) loggednutzer);
 			scrollPane = new JScrollPane(artikelnTablePanel);
 			getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -325,8 +327,6 @@ public class BibGuiMitKomponenten extends JFrame
 		warenkorb = k.getKundeWarenkorb().getKorbArtikelListe();
 		warenkorbModel.setWarenkorb(warenkorb, k.getKundeWarenkorb());
 	}
-	
-
 
 	@Override
 	public Artikel onSelctedRow() {
@@ -369,7 +369,7 @@ public class BibGuiMitKomponenten extends JFrame
 		}
 		return arikel;
 	}
-	
+
 	@Override
 	public Artikel onSelectedRow_Warenkorb() {
 
@@ -377,7 +377,8 @@ public class BibGuiMitKomponenten extends JFrame
 		int selectedRow = artikelnTablePanel.selectedrowIndex();
 		Artikel arikel = null;
 
-		if (selectedRow != -1 && artikelnTablePanel.getSelectedRowCount() == 1 && selectedRow != warenkorbModel.getRowCount()-1 ) {
+		if (selectedRow != -1 && artikelnTablePanel.getSelectedRowCount() == 1
+				&& selectedRow != warenkorbModel.getRowCount() - 1) {
 			arikel = warenkorbModel.getSelecetedArtikel(selectedRow);
 		}
 		return arikel;
@@ -385,18 +386,18 @@ public class BibGuiMitKomponenten extends JFrame
 
 	@Override
 	public void updateToVerlauf(List<Verlauf> verlaufListe) {
-		verTableModel = new VerlaufTableModel (verlaufListe);
+
+		verTableModel = new VerlaufTableModel(verlaufListe);
 		artikelnTablePanel.setModel(verTableModel);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Verlauf"));
 	}
+
 	@Override
-	public void updateToArtikeln( List<Artikel> artikeln) {
-		artikelTableModel = new ArtikelTableModel (artikeln);
+	public void updateToArtikeln(List<Artikel> artikeln) {
+		artikelTableModel = new ArtikelTableModel(artikeln);
 		artikelnTablePanel.setModel(artikelTableModel);
 		scrollPane.setBorder(BorderFactory.createTitledBorder("Artikeln"));
-	
+
 	}
-
-
 
 }
