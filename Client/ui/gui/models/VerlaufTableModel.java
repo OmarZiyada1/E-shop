@@ -12,7 +12,7 @@ import entities.Verlauf;
 public class VerlaufTableModel extends AbstractTableModel {
 
     private List<Verlauf> verlaeufe;
-    private String[] spaltenNamen = {"Datum", "Nutzer", "Aktion", "Artikel", "Änderung"};
+    private String[] spaltenNamen = {"Datum", "Nutzer", "Aktion", "Artikel", "aenderung"};
 
     public VerlaufTableModel(List<Verlauf> verlaeufe) {
         super();
