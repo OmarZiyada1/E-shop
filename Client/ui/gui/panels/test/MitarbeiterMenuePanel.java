@@ -21,7 +21,6 @@ import entities.Mitarbeiter;
 import entities.Nutzer;
 import entities.Verlauf;
 import ui.gui.models.VerlaufTableModel;
-import ui.gui.panels.test.AddArtikelPanel.AddArtikelListener;
 
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
@@ -31,6 +30,8 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 import java.awt.Cursor;
+
+
 
 public class MitarbeiterMenuePanel extends JPanel {
 	private JButton btn_zeigeArtikeln;
@@ -43,6 +44,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 	private E_Shop shop;
 	private Mitarbeiter mitarbeiter;
 	private JSeparator separator;
+	private JButton btn_MA_regestrieren;
 
 	public interface TableDataListener {
 		public Artikel onSelctedRow();
@@ -69,9 +71,9 @@ public class MitarbeiterMenuePanel extends JPanel {
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 107, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 21, 30, 0, 21, 21, 21, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowHeights = new int[] { 0, 21, 30, 0, 21, 21, 21, 0, 0, 0 };
+		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 		{
 			this.btnLoeschen = new JButton("Artikel Löschen");
@@ -166,10 +168,26 @@ public class MitarbeiterMenuePanel extends JPanel {
 				}
 			});
 			GridBagConstraints gbc_btnArtikel_Erhoehen = new GridBagConstraints();
+			gbc_btnArtikel_Erhoehen.insets = new Insets(0, 0, 5, 0);
 			gbc_btnArtikel_Erhoehen.fill = GridBagConstraints.BOTH;
 			gbc_btnArtikel_Erhoehen.gridx = 0;
 			gbc_btnArtikel_Erhoehen.gridy = 6;
 			add(this.btnArtikel_Erhoehen, gbc_btnArtikel_Erhoehen);
+		}
+		{
+			this.btn_MA_regestrieren = new JButton("MA. regestrieren");
+			this.btn_MA_regestrieren.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					do_btn_MA_regestrieren_actionPerformed(e);
+				}
+			});
+			this.btn_MA_regestrieren.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			GridBagConstraints gbc_btn_MA_regestrieren = new GridBagConstraints();
+			gbc_btn_MA_regestrieren.anchor = GridBagConstraints.SOUTH;
+			gbc_btn_MA_regestrieren.fill = GridBagConstraints.HORIZONTAL;
+			gbc_btn_MA_regestrieren.gridx = 0;
+			gbc_btn_MA_regestrieren.gridy = 8;
+			add(this.btn_MA_regestrieren, gbc_btn_MA_regestrieren);
 		}
 	}
 
@@ -297,4 +315,7 @@ public class MitarbeiterMenuePanel extends JPanel {
 
 	}
 
+	protected void do_btn_MA_regestrieren_actionPerformed(ActionEvent e) {
+		shop.regestiereNeueMitarbeiter(TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY);
+	}
 }
