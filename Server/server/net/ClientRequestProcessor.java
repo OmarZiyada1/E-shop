@@ -1,18 +1,17 @@
 package server.net;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.List;
-
-import bib.common.exceptions.BuchExistiertBereitsException;
 import bib.common.interfaces.E_ShopInterface;
 import domain.exceptions.ArtikelExistiertNichtException;
 import entities.Artikel;
 import entities.Massengutartikel;
-import bib.common.entities.Buch;
+import entities.Mitarbeiter;
 
 /**
  * Klasse zur Verarbeitung der Kommunikation zwischen EINEM Client und dem
@@ -94,19 +93,20 @@ class ClientRequestProcessor implements Runnable {
 			} else if (input.equals("a")) {
 				// Aktion "Bücher _a_usgeben" gewählt
 				ausgeben();
-			} else if (input.equals("d")) {
-				// Aktion "Buch löschen (_d_elete)" gewählt
-				loeschen();
-			} else if (input.equals("e")) {
-				// Aktion "Buch _e_infügen" gewählt
-				einfuegen();
-			} else if (input.equals("f")) {
-				// Aktion "Bücher _f_inden" (suchen) gewählt
-				suchen();
-			} else if (input.equals("s")) {
-				// Aktion "_s_peichern" gewählt
-				speichern();
 			}
+//			 else if (input.equals("d")) {
+//				// Aktion "Buch löschen (_d_elete)" gewählt
+//				loeschen();
+//			} else if (input.equals("e")) {
+//				// Aktion "Buch _e_infügen" gewählt
+//				einfuegen();
+//			} else if (input.equals("f")) {
+//				// Aktion "Bücher _f_inden" (suchen) gewählt
+//				suchen();
+//			} else if (input.equals("s")) {
+//				// Aktion "_s_peichern" gewählt
+//				speichern();
+//			}
 			// ---
 			// weitere Server-Dienste ...
 			// ---
@@ -115,6 +115,14 @@ class ClientRequestProcessor implements Runnable {
 
 		// Verbindung wurde vom Client abgebrochen:
 		disconnect();
+	}
+
+	private void ausgeben() {
+		// Die Arbeit soll wieder das Bibliotheksverwaltungsobjekt machen:
+		List<Artikel> artikel = null;
+		artikel = shop.gibAlleArtikeln();
+
+		sendeArtikelListAnClient(artikel);
 	}
 
 	private void speichern() {
@@ -134,7 +142,7 @@ class ClientRequestProcessor implements Runnable {
 		}
 	}
 
-	public void sucheNachName() throws ArtikelExistiertNichtException {
+	public void sucheArtikelNachName() throws ArtikelExistiertNichtException {
 		String input = null;
 		// lese die notwendigen Parameter, einzeln pro Zeile
 		// hier ist nur der Titel der gesuchten Bücher erforderlich:
@@ -151,7 +159,7 @@ class ClientRequestProcessor implements Runnable {
 			artikeln = shop.gibAlleArtikeln();
 			sendeArtikelListAnClient(artikeln);
 		} else {
-			artikel = shop.sucheNachName(name);
+			artikel = shop.sucheArtikelNachName(name);
 			sendeArtikelAnClient(artikel);
 		}
 
@@ -178,9 +186,34 @@ class ClientRequestProcessor implements Runnable {
 			out.println(artikel_1.getPackungsGroesse());
 		}
 	}
-	
-	
-	
+
+	private void fuegeArtikelEin() {
+
+	}
+
+	private Mitarbeiter getMitarbeiter() {
+		String input = "";
+		int maId;
+		String name;
+		String vorname;
+		String nutzerName;
+		String passwort;
+		try {
+			input = in.readLine();
+		} catch (Exception e) {
+			System.out.println("--->Fehler beim Lesen vom Client (Mitarbeiter id): ");
+			System.out.println(e.getMessage());
+		}
+		maId = Integer.parseInt(input);
+		try {
+			input = in.readLine();
+		} catch (Exception e) {
+			System.out.println("--->Fehler beim Lesen vom Client (Mitarbeiter name): ");
+			System.out.println(e.getMessage());
+		}
+		name = input;
+		return null;
+	}
 
 	private void disconnect() {
 		try {

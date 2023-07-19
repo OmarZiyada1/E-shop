@@ -242,7 +242,7 @@ public class E_shop_CUI {
 			System.out.print("Artikel Name  > ");
 			artikelName = liesEingabe();
 			try {
-				System.out.println(gesuchteArtikel = sh.sucheNachName(artikelName));
+				System.out.println(gesuchteArtikel = sh.sucheArtikelNachName(artikelName));
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
@@ -360,7 +360,7 @@ public class E_shop_CUI {
 			System.out.print("Artikel Name  > ");
 			artikelName = liesEingabe().trim();
 			try {
-				System.out.println(gesuchteArtikel = sh.sucheNachName(artikelName));
+				System.out.println(gesuchteArtikel = sh.sucheArtikelNachName(artikelName));
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}
@@ -369,7 +369,7 @@ public class E_shop_CUI {
 			System.out.println("Bitte name des Artikels eingeben  >");
 			artikelName = liesEingabe().trim();
 			try {
-				gesuchteArtikel = sh.sucheNachName(artikelName);
+				gesuchteArtikel = sh.sucheArtikelNachName(artikelName);
 				if (sh.checkMassengutatikel(gesuchteArtikel)) {
 					System.out.println("Es handelt sich um einen Artikel, die nur in "
 							+ sh.artikelZuMassengeutartikel(gesuchteArtikel).getPackungsGroesse()
@@ -393,7 +393,7 @@ public class E_shop_CUI {
 			System.out.println("Bitte name des Artikels eingeben  >");
 			artikelName = liesEingabe().trim();
 			try {
-				gesuchteArtikel = sh.sucheNachName(artikelName);
+				gesuchteArtikel = sh.sucheArtikelNachName(artikelName);
 			} catch (ArtikelExistiertNichtException e) {
 				System.err.println("\n" + e.getMessage() + "\n");
 			}

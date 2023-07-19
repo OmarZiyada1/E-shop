@@ -1,13 +1,13 @@
 package server.net;
 
 import java.io.IOException;
+
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.ParseException;
 
 import bib.common.interfaces.E_ShopInterface;
-import bib.server.domain.Bibliothek;
 import domain.E_Shop;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
@@ -79,7 +79,7 @@ public class MiniShopServer {
 		try {
 			while (true) {
 				Socket clientSocket = serverSocket.accept();
-				ClientRequestProcessor c = new ClientRequestProcessor(clientSocket, bib);
+				ClientRequestProcessor c = new ClientRequestProcessor(clientSocket, shop);
 				Thread t = new Thread(c);
 				t.start();
 			}
@@ -106,7 +106,7 @@ public class MiniShopServer {
 		try {
 			MiniShopServer server = new MiniShopServer(port);
 			server.acceptClientConnectRequests();
-		} catch (IOException e) {
+		} catch (IOException | ArtikelExistiertBereitsException | ArtikelExistiertNichtException | MitarbeiterUsernameIstBenutztException | ParseException | BestandPasstNichtMitPackungsGroesseException e) {
 			e.printStackTrace();
 			fail(e, " - MiniBibServer-Erzeugung");
 		}

@@ -15,6 +15,13 @@ public class ArtikelExistiertBereitsException extends Exception {
 		super("Artikel mit Name '" + artikel.getName() + "'" + " existiert bereits" + zusatzMsg);
 		this.artikel = artikel;
 	}
+	
+	public ArtikelExistiertBereitsException(String massage) {
+		// TODO Auto-generated constructor stub
+
+		super(massage);
+		
+	}
 
 	public Artikel getArtikel() {
 		return artikel;

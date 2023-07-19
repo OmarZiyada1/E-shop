@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import domain.E_Shop;
 import domain.exceptions.ArtikelExistiertNichtException;
 import domain.exceptions.BestandPasstNichtMitPackungsGroesseException;
+import domain.exceptions.MitarbeiterUsernameIstBenutztException;
 import domain.exceptions.SenkenUnterNullNichtMoeglichException;
 import domain.exceptions.VerlaufLeerException;
 import entities.Artikel;
@@ -316,6 +317,11 @@ public class MitarbeiterMenuePanel extends JPanel {
 	}
 
 	protected void do_btn_MA_regestrieren_actionPerformed(ActionEvent e) {
-		shop.regestiereNeueMitarbeiter(TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY);
+		try {
+			shop.regestiereNeueMitarbeiter(TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY, TOOL_TIP_TEXT_KEY);
+		} catch (MitarbeiterUsernameIstBenutztException e1) {
+			// todo excption
+			
+		}
 	}
 }

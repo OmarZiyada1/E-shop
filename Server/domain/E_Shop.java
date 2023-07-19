@@ -40,7 +40,7 @@ public class E_Shop implements E_ShopInterface{
 	private VerlaufsVerwaltung verlaufVW;
 	private String datei = "";
 
-	public E_Shop(String datei) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException, ParseException, BestandPasstNichtMitPackungsGroesseException {
+	public E_Shop(String datei ) throws IOException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException, MitarbeiterUsernameIstBenutztException, ParseException, BestandPasstNichtMitPackungsGroesseException {
 
 		this.datei = datei;
 		artikelVW = new ArtikelVerwaltung();
@@ -62,7 +62,7 @@ public class E_Shop implements E_ShopInterface{
 		return artikelVW.getArtikelListe();
 	}
 	@Override
-	public Artikel sucheNachName(String name) throws ArtikelExistiertNichtException {
+	public Artikel sucheArtikelNachName(String name) throws ArtikelExistiertNichtException {
 		return artikelVW.sucheArtikel(name);
 	}
 

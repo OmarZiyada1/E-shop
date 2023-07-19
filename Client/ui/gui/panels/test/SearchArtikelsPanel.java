@@ -92,7 +92,7 @@ public class SearchArtikelsPanel extends JPanel {
 				} else {
 
 					try {
-						suchErgebnis.add(shop.sucheNachName(suchbegriff));
+						suchErgebnis.add(shop.sucheArtikelNachName(suchbegriff));
 					} catch (ArtikelExistiertNichtException e) {
 
 						JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

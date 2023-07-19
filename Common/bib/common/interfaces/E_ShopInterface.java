@@ -83,7 +83,7 @@ public interface E_ShopInterface {
 	// Artikel Methoden
 	public Vector<Artikel> gibAlleArtikeln();
 
-	public Artikel sucheNachName(String name) throws ArtikelExistiertNichtException;
+	public Artikel sucheArtikelNachName(String name) throws ArtikelExistiertNichtException;
 
 	public Artikel fuegeArtikelEin(Mitarbeiter mitarbeiter, String name, String beschreibung, int bestand, double preis,
 			boolean istPackung) throws AnzahlIsNichtDefiniertException, ArtikelExistiertBereitsException,

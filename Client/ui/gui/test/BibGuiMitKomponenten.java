@@ -2,6 +2,8 @@ package ui.gui.test;
 
 import javax.swing.*;
 
+import bib.client.net.EshopsFassade;
+import bib.common.interfaces.E_ShopInterface;
 import domain.E_Shop;
 import domain.exceptions.ArtikelExistiertBereitsException;
 import domain.exceptions.ArtikelExistiertNichtException;
@@ -32,17 +34,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class BibGuiMitKomponenten extends JFrame
-		implements  SearchArtikelsPanel.SearchResultListener,
+public class BibGuiMitKomponenten extends JFrame implements SearchArtikelsPanel.SearchResultListener,
 		MitarbeiterMenuePanel.TableDataListener, Login_Panel.LoginSuccessListener, Login_Panel.PanelChangeListener,
 		LogoutPanel.PanelChangeBeiLogout, KundenMenuePanel.OnWarenkorpListener {
 
 	private E_Shop shop;
+	private E_ShopInterface fas;
 
 	private SearchArtikelsPanel searchPanel;
 	private AddArtikelPanel addArtikelPanel;
@@ -62,14 +65,57 @@ public class BibGuiMitKomponenten extends JFrame
 	private List<Verlauf> verlaufListe;
 	private VerlaufPanel verlaufPanel;
 	private VerlaufTableModel verTableModel;
+	public static final int DEFAULT_PORT = 6789;
 
 	public static void main(String[] args) {
+		int portArg = 0;
+		String hostArg = null;
+		InetAddress ia = null;
+
+		// ---
+		// Hier werden die main-Parameter geprüft:
+		// ---
+
+		// Host- und Port-Argument einlesen, wenn angegeben
+		if (args.length > 2) {
+			System.out.println("Aufruf: java <Klassenname> [<hostname> [<port>]]");
+			System.exit(0);
+		}
+		switch (args.length) {
+		case 0:
+			try {
+				ia = InetAddress.getLocalHost();
+			} catch (Exception e) {
+				System.out.println("XXX InetAdress-Fehler: " + e);
+				System.exit(0);
+			}
+			hostArg = ia.getHostName(); // host ist lokale Maschine
+			portArg = DEFAULT_PORT;
+			break;
+		case 1:
+			portArg = DEFAULT_PORT;
+			hostArg = args[0];
+			break;
+		case 2:
+			hostArg = args[0];
+			try {
+				portArg = Integer.parseInt(args[1]);
+			} catch (NumberFormatException e) {
+				System.out.println("Aufruf: java BibClientGUI [<hostname> [<port>]]");
+				System.exit(0);
+			}
+		}
+
+		// Swing-UI auf dem GUI-Thread initialisieren
+		// (host und port müssen für Verwendung in inner class final sein)
+		final String host = hostArg;
+		final int port = portArg;
 		// Start der Anwendung (per anonymer Klasse)
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					BibGuiMitKomponenten gui = new BibGuiMitKomponenten("EShop");
+					BibGuiMitKomponenten gui = new BibGuiMitKomponenten("EShop", host, port);
 				} catch (ArtikelExistiertBereitsException | ArtikelExistiertNichtException
 						| MitarbeiterUsernameIstBenutztException | ParseException
 						| BestandPasstNichtMitPackungsGroesseException e) {
@@ -82,12 +128,14 @@ public class BibGuiMitKomponenten extends JFrame
 //		SwingUtilities.invokeLater(() -> { BibGuiAusVL gui = new BibGuiAusVL("Bibliothek"); });
 	}
 
-	public BibGuiMitKomponenten(String titel) throws ArtikelExistiertBereitsException, ArtikelExistiertNichtException,
+	public BibGuiMitKomponenten(String titel, String host, int port)
+			throws ArtikelExistiertBereitsException, ArtikelExistiertNichtException,
 			MitarbeiterUsernameIstBenutztException, ParseException, BestandPasstNichtMitPackungsGroesseException {
 		super(titel);
 
 		try {
 			shop = new E_Shop("EShop");
+			fas = new EshopsFassade(host, port, loggedNutzer);
 
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -124,6 +172,7 @@ public class BibGuiMitKomponenten extends JFrame
 
 		// Center
 		artikeln = shop.gibAlleArtikeln();
+		System.out.println("fas  " + artikeln);
 
 		// south
 		logoutPanel = new LogoutPanel(shop, this.loggedNutzer, this);
@@ -131,7 +180,7 @@ public class BibGuiMitKomponenten extends JFrame
 
 		if (shop.sucheMitarbeiter(loggednutzer.getNutzerName()) != null) {
 			// West
-			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer,this);
+			addArtikelPanel = new AddArtikelPanel(shop, this.loggedNutzer, this);
 			getContentPane().add(addArtikelPanel, BorderLayout.WEST);
 
 			artikelnTablePanel = new ArtikelnTablePanel(this.shop, (Mitarbeiter) loggednutzer);
@@ -166,8 +215,6 @@ public class BibGuiMitKomponenten extends JFrame
 		this.setSize(640, 480);
 		this.setVisible(true);
 	}
-
-
 
 	/*
 	 * (non-Javadoc)
